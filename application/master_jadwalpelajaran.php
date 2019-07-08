@@ -208,8 +208,6 @@
                                                     kode_kelas = '$_POST[b]',
                                                     kode_pelajaran = '$_POST[c]',
                                                     nip = '$_POST[e]',
-                                                    paralel = '$_POST[f]',
-                                                    jadwal_serial = '$_POST[g]',
                                                     jam_mulai = '$_POST[h]',
                                                     jam_selesai = '$_POST[i]',
                                                     hari = '$_POST[j]',
@@ -264,18 +262,7 @@
                                                 }
                                                 echo "</select>
                     </td></tr>
-                    <tr><th scope='row'>Ruangan</th>   <td><select class='form-control' name='d'> 
-                                                <option value='0' selected>- Pilih Ruangan -</option>"; 
-                                                $ruangan = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_ruangan a JOIN rb_gedung b ON a.kode_gedung=b.kode_gedung");
-                                                while($a = mysqli_fetch_array($ruangan)){
-                                                  if ($e[kode_ruangan]==$a[kode_ruangan]){
-                                                    echo "<option value='$a[kode_ruangan]' selected>$a[nama_gedung] - $a[nama_ruangan]</option>";
-                                                  }else{
-                                                    echo "<option value='$a[kode_ruangan]'>$a[nama_gedung] - $a[nama_ruangan]</option>";
-                                                  }
-                                                }
-                                                echo "</select>
-                    </td></tr>
+                    
                     <tr><th scope='row'>Guru</th>   <td><select class='form-control' name='e'> 
                                                 <option value='0' selected>- Pilih Guru -</option>"; 
                                                 $guru = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_guru");
@@ -288,8 +275,6 @@
                                                 }
                                                 echo "</select>
                     </td></tr>
-                    <tr><th scope='row'>Jadwal Paralel</th>  <td><input type='text' class='form-control' name='f' value='$e[paralel]'></td></tr>
-                    <tr><th scope='row'>Jadwal Serial</th>  <td><input type='text' class='form-control' name='g' value='$e[jadwal_serial]'></td></tr>
                     <tr><th scope='row'>Jam Mulai</th>  <td><input type='text' class='form-control' name='h' placeholder='hh:ii:ss' value='$e[jam_mulai]'></td></tr>
                     <tr><th scope='row'>Jam Selesai</th><td><input type='text' class='form-control' name='i' placeholder='hh:ii:ss' value='$e[jam_selesai]'></td></tr>
                     <tr><th scope='row'>Hari</th>  <td><select class='form-control' name='j'>

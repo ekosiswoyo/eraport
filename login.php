@@ -46,11 +46,16 @@
   <body class="hold-transition login-page">
   
   <!-- <img src="gambarku.jpg" alt="gambar" class="bg" /> -->
+
+  <a href="../../index2.html"> </a>
+
+    <b> Sistem Informasi Nilai Raport</b> 
+        <h3> Sekolah Menengah Pertama Negeri 2 Kajen </h3>
+
     <div class="login-box" style="border: 10px inset green;background-color:#ffffff;">
       <div class="login-logo" style="background-color:#ffffff;">
       <img src="logo.png" width="30%;height:30%;"><br>
-        <a href="../../index2.html"> Sistem Informasi Nilai Raport</b></a>
-        <h3> Sekolah Menengah Pertama Negeri 2 Kajen </h3>
+        
       </div><!-- /.login-logo -->
       <div class="login-box-body"  style="background-color:#ffffff;">
         <p class="login-box-msg">Silahkan Login Pada Form dibawah ini</p>

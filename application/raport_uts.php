@@ -113,13 +113,15 @@ cek_session_guru();
         for ($ia=1; $ia<=$jumls; $ia++){
           $a  = $_POST['a'.$ia];
           $b  = $_POST['b'.$ia];
+          $c  = $_POST['c'.$ia];
+          $d  = $_POST['d'.$ia];
           $nisn = $_POST['nisn'.$ia];
           if ($a != '' OR $b != ''){
             $cek = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_nilai_uts where kodejdwl='$_POST[jdwl]' AND nisn='$nisn'"));
             if ($cek >= '1'){
-              mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rb_nilai_uts SET angka_pengetahuan='$a', angka_keterampilan='$b' where kodejdwl='$_POST[jdwl]' AND nisn='$nisn'");
+              mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rb_nilai_uts SET angka_pengetahuan='$a',deskripsi_pengetahuan='$c', angka_keterampilan='$b', deskripsi_keterampilan='$d' where kodejdwl='$_POST[jdwl]' AND nisn='$nisn'");
             }else{
-              mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_nilai_uts VALUES('','$_POST[jdwl]','$nisn','$a','','$b','','".date('Y-m-d H:i:s')."')");
+              mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_nilai_uts VALUES('','$_POST[jdwl]','$nisn','$a','$c','$b','$d','".date('Y-m-d H:i:s')."')");
             }
           }
         }
@@ -156,14 +158,16 @@ cek_session_guru();
                         <th style='border:1px solid #e3e3e3' width='30px' rowspan='2'>No</th>
                         <th style='border:1px solid #e3e3e3' width='90px' rowspan='2'>NISN</th>
                         <th style='border:1px solid #e3e3e3' width='190px' rowspan='2'>Nama Lengkap</th>
-                        <th style='border:1px solid #e3e3e3' colspan='2'><center>Pengetahuan</center></th>
-                        <th style='border:1px solid #e3e3e3' colspan='2'><center>Keterampilan</center></th>
+                        <th style='border:1px solid #e3e3e3' colspan='3'><center>Pengetahuan</center></th>
+                        <th style='border:1px solid #e3e3e3' colspan='3'><center>Keterampilan</center></th>
                       </tr>
                       <tr>
                         <th style='border:1px solid #e3e3e3'><center>Angka</center></th>
                         <th style='border:1px solid #e3e3e3'><center>Predikat</center></th>
+                        <th style='border:1px solid #e3e3e3'><center>Deskripsi</center></th>
                         <th style='border:1px solid #e3e3e3'><center>Angka</center></th>
                         <th style='border:1px solid #e3e3e3'><center>predikat</center></th>
+                        <th style='border:1px solid #e3e3e3'><center>Deskripsi</center></th>
                       </tr>
                     <tbody>";
                     $no = 1;
@@ -182,8 +186,12 @@ cek_session_guru();
                               <input type='hidden' name='nisn".$no."' value='$r[nisn]'>
                               <td align=center><input type='number' name='a".$no."' value='$n[angka_pengetahuan]' style='width:90px; text-align:center; padding:0px' placeholder='-'></td>
                                         <td align=center><input type='text' value='$grade1[grade]' style='width:90px; text-align:center; padding:0px' placeholder='-' disabled></td>
+                                        <td align=center><input type='text' name='c".$no."' value='$n[deskripsi_pengetahuan]' style='width:90px; text-align:center; padding:0px' placeholder='-'></td>
+
+
                                         <td align=center><input type='number' name='b".$no."' value='$n[angka_keterampilan]' style='width:90px; text-align:center; padding:0px' placeholder='-'></td>
                                         <td align=center><input type='text' value='$grade2[grade]' style='width:90px; text-align:center; padding:0px' placeholder='-' disabled></td>
+                                        <td align=center><input type='text' name='d".$no."' value='$n[deskripsi_keterampilan]' style='width:90px; text-align:center; padding:0px' placeholder='-'></td>
                             </tr>";
                       $no++;
                       }

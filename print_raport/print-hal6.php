@@ -3,11 +3,10 @@ session_start();
 error_reporting(0);
 include "../config/koneksi.php"; 
 include "../config/fungsi_indotgl.php"; 
-$skp = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_nilai_sikap_semester where id_tahun_akademik='$_GET[tahun]' AND nisn='$_GET[id]' AND kode_kelas='$_GET[kelas]'")); 
+$frt = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_header_print ORDER BY id_header_print DESC LIMIT 1")); 
 ?>
-<html>
 <head>
-<title>Hal 6 - Raport Siswa</title>
+<title>Hal 5 - Raport Siswa</title>
 <link rel="stylesheet" href="../bootstrap/css/printer.css">
 </head>
 <body onload="window.print()">
@@ -25,95 +24,38 @@ echo "<table width=100%>
         <tr><td>No Induk/NISN</td>            <td> : $s[nipd] / $s[nisn]</td>        <td></td></tr>
       </table><br>";
 
-echo "<b>C. Extrakulikuler</b>
-      <table id='tablemodul1' width=100% border=1>
+echo "DESKRIPSI PENGETAHUAN DAN KETERAMPILAM
+<table id='tablemodul1' width=100% style='margin-top:2px' border=1>
           <tr>
-            <th width='40px'>No</th>
-            <th width='30%'>Kegiatan Extrakulikuler</th>
-            <th>Nilai</th>
+            <th width='160px' colspan='2'>Mata Pelajaran</th>
+            <th width='140px'>Aspek</th>
             <th>Deskripsi</th>
           </tr>";
-
-          $extra = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_nilai_extrakulikuler where id_tahun_akademik='$_GET[tahun]' AND nisn='$_GET[id]' AND kode_kelas='$_GET[kelas]'");
-          $no = 1;
-          while ($ex = mysqli_fetch_array($extra)){
-            echo "<tr>
-                    <td>$no</td>
-                    <td>$ex[kegiatan]</td>
-                    <td>$ex[nilai]</td>
-                    <td>$ex[deskripsi]</td>
-                  </tr>";
-              $no++;
-          }
-      echo "</table>";
-
-echo "<b>D. Prestasi</b>
-      <table id='tablemodul1' width=100% border=1>
-          <tr>
-            <th width='40px'>No</th>
-            <th width='30%'>Jenis Kegiatan</th>
-            <th>Keterangan</th>
+      $kelompok = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelompok_mata_pelajaran");  
+      while ($k = mysqli_fetch_array($kelompok)){
+      echo "<tr>
+            <td colspan='7'><b>$k[nama_kelompok_mata_pelajaran]</b></td>
           </tr>";
-
-          $prestasi = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_nilai_prestasi where id_tahun_akademik='$_GET[tahun]' AND nisn='$_GET[id]' AND kode_kelas='$_GET[kelas]'");
-          $no = 1;
-          while ($pr = mysqli_fetch_array($prestasi)){
-            echo "<tr>
-                    <td>$no</td>
-                    <td>$pr[jenis_kegiatan]</td>
-                    <td>$pr[keterangan]</td>
-                  </tr>";
-              $no++;
-          }
-      echo "</table>";
-
-echo "<b>E. Ketidakhadiran</b>
-      <table id='tablemodul1' width=85% border=1>";
-
-      $kehadiran = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kehadiran where nisn='$_GET[id]' AND kode_kelas='$_GET[kelas]' ORDER BY id_kehadiran DESC LIMIT 1");
-      while ($pr = mysqli_fetch_array($kehadiran)){
-      echo " <tr><td width='70%'>Sakit</td>  <td width='10px'> : </td> <td align=center>$pr[sakit]</td> </tr>
-        <tr><td>Izin</td>               <td> : </td>              <td align=center>$pr[izin]</td> </tr>
-        <tr><td>Tanpa Keterangan</td>   <td> : </td>              <td align=center>$pr[alpha]</td> </tr>";
+        $mapel = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM  rb_jadwal_pelajaran a JOIN rb_mata_pelajaran b ON a.kode_pelajaran=b.kode_pelajaran 
+                                  where a.kode_kelas='$_GET[kelas]' AND a.id_tahun_akademik='$_GET[tahun]' AND b.id_kelompok_mata_pelajaran='$k[id_kelompok_mata_pelajaran]'");
+        $no = 1;
+        while ($m = mysqli_fetch_array($mapel)){
+        $maxn = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT ((nilai1+nilai2+nilai3+nilai4+nilai5)/5) as rata_rata, deskripsi FROM rb_nilai_pengetahuan where kodejdwl='$m[kodejdwl]' AND nisn='$s[nisn]' ORDER BY rata_rata DESC LIMIT 1"));
+        $maxnk = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT deskripsi, GREATEST(nilai1,nilai2,nilai3,nilai4,nilai5,nilai6) as tertinggi FROM rb_nilai_keterampilan where kodejdwl='$m[kodejdwl]' AND nisn='$s[nisn]' ORDER BY tertinggi DESC LIMIT 1"));
+        echo "<tr>
+                <td width='30px' rowspan=2 align=center>$no</td>
+                <td width='160px' rowspan=2>$m[namamatapelajaran]</td>
+                <td>Pengetahuan</td>
+                <td>$maxn[deskripsi]</td>
+            </tr>
+            <tr>
+                <td>Keterampilan</td>
+                <td>$maxnk[deskripsi]</td>
+            </tr>";
+        $no++;
+        }
       }
-      echo "</table>";
- 
 
-echo "<b>F. Catatan Wali Kelas</b>";
-    $catatan = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_catatan where nisn='$_GET[id]' AND kode_kelas='$_GET[kelas]' ORDER BY id_catatan DESC LIMIT 1");
-    while ($pr = mysqli_fetch_array($catatan)){
-     echo "<table id='tablemodul1' width=100% height=80px border=1>
-        <tr><td>$pr[catatan]</td></tr>";
-      }
-      echo "</table>";
-
-echo "<b>G. Tanggapan Orang tua / Wali</b>
-      <table id='tablemodul1' width=100% height=80px border=1>
-        <tr><td></td></tr>
-      </table><br/>";
-
+        echo "</table><br/>";
 ?>
-
-<table border=0 width=100%>
-  <tr>
-    <td width="260" align="left">Orang Tua / Wali</td>
-    <td width="520"align="center">Mengetahui <br> Kepala SMP Negeri 2 Kajen</td>
-    <td width="260" align="left">Pekalongan, <?php echo tgl_raport(date("Y-m-d")); ?> <br> Wali Kelas</td>
-  </tr>
-  <tr>
-    <td align="left"><br /><br /><br />
-      ................................... <br /><br /></td>
-
-    <td align="center" valign="top"><br /><br /><br />
-      <b>Arifin, S.Pd.<br>
-      NIP : 1963031819870310006</b>
-    </td>
-
-    <td align="left" valign="top"><br /><br /><br />
-      <b><?php echo $s[walikelas]; ?><br />
-      NIP : <?php echo $s[nip]; ?></b>
-    </td>
-  </tr>
-</table> 
 </body>
-</html>

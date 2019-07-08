@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.4
+-- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 04 Jul 2019 pada 05.00
--- Versi server: 10.1.37-MariaDB
--- Versi PHP: 7.3.1
+-- Waktu pembuatan: 08 Jul 2019 pada 08.49
+-- Versi server: 10.3.16-MariaDB
+-- Versi PHP: 7.1.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -32,7 +32,7 @@ CREATE TABLE `rb_catatan` (
   `id_catatan` int(11) NOT NULL,
   `nisn` varchar(20) DEFAULT NULL,
   `kode_kelas` varchar(10) DEFAULT NULL,
-  `catatan` text
+  `catatan` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -40,7 +40,8 @@ CREATE TABLE `rb_catatan` (
 --
 
 INSERT INTO `rb_catatan` (`id_catatan`, `nisn`, `kode_kelas`, `catatan`) VALUES
-(2, '4443', 'VII1', '2');
+(2, '4443', 'VII1', '2'),
+(3, '0050855185', 'VIIC', 'harus tingkatkan');
 
 -- --------------------------------------------------------
 
@@ -56,27 +57,25 @@ CREATE TABLE `rb_guru` (
   `jenis_kelamin` varchar(10) NOT NULL,
   `tempat_lahir` varchar(25) NOT NULL,
   `tanggal_lahir` date NOT NULL,
-  `nik` varchar(15) NOT NULL,
   `agama` varchar(10) NOT NULL,
   `alamat_jalan` text NOT NULL,
   `hp` varchar(15) NOT NULL,
   `email` varchar(20) NOT NULL,
-  `status_pernikahan` varchar(15) NOT NULL,
-  `foto` varchar(100) NOT NULL
+  `status_pernikahan` varchar(15) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `rb_guru`
 --
 
-INSERT INTO `rb_guru` (`nip`, `password`, `kode_kelas`, `nama_guru`, `jenis_kelamin`, `tempat_lahir`, `tanggal_lahir`, `nik`, `agama`, `alamat_jalan`, `hp`, `email`, `status_pernikahan`, `foto`) VALUES
-('1234567890', 'admin', '', 'sdfsdf', 'Laki-Laki', 'semarang', '0000-00-00', '123213', '2', 'fa', '2342', 'sf@g.com', '1', ''),
-('1112222', 'admin', '', 'Andi ', 'Laki-Laki', 'pkl', '1975-09-20', '', 'Islam', 'kajen', '53703802', 'Andi@gmail.com', 'Menikah', ''),
-('555555', 'admin', '', 'Tri elyawati, S.Pd', 'Perempuan', 'Pemalang', '1978-05-21', '', 'Islam', 'kajen', '085256932192', 'Trielyawati@gmail.co', 'Menikah', ''),
-('3333333', 'admin', '', 'Dyah Hendarti, S.Pd', 'Perempuan', 'pkl', '1979-03-15', '', 'Islam', 'kesesi', '085642778856', 'dyahhendar@gmail.com', 'Menikah', ''),
-('12367', 'admin', '', 'slamet', 'Laki-Laki', 'pkl', '1970-02-23', '', 'Islam', 'bojong', '31637208', 'slamet@gmail.com', 'Menikah', ''),
-('657', '9', '', '10', 'Laki-Laki', '11', '0000-00-00', '', 'Islam', '14', '12', '13', 'Belum Menikah', '12'),
-('123321', 'admin', 'VII1', 'diyah', 'Laki-Laki', 'semarang', '0000-00-00', '', 'Islam', 'semarang', '123', 'diyah@gmail.com', 'Belum Menikah', '');
+INSERT INTO `rb_guru` (`nip`, `password`, `kode_kelas`, `nama_guru`, `jenis_kelamin`, `tempat_lahir`, `tanggal_lahir`, `agama`, `alamat_jalan`, `hp`, `email`, `status_pernikahan`) VALUES
+('1112222', 'admin', 'VIIA', 'Andi Haryono, S.Pd.I.', 'Laki-Laki', 'pekalongan', '1975-09-20', 'Islam', 'kajen', '081533312213', 'Andiharyono@gmail.co', 'Menikah'),
+('19721111', 'admin', '0', 'Tri elyawati, S.Pd', 'Perempuan', 'Pemalang', '1978-05-21', 'Islam', 'kajen', '085256932192', 'Trielyawati@gmail.co', 'Menikah'),
+('3333333', 'admin', 'VIIB', 'Dyah Hendarti, S.Pd', 'Perempuan', 'pkl', '1979-03-15', 'Islam', 'kesesi', '085642778856', 'dyahhendar@gmail.com', 'Menikah'),
+('19760831', 'admin', '', 'Tri Puji Astuti, S.Pd', 'Perempuan', 'pekalongan', '1975-02-16', 'Islam', 'karanganyar', '082134567654', 'TripujiA@gmail.co', 'Menikah'),
+('19700519', 'admin', 'VIIC', 'Cadaryanti', 'Perempuan', 'semarang', '1988-07-21', 'Islam', 'kajen', '085211292231', 'cadaryanti@gmail.com', 'Belum Menikah'),
+('19650117', 'admin', '0', 'Drs. Bambang ', 'Laki-Laki', 'Pekalongan', '1972-05-27', 'Islam', 'karanganyar', '082264585049', 'bambang@gmail.com', 'Menikah'),
+('19710608', 'admin', '0', 'Indah Avrianna, S.Pd', 'Perempuan', 'Pekalongan', '1983-04-22', 'Islam', 'bukur-bojong', '085216042104', 'indahavrianna12@gmai', 'Menikah');
 
 -- --------------------------------------------------------
 
@@ -107,7 +106,12 @@ INSERT INTO `rb_jadwal_pelajaran` (`kodejdwl`, `id_tahun_akademik`, `kode_kelas`
 (4, 2014, 'VII1', 'admin1', '12345678903', '09:24:28', '09:24:28', 'Senin', 'Ya'),
 (5, 2018, 'VIIA', 'P03', '3333333', '07:05:00', '08:10:00', 'Senin', 'Ya'),
 (6, 2018, 'VII1', 'P01', '1234567890', '17:08:20', '17:08:20', 'Senin', 'Ya'),
-(7, 2018, 'VII1', 'P01', '1234567890', '17:09:05', '17:09:05', 'Rabu', 'Ya');
+(7, 2018, 'VII1', 'P01', '1234567890', '17:09:05', '17:09:05', 'Rabu', 'Ya'),
+(9, 2018, 'VIIA', 'P02', '1112222', '12:15:58', '12:15:58', 'Rabu', 'Ya'),
+(10, 2018, 'VIIC', '0', '567890', '13:16:48', '13:16:48', 'Jumat', 'Ya'),
+(11, 2018, 'VIIC', 'P05', '567890', '13:18:35', '13:18:35', 'Sabtu', 'Ya'),
+(12, 2018, 'VIIB', 'P06', '12367', '13:53:04', '13:53:04', 'Kamis', 'Ya'),
+(13, 2018, 'VIID', 'P07', '19710608', '23:54:51', '23:54:51', 'Rabu', 'Ya');
 
 -- --------------------------------------------------------
 
@@ -129,7 +133,9 @@ CREATE TABLE `rb_kehadiran` (
 --
 
 INSERT INTO `rb_kehadiran` (`id_kehadiran`, `nisn`, `kode_kelas`, `sakit`, `izin`, `alpha`) VALUES
-(2, '4443', 'VII1', 3, 4, 5);
+(2, '4443', 'VII1', 3, 4, 5),
+(3, '0050855185', 'VIIC', 1, 2, 0),
+(4, '00508579091', 'VIIC', 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -149,8 +155,9 @@ CREATE TABLE `rb_kelas` (
 --
 
 INSERT INTO `rb_kelas` (`kode_kelas`, `nip`, `nama_kelas`, `aktif`) VALUES
-('VII1', '1234567890', 'VII.12', 'Ya'),
-('VIIA', '555555', 'VIIA', 'Ya');
+('VIIA', '19710608', 'AABB', 'Ya'),
+('VIIB', '3333333', 'VIIBd', 'Ya'),
+('VIID', '19700519', 'VIID', 'Ya');
 
 -- --------------------------------------------------------
 
@@ -181,10 +188,9 @@ INSERT INTO `rb_kelompok_mata_pelajaran` (`id_kelompok_mata_pelajaran`, `jenis_k
 
 CREATE TABLE `rb_mata_pelajaran` (
   `kode_pelajaran` varchar(20) NOT NULL,
-  `kelompok_mata_pelajaran` int(3) NOT NULL,
+  `id_kelompok_mata_pelajaran` int(3) NOT NULL,
   `nip` varchar(30) NOT NULL,
   `namamatapelajaran` varchar(25) NOT NULL,
-  `tingkat` varchar(10) NOT NULL,
   `kompetensi_umum` text NOT NULL,
   `kompetensi_khusus` text NOT NULL,
   `aktif` enum('Ya','Tidak') NOT NULL
@@ -194,13 +200,10 @@ CREATE TABLE `rb_mata_pelajaran` (
 -- Dumping data untuk tabel `rb_mata_pelajaran`
 --
 
-INSERT INTO `rb_mata_pelajaran` (`kode_pelajaran`, `kelompok_mata_pelajaran`, `nip`, `namamatapelajaran`, `tingkat`, `kompetensi_umum`, `kompetensi_khusus`, `aktif`) VALUES
-('P01', 1, '1234567890', 'ADAsa', '1', 'AD', 'FS', 'Ya'),
-('admin1', 1, '1234567890', 'FFF', '1', 'FFSD', 'S', 'Ya'),
-('P02', 0, '555555', 'IPA', '1', '', '', 'Ya'),
-('P03', 0, '3333333', 'Matematika', '1', '', '', 'Ya'),
-('C02', 0, '12367', 'Seni Budaya', '1', '', '', 'Ya'),
-('12', 0, '1112222', 's', '22', 'JURUSAN', 'KK', 'Ya');
+INSERT INTO `rb_mata_pelajaran` (`kode_pelajaran`, `id_kelompok_mata_pelajaran`, `nip`, `namamatapelajaran`, `kompetensi_umum`, `kompetensi_khusus`, `aktif`) VALUES
+('P03', 0, '3333333', 'Matematika', '', '', 'Ya'),
+('P04', 0, '1112222', 'bahasa daerah', '', '', 'Ya'),
+('P07', 3, '19710608', 'Ilmu Pengetahuan Alam', '', '', 'Ya');
 
 -- --------------------------------------------------------
 
@@ -214,7 +217,7 @@ CREATE TABLE `rb_nilai_extrakulikuler` (
   `nisn` varchar(20) NOT NULL,
   `kode_kelas` varchar(10) NOT NULL,
   `kegiatan` text NOT NULL,
-  `nilai` float NOT NULL,
+  `nilai` char(3) NOT NULL,
   `deskripsi` text NOT NULL,
   `user_akses` varchar(20) NOT NULL,
   `waktu_input` datetime NOT NULL
@@ -225,10 +228,14 @@ CREATE TABLE `rb_nilai_extrakulikuler` (
 --
 
 INSERT INTO `rb_nilai_extrakulikuler` (`id_nilai_extrakulikuler`, `id_tahun_akademik`, `nisn`, `kode_kelas`, `kegiatan`, `nilai`, `deskripsi`, `user_akses`, `waktu_input`) VALUES
-(1, 20161, '9991268756', 'X.MIPA.1', 'Kegiatan Mandi-mandii', 87, 'Kegiatan mandi-mandi dilaksanakan di lubuak minturun bersamaan dengan perayaan ulang tahun sekolah.', '1', '2016-04-29 10:11:10'),
-(2, 20161, '9991268756', 'X.MIPA.1', 'Kegiatan Bakar ayam.', 95, 'Memiliki keterampilan Mengidentifikasi, menyajikan model matematika dan menyelesaikan masalah keseharian.				', '1', '2016-04-29 07:08:28'),
-(7, 2018, '123456789', 'VII1', 'dsa', 56, 'vd', '2', '2019-06-09 11:19:51'),
-(8, 2018, '123456789', 'VII1', 'dsa', 56, 'vd', '2', '2019-06-09 11:30:28');
+(1, 20161, '9991268756', 'X.MIPA.1', 'Kegiatan Mandi-mandii', '87', 'Kegiatan mandi-mandi dilaksanakan di lubuak minturun bersamaan dengan perayaan ulang tahun sekolah.', '1', '2016-04-29 10:11:10'),
+(2, 20161, '9991268756', 'X.MIPA.1', 'Kegiatan Bakar ayam.', '95', 'Memiliki keterampilan Mengidentifikasi, menyajikan model matematika dan menyelesaikan masalah keseharian.				', '1', '2016-04-29 07:08:28'),
+(7, 2018, '123456789', 'VII1', 'dsa', '56', 'vd', '2', '2019-06-09 11:19:51'),
+(8, 2018, '123456789', 'VII1', 'dsa', '56', 'vd', '2', '2019-06-09 11:30:28'),
+(9, 2018, '888999', 'VIIA', 'voli', '75', 'oke aja', '123321', '2019-07-07 12:26:27'),
+(10, 2018, '0050855185', 'VIIC', 'pramuka', '75', 'iya', '567890', '2019-07-07 13:24:10'),
+(11, 2018, '00508579091', 'VIIC', '', '0', '', '567890', '2019-07-07 13:24:11'),
+(12, 2018, '888999', 'VIIA', 'sad', 'A', 'df', '567890', '2019-07-07 14:25:52');
 
 -- --------------------------------------------------------
 
@@ -272,7 +279,8 @@ INSERT INTO `rb_nilai_keterampilan` (`id_nilai_keterampilan`, `kodejdwl`, `nisn`
 (15, 5, '9991268756', '4.5', 99, 87, 98, 95, 'Menyunting teks cerita ulang, sesuai dengan struktur dan kaidah teks baik secara lisan maupun tulisan', '1', '2016-04-14 08:04:36'),
 (17, 3, '123456789', '1', 75, 80, 80, 75, 'sads', '2', '2019-04-24 11:30:21'),
 (18, 3, '123456789', '2', 45, 95, 90, 85, 'adr', '2', '2019-04-24 11:30:39'),
-(19, 3, '321', '1', 80, 90, 90, 90, 'ssa', '2', '2019-04-24 11:32:36');
+(19, 3, '321', '1', 80, 90, 90, 90, 'ssa', '2', '2019-04-24 11:32:36'),
+(20, 11, '0050855185', 'P04', 75, 80, 85, 65, 'afaaaaaaaaaaaa', '567890', '2019-07-07 13:32:55');
 
 -- --------------------------------------------------------
 
@@ -316,7 +324,8 @@ INSERT INTO `rb_nilai_pengetahuan` (`id_nilai_pengetahuan`, `kodejdwl`, `nisn`, 
 (15, 5, '9991268756', '4.5', 87, 90, 87, 78, 'Menganalisis teks cerita ulang, baik melalui lisan maupun tulisan ', '1', '2016-04-14 08:04:36'),
 (16, 5, '9998218087', '', 98, 99, 98, 89, 'Menganalisis teks pantun, baik melalui lisan maupun tulisan', '1', '2016-04-14 08:04:36'),
 (18, 5, '9991268756', '4.6', 90, 89, 90, 98, 'Memahami struktur dan kaidah teks cerita pendek, baik melalui lisan maupun tulisan', '1', '2016-04-30 10:50:43'),
-(19, 3, '123456789', '1', 70, 80, 70, 80, 'sad', '2', '2019-04-24 11:35:15');
+(19, 3, '123456789', '1', 70, 80, 70, 80, 'sad', '2', '2019-04-24 11:35:15'),
+(20, 11, '0050855185', 'P04', 78, 80, 83, 70, '', '567890', '2019-07-07 13:28:44');
 
 -- --------------------------------------------------------
 
@@ -342,7 +351,10 @@ CREATE TABLE `rb_nilai_prestasi` (
 INSERT INTO `rb_nilai_prestasi` (`id_nilai_prestasi`, `id_tahun_akademik`, `nisn`, `kode_kelas`, `jenis_kegiatan`, `keterangan`, `user_akses`, `waktu_input`) VALUES
 (2, 20161, '9991268756', 'X.MIPA.1', 'Kegiatan Jalan-jalan sore', 'Memiliki keterampilan merencanakan dan melaksanakan percobaan interferensi gelombang cahaya 				', '1', '2016-04-29 08:09:42'),
 (7, 0, '123456789', '', '1', '', '123321', '2019-07-03 15:18:38'),
-(8, 0, '123456789', '', '1', '', '123321', '2019-07-03 15:21:53');
+(8, 0, '123456789', '', '1', '', '123321', '2019-07-03 15:21:53'),
+(9, 2018, '888999', 'VIIA', 'olahraga', 'oke aja', '123321', '2019-07-07 12:29:00'),
+(10, 2018, '0050855185', 'VIIC', 'pramuka', 'sip', '567890', '2019-07-07 13:24:45'),
+(13, 2018, '00508579091', 'VIIC', 'olahraga', 'iya', '567890', '2019-07-07 13:25:09');
 
 -- --------------------------------------------------------
 
@@ -388,7 +400,13 @@ INSERT INTO `rb_nilai_sikap` (`id_nilai_sikap`, `kodejdwl`, `nisn`, `positif`, `
 (19, 0, '123456789', 'er', 'a', 's', 'sosial', '2', '2019-04-11 16:58:19'),
 (20, 0, '321', 'q', 'er', 'r', 'sosial', '2', '2019-04-11 16:58:19'),
 (21, 3, '4443', 'asd', 'ad', 'da', 'spiritual', '2', '2019-04-24 12:19:30'),
-(22, 3, '4443', '7', '8', '9', 'spiritual', '2', '2019-04-24 12:19:43');
+(22, 3, '4443', '7', '8', '9', 'spiritual', '2', '2019-04-24 12:19:43'),
+(23, 5, '888999', 'kamu baik', 'kamu olo', 'yayayay', 'spiritual', '3333333', '2019-07-07 12:22:54'),
+(24, 5, '888999', 'ok', 'yek', 'ayeaye', 'sosial', '3333333', '2019-07-07 12:23:10'),
+(25, 11, '0050855185', 'baik', '-', 'iya', 'spiritual', '567890', '2019-07-07 13:26:56'),
+(26, 11, '00508579091', 'baik', '-', 'iya', 'spiritual', '567890', '2019-07-07 13:26:56'),
+(27, 11, '0050855185', 'baik', '-', 'tingatkan', 'sosial', '567890', '2019-07-07 13:27:27'),
+(28, 11, '00508579091', 'baik', '-', 'sp', 'sosial', '567890', '2019-07-07 13:27:27');
 
 -- --------------------------------------------------------
 
@@ -401,9 +419,9 @@ CREATE TABLE `rb_nilai_sikap_semester` (
   `id_tahun_akademik` int(5) NOT NULL,
   `nisn` varchar(20) NOT NULL,
   `kode_kelas` varchar(10) NOT NULL,
-  `spiritual_predikat` varchar(2) NOT NULL,
+  `spiritual_predikat` varchar(10) NOT NULL,
   `spiritual_deskripsi` text NOT NULL,
-  `sosial_predikat` varchar(2) NOT NULL,
+  `sosial_predikat` varchar(10) NOT NULL,
   `sosial_deskripsi` text NOT NULL,
   `user_akses` varchar(20) NOT NULL,
   `waktu_input` datetime NOT NULL
@@ -417,7 +435,10 @@ INSERT INTO `rb_nilai_sikap_semester` (`id_nilai_sikap_semester`, `id_tahun_akad
 (1, 20161, '9991268756', 'X.MIPA.1', 'A', 'Pertahankan Nilai anda,..', 'B', 'Tingkatkan Nilai anda,..', '1', '2016-04-28 10:10:16'),
 (2, 20161, '0151379251', 'X.MIPA.1', 'C', 'Tolong Perbaiki Sikap anda,..', 'D', 'Anda Tidak Berutak,..', '1', '2016-04-28 10:10:16'),
 (3, 20161, '0004107204', 'X.MIPA.1', 'A', 'Pertahankan Nilai anda,..', 'C', 'Tolong Perbaiki Sikap anda,..', '1', '2016-04-28 10:10:50'),
-(4, 2018, '123456789', 'VII1', 'A', 'sad', 'B', 'ddds', '2', '2019-06-07 09:32:05');
+(4, 2018, '123456789', 'VII1', 'A', 'sad', 'B', 'ddds', '2', '2019-06-07 09:32:05'),
+(5, 2018, '888999', 'VIIA', 'ba', 'yayay', 'ti', 'oke', '123321', '2019-07-07 12:25:42'),
+(6, 2018, '0050855185', 'VIIC', 'Ba', 'iya', 'ba', 'tingkat', '567890', '2019-07-07 13:21:19'),
+(7, 2018, '00508579091', 'VIIC', 'Ba', 'oke', 'bu', 'turunkan harga', '567890', '2019-07-07 13:21:19');
 
 -- --------------------------------------------------------
 
@@ -454,7 +475,11 @@ INSERT INTO `rb_nilai_uts` (`id_nilai_uts`, `kodejdwl`, `nisn`, `angka_pengetahu
 (11, 2, '321', 78, '', 75, '', '2019-06-27 05:33:54'),
 (12, 2, '4443', 79, '', 70, '', '2019-06-27 05:33:54'),
 (13, 1, '123456789', 80, '', 70, '', '2019-06-30 17:05:36'),
-(14, 1, '321', 90, '', 60, '', '2019-06-30 17:06:37');
+(14, 1, '321', 90, '', 60, '', '2019-06-30 17:06:37'),
+(15, 5, '888999', 70, '', 75, '', '2019-07-07 12:21:50'),
+(16, 9, '888999', 80, '', 90, '', '2019-07-07 13:01:10'),
+(17, 11, '0050855185', 89, '1', 85, '2', '2019-07-07 13:25:55'),
+(18, 11, '00508579091', 90, '3', 90, '3', '2019-07-07 13:25:55');
 
 -- --------------------------------------------------------
 
@@ -463,7 +488,7 @@ INSERT INTO `rb_nilai_uts` (`id_nilai_uts`, `kodejdwl`, `nisn`, `angka_pengetahu
 --
 
 CREATE TABLE `rb_predikat` (
-  `id_predikat` int(5) NOT NULL,
+  `id_predikat` int(6) NOT NULL,
   `nilai_a` int(3) NOT NULL,
   `nilai_b` int(3) NOT NULL,
   `grade` varchar(5) NOT NULL,
@@ -478,7 +503,7 @@ INSERT INTO `rb_predikat` (`id_predikat`, `nilai_a`, `nilai_b`, `grade`, `ketera
 (1, 50, 59, 'D', 'Kurang'),
 (2, 60, 74, 'C', 'Cukup'),
 (3, 75, 84, 'B', 'Baik'),
-(4, 85, 1001, 'A', 'sangat baik');
+(4, 85, 100, 'A', 'sangat baik');
 
 -- --------------------------------------------------------
 
@@ -498,7 +523,6 @@ CREATE TABLE `rb_siswa` (
   `alamat` text NOT NULL,
   `hp` varchar(15) NOT NULL,
   `email` varchar(20) NOT NULL,
-  `foto` varchar(100) NOT NULL,
   `nama_ayah` varchar(35) NOT NULL,
   `no_telpon_ayah` varchar(15) NOT NULL,
   `nama_ibu` varchar(35) NOT NULL,
@@ -516,17 +540,26 @@ CREATE TABLE `rb_siswa` (
 -- Dumping data untuk tabel `rb_siswa`
 --
 
-INSERT INTO `rb_siswa` (`id_siswa`, `password`, `nama`, `jenis_kelamin`, `nisn`, `tempat_lahir`, `tanggal_lahir`, `agama`, `alamat`, `hp`, `email`, `foto`, `nama_ayah`, `no_telpon_ayah`, `nama_ibu`, `no_telpon_ibu`, `nama_wali`, `angkatan`, `status_awal`, `status_siswa`, `tingkat`, `kode_kelas`, `id_sesi`) VALUES
-(1272, 'admin', 'ekodsa', '0', '123456789', 'oiuoiu', '2019-09-09', '0', 'kjbk', 'hkjh', 'kjhkj', '20190702112651-', '1', '2', '3', '4', '5', 1, 'jh', 'Aktif', '', 'VII1', 0),
-(1273, 'POSTa', 'POSTb', 'm', '321', 'k', '0000-00-00', 'n', 'Pe', '', 'q', 'j', '', '', '', '', '', 0, 'i', '', '', 'POSTc', 0),
-(1274, 'admin', 'admin', 'Laki-Laki', '4443', 'smc', '1998-03-26', '0', 'semarang', 'No Handpone	', 'Alamat Email	', '', '', '', '', '', '', 1, 'ya', 'Aktif', '', 'VII1', 0),
-(1275, 'admin', 'galuh', 'Perempuan', '888999', 'pkl', '2005-08-23', 'Islam', 'Perkiringan  Ageng, kajen', '085210649861', 'galuh12@gmail.com', '', '', '', '', '', '', 2018, '', 'Aktif', '', 'VIIA', 0),
-(1276, 'admin', 'Viko saputra', 'Laki-Laki', '777555', 'pkl', '2004-06-12', 'Islam', 'desa kulu, kajen', '0853147207733', 'vikoputra@gmail.com', '', '', '', '', '', '', 2018, '', 'Aktif', '', 'VIIB', 0),
-(1277, 'admin', 'aldi', 'Laki-Laki', '1234', 'pkl', '2004-08-23', 'Islam', 'kajen', '03763738', 'raka@gmail.com', '', '', '', '', '', '', 2018, '', 'Aktif', '', 'VII1', 0),
-(1278, 'admin', 'siti', 'Perempuan', '1235', 'pkl', '2005-02-12', 'Islam', 'kajen', '32528', '@gmail.com', '', '', '', '', '', '', 2018, '', 'Aktif', '', 'VII1', 0),
-(1279, 'admin', 'siti', 'Perempuan', '22222', 'pkl', '0000-00-00', 'Islam', 'bojong', '09529', 'siti@gmail.com', '', '', '', '', '', '', 2018, '', 'Aktif', '', 'VII1', 0),
-(1280, 'admin', 'popo', 'Laki-Laki', '324234212', 'dsada', '1998-09-09', 'Islam', 'sadas', '131231', 'eko@gmail.com', '', '', '', '', '', '', 2019, 'asd', 'Aktif', '', 'VII1', 0),
-(1281, 'admin', 'bisa', 'Laki-Laki', '7853', 'pkl', '0000-00-00', 'Islam', 'as', '12', 'a@gmail.com', '', '1', '2', '3', '4', '5', 1, 's', 'Aktif', '', 'VII1', 0);
+INSERT INTO `rb_siswa` (`id_siswa`, `password`, `nama`, `jenis_kelamin`, `nisn`, `tempat_lahir`, `tanggal_lahir`, `agama`, `alamat`, `hp`, `email`, `nama_ayah`, `no_telpon_ayah`, `nama_ibu`, `no_telpon_ibu`, `nama_wali`, `angkatan`, `status_awal`, `status_siswa`, `tingkat`, `kode_kelas`, `id_sesi`) VALUES
+(1272, 'admin', 'ekodsa', '0', '123456789', 'oiuoiu', '2019-09-09', '0', 'kjbk', 'hkjh', 'kjhkj', '1', '2', '3', '4', '5', 1, 'jh', 'Aktif', '', 'VII1', 0),
+(1273, 'POSTa', 'POSTb', 'm', '321', 'k', '0000-00-00', 'n', 'Pe', '', 'q', '', '', '', '', '', 0, 'i', '', '', 'POSTc', 0),
+(1274, 'admin', 'admin', 'Laki-Laki', '4443', 'smc', '1998-03-26', '0', 'semarang', 'No Handpone	', 'Alamat Email	', '', '', '', '', '', 1, 'ya', 'Aktif', '', 'VII1', 0),
+(1289, 'admin', 'DINDA AZAHRA DILA', 'Perempuan', '0050835524', 'pekalongan', '2005-07-11', 'Islam', 'kajen', '085841122134', 'dindaad@gmail.com', '', '', '', '', '', 34, '', 'Aktif', '', 'VIIA', 0),
+(1276, 'admin', 'Viko saputra', 'Laki-Laki', '777555', 'pkl', '2004-06-12', 'Islam', 'desa kulu, kajen', '0853147207733', 'vikoputra@gmail.com', '', '', '', '', '', 2018, '', 'Aktif', '', 'VIIB', 0),
+(1277, 'admin', 'aldi', 'Laki-Laki', '1234', 'pkl', '2004-08-23', 'Islam', 'kajen', '03763738', 'raka@gmail.com', '', '', '', '', '', 2018, '', 'Aktif', '', 'VII1', 0),
+(1278, 'admin', 'siti', 'Perempuan', '1235', 'pkl', '2005-02-12', 'Islam', 'kajen', '32528', '@gmail.com', '', '', '', '', '', 2018, '', 'Aktif', '', 'VII1', 0),
+(1279, 'admin', 'siti', 'Perempuan', '22222', 'pkl', '0000-00-00', 'Islam', 'bojong', '09529', 'siti@gmail.com', '', '', '', '', '', 2018, '', 'Aktif', '', 'VII1', 0),
+(1280, 'admin', 'popo', 'Laki-Laki', '324234212', 'dsada', '1998-09-09', 'Islam', 'sadas', '131231', 'eko@gmail.com', '', '', '', '', '', 2019, 'asd', 'Aktif', '', 'VII1', 0),
+(1281, 'admin', 'bisa', 'Laki-Laki', '7853', 'pkl', '0000-00-00', 'Islam', 'as', '12', 'a@gmail.com', '1', '2', '3', '4', '5', 1, 's', 'Aktif', '', 'VII1', 0),
+(1283, 'admin', 'anton', 'Laki-Laki', '0051234567', 'pkl', '2005-02-22', 'Islam', 'kajen', '', 'anton@gmail.com', 'andi', '12345678909', 'asri', '09876543212', 'budi', 34, '', 'Aktif', '', 'VII', 0),
+(1284, 'admin', 'Febilaela', 'Perempuan', '0054635949', 'pekalongan', '2005-03-17', 'Islam', 'kajen', '082311164851', 'febi12@gmail.com', '', '', '', '', '', 34, '', 'Aktif', '', 'VII', 0),
+(1285, 'admin', 'Nabila', 'Perempuan', '0050855185', 'pkl', '2005-04-10', 'Islam', 'bojong', '098765432134', 'nabil12@gmail.com', '', '', '', '', '', 34, '', 'Aktif', '', 'VIIC', 0),
+(1286, 'admin', 'M. sofiyan ilham', 'Laki-Laki', '00508579091', 'pekalongan', '2005-05-21', 'Islam', 'karanganyar', '098567432123', '@gmail.com', '', '', '', '', '', 34, '', 'Aktif', '', 'VIIC', 0),
+(1288, 'admin', 'ADITYA YUSUF RAHMAN', 'Laki-Laki', '00508232739', 'pekalongan', '2005-05-19', 'Islam', 'Bojong', '082134565432', 'aditya@gmail.com', '', '', '', '', '', 34, '', 'Aktif', '', 'VIIA', 0),
+(1290, 'admin', 'GALIH PRADANA', 'Laki-Laki', '0050857908', 'pekalongan', '2005-01-01', 'Islam', 'kajen', '082138723454', 'galihp@gmail.com', '', '', '', '', '', 34, '', 'Aktif', '', 'VIIB', 0),
+(1291, 'admin', 'rani', '0', '0050857908', 'pkl', '0000-00-00', '0', 'bojong', '', '', '', '', '', '', '', 34, '', 'Aktif', '', 'VIIA', 0),
+(1292, 'admin', 'ARYA KRISTANDI', 'Laki-Laki', '0050855179', 'pekalongan', '2005-09-12', 'Kristen', 'rowolaku-kajen', '0855317772907', 'aryakris@gmail.com', '', '', '', '', '', 34, '', 'Aktif', '', 'VIID', 0),
+(1293, 'admin', 'ISNAENI', 'Perempuan', '0060857758', 'pekalongan', '2006-02-11', 'Islam', 'Gandarum-kajen', '085244725373', 'isnaeni@gmail.com', '', '', '', '', '', 34, '', 'Aktif', '', 'VIID', 0);
 
 -- --------------------------------------------------------
 
@@ -572,10 +605,9 @@ CREATE TABLE `rb_users` (
 --
 
 INSERT INTO `rb_users` (`id_user`, `username`, `password`, `nama_lengkap`, `email`, `no_telpon`, `jabatan`, `level`, `aktif`) VALUES
-(1, '661166', 'edbd881f1ee2f76ba0bd70fd184f87711be991a0401fd07ccd4b199665f00761afc91731d8d8ba6cbb188b2ed5bfb465b9f3d30231eb0430b9f90fe91d136648', 'Arifin, S.Pd.i', 'arifin@gmail.com', '082128713345', 'kepala sekolah', 'kepala', 'Y'),
+(1, '661166', 'edbd881f1ee2f76ba0bd70fd184f87711be991a0401fd07ccd4b199665f00761afc91731d8d8ba6cbb188b2ed5bfb465b9f3d30231eb0430b9f90fe91d136648', 'Arifin, S.Pd12', 'arifin@gmail.com', '082128713345', 'kepala sekolah', 'kepala', 'Y'),
 (2, 'admin', 'edbd881f1ee2f76ba0bd70fd184f87711be991a0401fd07ccd4b199665f00761afc91731d8d8ba6cbb188b2ed5bfb465b9f3d30231eb0430b9f90fe91d136648', 'Cicik Anggraeni, S.Pd.i', 'Cicik.Angraeni1@gmail.com', '085268009213', 'Admin', 'superuser', 'Y'),
-(107, '', '8d5891b55ccb5f5809559d62af779ae306d2f39b23e0d2508a11e8140b049f003e4004e6f5189b5513d56c1ba75074f9efba4a02b7ab92db43496f426e46075e', '', '', '', '', 'superuser', 'Y'),
-(109, '', '8d5891b55ccb5f5809559d62af779ae306d2f39b23e0d2508a11e8140b049f003e4004e6f5189b5513d56c1ba75074f9efba4a02b7ab92db43496f426e46075e', '', '', '', '', 'superuser', 'Y');
+(107, '', '8d5891b55ccb5f5809559d62af779ae306d2f39b23e0d2508a11e8140b049f003e4004e6f5189b5513d56c1ba75074f9efba4a02b7ab92db43496f426e46075e', '', '', '', '', 'superuser', 'Y');
 
 --
 -- Indexes for dumped tables
@@ -697,19 +729,19 @@ ALTER TABLE `rb_users`
 -- AUTO_INCREMENT untuk tabel `rb_catatan`
 --
 ALTER TABLE `rb_catatan`
-  MODIFY `id_catatan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_catatan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `rb_jadwal_pelajaran`
 --
 ALTER TABLE `rb_jadwal_pelajaran`
-  MODIFY `kodejdwl` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `kodejdwl` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT untuk tabel `rb_kehadiran`
 --
 ALTER TABLE `rb_kehadiran`
-  MODIFY `id_kehadiran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_kehadiran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `rb_kelompok_mata_pelajaran`
@@ -721,55 +753,55 @@ ALTER TABLE `rb_kelompok_mata_pelajaran`
 -- AUTO_INCREMENT untuk tabel `rb_nilai_extrakulikuler`
 --
 ALTER TABLE `rb_nilai_extrakulikuler`
-  MODIFY `id_nilai_extrakulikuler` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_nilai_extrakulikuler` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT untuk tabel `rb_nilai_keterampilan`
 --
 ALTER TABLE `rb_nilai_keterampilan`
-  MODIFY `id_nilai_keterampilan` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id_nilai_keterampilan` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT untuk tabel `rb_nilai_pengetahuan`
 --
 ALTER TABLE `rb_nilai_pengetahuan`
-  MODIFY `id_nilai_pengetahuan` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id_nilai_pengetahuan` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT untuk tabel `rb_nilai_prestasi`
 --
 ALTER TABLE `rb_nilai_prestasi`
-  MODIFY `id_nilai_prestasi` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_nilai_prestasi` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT untuk tabel `rb_nilai_sikap`
 --
 ALTER TABLE `rb_nilai_sikap`
-  MODIFY `id_nilai_sikap` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id_nilai_sikap` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT untuk tabel `rb_nilai_sikap_semester`
 --
 ALTER TABLE `rb_nilai_sikap_semester`
-  MODIFY `id_nilai_sikap_semester` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_nilai_sikap_semester` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT untuk tabel `rb_nilai_uts`
 --
 ALTER TABLE `rb_nilai_uts`
-  MODIFY `id_nilai_uts` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_nilai_uts` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT untuk tabel `rb_predikat`
 --
 ALTER TABLE `rb_predikat`
-  MODIFY `id_predikat` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_predikat` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT untuk tabel `rb_siswa`
 --
 ALTER TABLE `rb_siswa`
-  MODIFY `id_siswa` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1282;
+  MODIFY `id_siswa` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1294;
 
 --
 -- AUTO_INCREMENT untuk tabel `rb_tahun_akademik`

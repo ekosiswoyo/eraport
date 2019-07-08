@@ -56,13 +56,13 @@
 <?php 
 }elseif($_GET[act]=='edit'){
     if (isset($_POST[update])){
-        mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rb_kelas SET kode_kelas = '$_POST[a]',
+        mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rb_kelas SET 
                                          nip = '$_POST[b]',
                                          nama_kelas = '$_POST[e]', 
                                          aktif = '$_POST[f]' where kode_kelas='$_POST[id]'");
       echo "<script>document.location='index.php?view=kelas';</script>";
     }
-    $edit = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelas a LEFT JOIN rb_guru b ON a.nip=b.nip 
+    $edit = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT a.kode_kelas,a.nama_kelas,a.aktif, a.nip FROM rb_kelas a LEFT JOIN rb_guru b ON a.nip=b.nip 
                         
                                   where a.kode_kelas='$_GET[id]'");
     $s = mysqli_fetch_array($edit);
@@ -80,7 +80,7 @@
 
                     <div class='form-group'>
                     <label for=''>Kode Kelas</label>
-                    <input type='text' class='form-control' name='a' value='$s[kode_kelas]'>
+                    <input type='text' class='form-control' name='a' value='$s[kode_kelas]' readonly>
                     </div>
                     <div class='form-group'>
                     <label for=''>Wali Kelas</label>

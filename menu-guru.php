@@ -13,13 +13,10 @@
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
             <li class="header" style='color:#fff; text-transform:uppercase; border-bottom:2px solid #00c0ef'>MENU <?php echo $level; ?></li>
-            <li><a href="index.php"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
             <li class="treeview">
               <a href="#"><i class="fa fa-calendar"></i> <span>Laporan Nilai Siswa</span><i class="fa fa-angle-left pull-right"></i></a>
               <ul class="treeview-menu">
-              <li><a href="index.php?view=capaianhasilbelajar"><i class="fa fa-circle-o"></i> Data Capaian Belajar</a></li>
-                <li><a href="index.php?view=extrakulikuler"><i class="fa fa-circle-o"></i> Data Extrakulikuler</a></li>
-                <li><a href="index.php?view=prestasi"><i class="fa fa-circle-o"></i> Data Prestasi</a></li>
+              
                 <li><a href="index.php?view=raportuts&act=detailguru"><i class="fa fa-circle-o"></i> Input Nilai UTS</a></li>
                 <li><a href="index.php?view=raport&act=detailguru"><i class="fa fa-circle-o"></i> Input Nilai Raport</a></li>
                 
@@ -31,8 +28,11 @@
               echo " <li classtreeview'>
               <a href='#'><i class='fa fa-calendar'></i> <span>Menu Wali Kelas</span><i class='fa fa-angle-left pull-right'></i></a>
               <ul class='treeview-menu'>
+              <li><a href='index.php?view=capaianhasilbelajar'><i class='fa fa-circle-o'></i> Data Capaian Belajar</a></li>
+                <li><a href='index.php?view=extrakulikuler'><i class='fa fa-circle-o'></i> Data Extrakulikuler</a></li>
+                <li><a href='index.php?view=prestasi'><i class='fa fa-circle-o'></i> Data Prestasi</a></li>
               <li><a href='index.php?view=catatan'><i class='fa fa-circle-o'></i> Input Catatan Raport</a></li>
-              <li><a href='index.php?view=catatan'><i class='fa fa-circle-o'></i> Input Kehadiran</a></li><
+              <li><a href='index.php?view=kehadiran'><i class='fa fa-circle-o'></i> Input Kehadiran</a></li><
 
                 
               </ul>

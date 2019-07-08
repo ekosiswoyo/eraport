@@ -18,7 +18,7 @@ $s = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM 
 
     <table style='font-size:15px' width='100%'>
         <tr><td width='25px'>1.</td>  <td width='190px'>Nama Lengkap Peserta Didik</td>   <td width='10px'> : </td><td> <?php echo "$s[nama]"; ?></td></tr>
-        <tr><td>2.</td>  <td width='190px'>Nomor Induk/NISN</td>                          <td width='10px'> : </td><td> <?php echo "$s[nipd] / $s[nisn]"; ?></td></tr>
+        <tr><td>2.</td>  <td width='190px'>Nomor Induk/NISN</td>                          <td width='10px'> : </td><td> <?php echo "$s[nisn]"; ?></td></tr>
         <tr><td>3.</td>  <td width='190px'>Tempat,Tanggal Lahir</td>                      <td width='10px'> : </td><td> <?php echo "$s[tempat_lahir], ".tgl_raport($s[tanggal_lahir]); ?></td></tr>
         <tr><td>4.</td>  <td width='190px'>Jenis Kelamin</td>                             <td width='10px'> : </td><td> <?php echo "$s[jenis_kelamin]"; ?></td></tr>
         <tr><td>5.</td>  <td width='190px'>Agama</td>                                     <td width='10px'> : </td><td> <?php echo "$s[agama]"; ?></td></tr>

@@ -14,7 +14,6 @@
                         <th style='width:30px'>No</th>
                         <th>Kode Mapel</th>
                         <th>Nama Mapel</th>
-                        <th>Tingkat</th>
                         <th>Guru Pengampu</th>
                         <?php if($_SESSION[level]!='kepala'){ ?>
                         <th style='width:70px'>Action</th>
@@ -30,7 +29,6 @@
                     echo "<tr><td>$no</td>
                               <td>$r[kode_pelajaran]</td>
                               <td>$r[namamatapelajaran]</td>
-                              <td>$r[tingkat]</td>
                               <td>$r[nama_guru]</td>
 ";
                               if($_SESSION[level]!='kepala'){
@@ -61,7 +59,6 @@
                                          kelompok_mata_pelajaran = '$_POST[b]',
                                          nip = '$_POST[d]',
                                          namamatapelajaran = '$_POST[f]',
-                                         tingkat = '$_POST[h]',
                                          kompetensi_umum = '$_POST[i]',
                                          kompetensi_khusus = '$_POST[j]',
                                          aktif = '$_POST[m]' where kode_pelajaran='$_POST[id]'");
@@ -104,10 +101,6 @@
                     echo "</select>
                     </div>
                     <div class='form-group'>
-                    <label for=''>Tingkat</label>
-                    <input type='text' class='form-control' name='h' value='$s[tingkat]'>
-                    </div>
-                    <div class='form-group'>
                     <label for=''>Kompetensi Umum</label>
                     <input type='text' class='form-control' name='i' value='$s[kompetensi_umum]'>
                     </div>
@@ -143,8 +136,7 @@
             </div>";
 }elseif($_GET[act]=='tambah'){
     if (isset($_POST[tambah])){
-        mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_mata_pelajaran VALUES('$_POST[a]','$_POST[b]','$_POST[d]','$_POST[f]',
-                                                          '$_POST[h]','$_POST[i]','$_POST[j]','$_POST[m]')");
+        mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_mata_pelajaran VALUES('$_POST[a]','$_POST[b]','$_POST[d]','$_POST[f]','$_POST[i]','$_POST[j]','$_POST[m]')");
         echo "<script>document.location='index.php?view=matapelajaran';</script>";
     }
 
@@ -179,10 +171,6 @@
                              echo "</select>
                 </div>
                 <div class='form-group'>
-                <label for=''>Tingkat</label>
-                <input type='text' class='form-control' name='h' value='$s[tingkat]'>
-                </div>
-                <div class='form-group'>
                 <label for=''>Kompetensi Umum</label>
                 <input type='text' class='form-control' name='i' value='$s[kompetensi_umum]'>
                 </div>
@@ -193,7 +181,13 @@
                 
                 <div class='form-group'>
                 <label for=''>Kelompok</label>
-                <input type='text' class='form-control' name='b' value='$s[kelompok_mata_pelajaran]'>
+                <select class='form-control' name='b'> 
+                             <option value='0' selected>- Pilih Kelompok Mata -</option>"; 
+                              $guru = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelompok_mata_pelajaran");
+                                  while($a = mysqli_fetch_array($guru)){
+                                       echo "<option value='$a[id_kelompok_mata_pelajaran]'>$a[nama_kelompok_mata_pelajaran]</option>";
+                                  }
+                             echo "</select>
                 </div>
                 <div class='form-group'>
                 <label for=''>Aktif</label> <br>

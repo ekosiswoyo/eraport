@@ -62,23 +62,12 @@
       $rtrw = explode('/',$_POST[al]);
       $rt = $rtrw[0];
       $rw = $rtrw[1];
-      $dir_gambar = 'foto_pegawai/';
-      $filename = basename($_FILES['ax']['name']);
-      $filenamee = date("YmdHis").'-'.basename($_FILES['ax']['name']);
-      $uploadfile = $dir_gambar . $filenamee;
-      if ($filename != ''){      
-        if (move_uploaded_file($_FILES['ax']['tmp_name'], $uploadfile)) {
-          mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_guru VALUES('$_POST[aa]','$_POST[ab]','$_POST[zx]','$_POST[ac]','$_POST[af]','$_POST[ad]',
-                           '$_POST[ae]','$_POST[ba]','$_POST[bv]',
-                           '$_POST[ag]','$_POST[ak]','$_POST[ah]','$_POST[aj]',
-                           '$_POST[aw]','$filenamee')");
-        }
-      }else{
+     
           mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_guru VALUES('$_POST[aa]','$_POST[ab]','$_POST[zx]','$_POST[ac]','$_POST[af]','$_POST[ad]',
                            '$_POST[ae]','$_POST[ba]', 
                            '$_POST[ag]','$_POST[ak]','$_POST[ah]','$_POST[aj]',
-                           '$_POST[aw]','')");
-      }
+                           '$_POST[aw]')");
+      
       echo "<script>document.location='index.php?view=guru&act=detailguru&id=".$_POST[aa]."';</script>";
   }
 
@@ -128,13 +117,7 @@
                                                                     <option value='Menikah'>Menikah</option>
                                                                     <option value='Belum Menikah'>Belum Menikah</option></select>
                                                                     </td></tr>
-                    <tr><th scope='row'>Foto</th>             <td><div style='position:relative;''>
-                                                                          <a class='btn btn-primary' href='javascript:;'>
-                                                                            <span class='glyphicon glyphicon-search'></span> Browse..."; ?>
-                                                                            <input type='file' class='files' name='ax' onchange='$("#upload-file-info").html($(this).val());'>
-                                                                          <?php echo "</a> <span style='width:155px' class='label label-info' id='upload-file-info'></span>
-                                                                        </div>
-                    </td></tr>
+                   
                    
                    
                   </tbody>
@@ -217,14 +200,7 @@
                   <tbody>
                     <input type='hidden' name='id' value='$s[nip]'>
                     
-                    <tr><th style='background-color:#E7EAEC' width='160px' rowspan='25'>";
-                        if (trim($s[foto])==''){
-                          echo "<img class='img-thumbnail' style='width:155px' src='foto_siswa/no-image.jpg'>";
-                        }else{
-                          echo "<img class='img-thumbnail' style='width:155px' src='foto_pegawai/$s[foto]'>";
-                        }
-                        echo "</th>
-                    </tr>
+                  
                     
                     <input type='hidden' name='id' value='$s[nip]'
                     <tr><th width='120px' scope='row'>Nip</th>      <td><input type='text' class='form-control' value='$s[nip]' name='aa'></td></tr>

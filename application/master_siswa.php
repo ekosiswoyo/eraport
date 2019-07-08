@@ -164,27 +164,13 @@ if ($_GET[act]==''){
       $rtrw = explode('/',$_POST[ai]);
       $rt = $rtrw[0];
       $rw = $rtrw[1];
-      $dir_gambar = 'foto_siswa/';
-      $filename = basename($_FILES['ao']['name']);
-      $filenamee = date("YmdHis").'-'.basename($_FILES['ao']['name']);
-      $uploadfile = $dir_gambar . $filenamee;
-      if ($filename != ''){      
-        if (move_uploaded_file($_FILES['ao']['tmp_name'], $uploadfile)) {
-           mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_siswa VALUES('','$_POST[ac]','$_POST[ad]','$_POST[bd]','$_POST[ab]',
+     mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_siswa VALUES('','$_POST[ac]','$_POST[ad]','$_POST[bd]','$_POST[ab]',
                                '$_POST[bb]','$_POST[bc]','$_POST[be]','$_POST[ah]',
-                               '$_POST[bj]','$_POST[bk]','$filenamee','$_POST[ca]',
+                               '$_POST[bj]','$_POST[bk]','$_POST[ca]',
                                '$_POST[cg]','$_POST[ch]',
                               '$_POST[cn]','$_POST[co]','$_POST[af]','$_POST[an]','$_POST[bo]',
                                '','$_POST[ae]','0')");
-        }
-      }else{
-            mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_siswa VALUES('','$_POST[ac]','$_POST[ad]','$_POST[bd]','$_POST[ab]',
-                               '$_POST[bb]','$_POST[bc]','$_POST[be]','$_POST[ah]',
-                               '$_POST[bj]','$_POST[bk]','','$_POST[ca]',
-                               '$_POST[cg]','$_POST[ch]',
-                              '$_POST[cn]','$_POST[co]','$_POST[af]','$_POST[an]','$_POST[bo]',
-                               '','$_POST[ae]','0')");
-      }
+      
           echo "<script>document.location='index.php?view=siswa&act=detailsiswa&id=".$_POST[ab]."';</script>";
   }
 
@@ -223,13 +209,7 @@ if ($_GET[act]==''){
                               <tr><th scope='row'>Alamat Siswa</th> <td><input type='text' class='form-control' name='ah'></td></tr>
                              
                               <tr><th scope='row'>Status Awal</th> <td><input type='text' class='form-control' name='an'></td></tr>
-                              <tr><th scope='row'>Foto</th>             <td><div style='position:relative;''>
-                                                                            <a class='btn btn-primary' href='javascript:;'>
-                                                                              <span class='glyphicon glyphicon-search'></span> Browse..."; ?>
-                                                                              <input type='file' class='files' name='ao' onchange='$("#upload-file-info").html($(this).val());'>
-                                                                            <?php echo "</a> <span style='width:155px' class='label label-info' id='upload-file-info'></span>
-                                                                          </div>
-                              </td></tr>
+                             
                             </tbody>
                             </table>
                           </div>
@@ -306,27 +286,7 @@ if ($_GET[act]==''){
       $filename = basename($_FILES['ao']['name']);
       $filenamee = date("YmdHis").'-'.basename($_FILES['ao']['name']);
       $uploadfile = $dir_gambar . $filenamee;
-      if ($filename != ''){      
-        if (move_uploaded_file($_FILES['ao']['tmp_name'], $uploadfile)){
-           mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rb_siswa SET 
-                                     password         = '$_POST[a]',
-                                     nama       = '$_POST[ad]',
-                                     kode_kelas    = '$_POST[ae]',
-                                     angkatan   = '$_POST[af]',
-                                     alamat        = '$_POST[ah]',
-                                     status_awal   = '$_POST[an]',
-                                     foto = '$filenamee',
-
-                                    
-                                     tempat_lahir = '$_POST[bb]',
-                                     tanggal_lahir = '$_POST[bc]',
-                                     jenis_kelamin = '$_POST[bd]',
-                                     agama = '$_POST[be]',
-                                     
-                                     email = '$_POST[bk]',
-                               status_siswa = '$_POST[bo]' where nisn='$_POST[id]'");
-        }
-      }else{
+     
             mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rb_siswa SET 
                                      password         = '$_POST[ac]',
                                      nama       = '$_POST[ad]',
@@ -334,7 +294,6 @@ if ($_GET[act]==''){
                                      angkatan   = '$_POST[af]',
                                      alamat        = '$_POST[ah]',
                                      status_awal   = '$_POST[an]',
-                                     foto = '$filenamee',
 
                                     
                                      tempat_lahir = '$_POST[bb]',
@@ -343,7 +302,7 @@ if ($_GET[act]==''){
                                      agama = '$_POST[be]',
                                      email = '$_POST[bk]',
                                status_siswa = '$_POST[bo]' where nisn='$_POST[id]'");
-      }
+      
           echo "<script>document.location='index.php?view=siswa&act=editsiswa&id=".$_POST[id]."';</script>";
   }
 
@@ -548,11 +507,7 @@ if ($_GET[act]==''){
                           <table class='table table-condensed table-bordered'>
                           <tbody>
                             <tr><th style='background-color:#E7EAEC' width='160px' rowspan='17'>";
-                                if (trim($s[foto])==''){
-                                  echo "<img class='img-thumbnail' style='width:155px' src='foto_siswa/no-image.jpg'>";
-                                }else{
-                                  echo "<img class='img-thumbnail' style='width:155px' src='foto_siswa/$s[foto]'>";
-                                }
+                                
                               if($_SESSION[level]!='kepala'){
                                 echo "<a href='index.php?view=siswa&act=editsiswa&id=$_GET[id]' class='btn btn-success btn-block'>Edit Profile</a>";
                               }
@@ -574,7 +529,6 @@ if ($_GET[act]==''){
                         <div class='col-md-5'>
                           <table class='table table-condensed table-bordered'>
                           <tbody>
-                            <tr><th width='120px' scope='row'>NIK</th> <td>$s[nik]</td></tr>
                             <tr><th scope='row'>Tempat Lahir</th> <td>$s[tempat_lahir]</td></tr>
                             <tr><th scope='row'>Tanggal Lahir</th> <td>".tgl_indo($s[tanggal_lahir])."</td></tr>
                             <tr><th scope='row'>Jenis Kelamin</th> <td>$s[jenis_kelamin]</td></tr>
@@ -594,11 +548,7 @@ if ($_GET[act]==''){
                           <table class='table table-condensed table-bordered'>
                           <tbody>
                             <tr><th style='background-color:#E7EAEC' width='160px' rowspan='20'>";
-                                if (trim($s[foto])==''){
-                                  echo "<img class='img-thumbnail' style='width:155px' src='foto_siswa/no-image.jpg'>";
-                                }else{
-                                  echo "<img class='img-thumbnail' style='width:155px' src='foto_siswa/$s[foto]'>";
-                                }
+                                
                               if($_SESSION[level]!='kepala'){
                                 echo "<a href='index.php?view=siswa&act=editsiswa&id=$_GET[id]' class='btn btn-success btn-block'>Edit Profile</a>";
                               }
