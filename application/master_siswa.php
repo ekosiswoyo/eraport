@@ -16,13 +16,13 @@ if ($_GET[act]==''){
        $angkatan = $_POST['angkatanpindah'];
        for ($i=0; $i<=$n; $i++){
          if (isset($_POST['pilih'.$i])){
-           $nisn = $_POST['pilih'.$i];
+           $nis = $_POST['pilih'.$i];
            if ($angkatan != '' AND $kelas != ''){
-              mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rb_siswa SET angkatan='$angkatan', kode_kelas='$kelas' where nisn='$nisn'");
+              mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rb_siswa SET angkatan='$angkatan', kode_kelas='$kelas' where nis='$nis'");
            }elseif ($angkatan == '' AND $kelas != ''){
-              mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rb_siswa SET kode_kelas='$kelas' where nisn='$nisn'");
+              mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rb_siswa SET kode_kelas='$kelas' where nis='$nis'");
            }elseif ($angkatan != '' AND $kelas == ''){
-              mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rb_siswa SET angkatan='$angkatan' where nisn='$nisn'");
+              mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rb_siswa SET angkatan='$angkatan' where nis='$nis'");
            }
          }
        }
@@ -35,7 +35,7 @@ if ($_GET[act]==''){
                   <h3 class="box-title">Semua Data Siswa </h3>
                    <?php if($_SESSION[level]!='kepala'){ ?>
                   <a class='pull-right btn btn-success btn-sm' target='_BLANK' href='print-siswa.php?kelas=<?php echo $_GET[kelas]; ?>&angkatan=<?php echo $_GET[angkatan]; ?>'>Print Siswa</a>
-                  <a style='margin-right:5px' class='pull-right btn btn-primary btn-sm' href='index.php?view=siswa&act=tambahsiswa'>Tambahkan Data Siswa</a>
+                  <a style='margin-right:5px' class='pull-right btn btn-primary btn-sm' href='index.php?view=siswa&act=tambah'>Tambahkan Data Siswa</a>
                     
                   <?php } ?>
 
@@ -45,7 +45,7 @@ if ($_GET[act]==''){
                     <select name='kelas' style='padding:4px'>
                         <?php 
                             echo "<option value=''>- Filter Kelas -</option>";
-                            $kelas = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelas");
+                            $kelas = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelas order by kode_kelas asc");
                             while ($k = mysqli_fetch_array($kelas)){
                               if ($_GET[kelas]==$k[kode_kelas]){
                                 echo "<option value='$k[kode_kelas]' selected>$k[kode_kelas] - $k[nama_kelas]</option>";
@@ -72,7 +72,7 @@ if ($_GET[act]==''){
                               <tr>";
                   }
                   echo "<th>No</th>
-                        <th>NISN</th>
+                        <th>NIS</th>
                         <th>Nama Siswa</th>
                         <th>Angkatan</th>
                         <th>Kelas</th>
@@ -84,46 +84,45 @@ if ($_GET[act]==''){
                   if ($_GET[kelas] != '' AND $_GET[angkatan] != ''){
                     $tampil = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa a LEFT JOIN rb_kelas b ON a.kode_kelas=b.kode_kelas 
                                               
-                                                  where a.kode_kelas='$_GET[kelas]' AND a.angkatan='$_GET[angkatan]' ORDER BY a.id_siswa");
+                                                  where a.kode_kelas='$_GET[kelas]' AND a.angkatan='$_GET[angkatan]' ORDER BY a.nis");
                   }elseif ($_GET[kelas] != '' AND $_GET[angkatan] == ''){
                     $tampil = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa a LEFT JOIN rb_kelas b ON a.kode_kelas=b.kode_kelas 
                                               
-                                                  where a.kode_kelas='$_GET[kelas]' ORDER BY a.id_siswa");
+                                                  where a.kode_kelas='$_GET[kelas]' ORDER BY a.nis");
                   }elseif ($_GET[kelas] == '' AND $_GET[angkatan] != ''){
                     $tampil = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa a LEFT JOIN rb_kelas b ON a.kode_kelas=b.kode_kelas 
                                            
-                                                  where a.angkatan='$_GET[angkatan]' ORDER BY a.id_siswa");
+                                                  where a.angkatan='$_GET[angkatan]' ORDER BY a.nis");
                   }
                     $no = 1;
                     while($r=mysqli_fetch_array($tampil)){
                     echo "<tr>";
                             if (isset($_GET[kelas])){
-                                echo "<td><input type='checkbox' name='pilih".$no."' value='$r[nisn]'/></td>";
+                                echo "<td><input type='checkbox' name='pilih".$no."' value='$r[nis]'/></td>";
                             }
                               echo "<td>$no</td>
-                              <td>$r[nisn]</td>
+                              <td>$r[nis]</td>
                               <td>$r[nama]</td>
                               <td>$r[angkatan]</td>
                               <td>$r[nama_kelas]</td>";
                               if($_SESSION[level]!='kepala'){
                                 echo "<td><center>
-                                  <a class='fa fa-fw fa-search' title='Lihat Detail' href='?view=siswa&act=detailsiswa&id=$r[nisn]'></a>
-                                  <a class='fa fa-fw fa-edit' title='Edit Siswa' href='?view=siswa&act=editsiswa&id=$r[nisn]'></a>
+                                  <a class='fa fa-fw fa-search' title='Lihat Detail' href='?view=siswa&act=detailsiswa&id=$r[nis]'></a>
+                                  <a class='fa fa-fw fa-edit' title='Edit Siswa' href='?view=siswa&act=editsiswa&id=$r[nis]'></a>
                                   
-                                  <a class='fa fa-fw fa-eraser' title='Delete Siswa' href='?view=siswa&hapus=$r[nisn]' onclick=\"return confirm('Apa anda yakin untuk hapus Data ini?')\"></a>
                                 </center></td>";
                               }else{
                                   echo "<td><center>
-                                  <a class='btn btn-default btn-xs' title='Lihat Detail' href='?view=siswa&act=detailsiswa&id=$r[nisn]'><span class='glyphicon glyphicon-search'></span></a>
-                                  <!--<a class='btn btn-success btn-xs' title='Penilaian Diri' href='?view=siswa&act=penilaiandiri&id=$r[nisn]'><span class='glyphicon glyphicon-th-list'></span></a>
-                                  <a class='btn btn-warning btn-xs' title='Penilaian Teman' href='?view=siswa&act=penilaianteman&id=$r[nisn]'><span class='glyphicon glyphicon-list'></span></a>-->
+                                  <a class='btn btn-default btn-xs' title='Lihat Detail' href='?view=siswa&act=detailsiswa&id=$r[nis]'><span class='glyphicon glyphicon-search'></span></a>
+                                  <!--<a class='btn btn-success btn-xs' title='Penilaian Diri' href='?view=siswa&act=penilaiandiri&id=$r[nis]'><span class='glyphicon glyphicon-th-list'></span></a>
+                                  <a class='btn btn-warning btn-xs' title='Penilaian Teman' href='?view=siswa&act=penilaianteman&id=$r[nis]'><span class='glyphicon glyphicon-list'></span></a>-->
                                 </center></td>";
                               }
                             echo "</tr>";
                       $no++;
                       }
                       if (isset($_GET[hapus])){
-                          mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM rb_siswa where nisn='$_GET[hapus]'");
+                          mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM rb_siswa where nis='$_GET[hapus]'");
                           echo "<script>document.location='index.php?view=siswa';</script>";
                       }
                   ?>
@@ -158,20 +157,21 @@ if ($_GET[act]==''){
               </form>
             </div>
 <?php 
-}elseif($_GET[act]=='tambahsiswa'){
+}elseif($_GET[act]=='tambah'){
   cek_session_admin();
-  if (isset($_POST[tambah])){
-      $rtrw = explode('/',$_POST[ai]);
-      $rt = $rtrw[0];
-      $rw = $rtrw[1];
-     mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_siswa VALUES('','$_POST[ac]','$_POST[ad]','$_POST[bd]','$_POST[ab]',
-                               '$_POST[bb]','$_POST[bc]','$_POST[be]','$_POST[ah]',
-                               '$_POST[bj]','$_POST[bk]','$_POST[ca]',
-                               '$_POST[cg]','$_POST[ch]',
-                              '$_POST[cn]','$_POST[co]','$_POST[af]','$_POST[an]','$_POST[bo]',
-                               '','$_POST[ae]','0')");
-      
-          echo "<script>document.location='index.php?view=siswa&act=detailsiswa&id=".$_POST[ab]."';</script>";
+  if (isset($_POST[cek])){
+    $nis = $_POST['ab'];
+     
+
+   $cek = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa where nis='$nis'"));
+   if($cek > 0){
+    // echo "<script>window.alert('NIS Sudah Ada!');</script>";
+       echo "<script>window.location='index.php?view=siswa&act=nis';</script>";
+
+   }else{
+          echo "<script>document.location='index.php?view=siswa&act=tambahsiswa&nis=$nis';</script>";
+    }
+         
   }
 
     echo "<div class='col-md-12'>
@@ -183,8 +183,8 @@ if ($_GET[act]==''){
 
                   <div class='panel-body'>
                     <ul id='myTabs' class='nav nav-tabs' role='tablist'>
-                      <li role='presentation' class='active'><a href='#siswa' id='siswa-tab' role='tab' data-toggle='tab' aria-controls='siswa' aria-expanded='true'>Data Siswa </a></li>
-                      <li role='presentation' class=''><a href='#ortu' role='tab' id='ortu-tab' data-toggle='tab' aria-controls='ortu' aria-expanded='false'>Data Orang Tua / Wali</a></li>
+                      <li role='presentation' class='active'><a href='#siswa' id='siswa-tab' role='tab' data-toggle='tab' aria-controls='siswa' aria-expanded='true'>Data </a></li>
+                      
                     </ul><br>
 
                     <div id='myTabContent' class='tab-content'>
@@ -194,12 +194,269 @@ if ($_GET[act]==''){
                             <table class='table table-condensed table-bordered'>
                             <tbody>
                              
-                              <tr><th scope='row'>NISN</th> <td><input type='text' class='form-control' name='ab'></td></tr>
+                              <tr><th scope='row'>NIS</th> <td><input type='text' class='form-control' name='ab'></td></tr>
+                             <tr><th scope='row'>Password</th> <td><input type='text' class='form-control' name='ac' disabled></td></tr>
+                              <tr><th scope='row'>Nama Siswa</th> <td><input type='text' class='form-control' name='ad' disabled></td></tr>
+                              <tr><th scope='row'>Kelas</th> <td><select class='form-control' name='ae' disabled> 
+                                                                            <option value='0' selected>- Pilih Kelas -</option>"; 
+                                                                              $kelas = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelas order by kode_kelas asc");
+                                                                              while($a = mysqli_fetch_array($kelas)){
+                                                                                  echo "<option value='$a[kode_kelas]'>$a[nama_kelas]</option>";
+                                                                              }
+                                                                    echo "</select></td></tr>
+                              <tr><th scope='row'>Angkatan</th> <td><input type='text' class='form-control' name='af' disabled></td></tr>
+                             
+                              <tr><th scope='row'>Alamat Siswa</th> <td><input type='text' class='form-control' name='ah' disabled></td></tr>
+                             
+                              <tr><th scope='row'>Status Awal</th> <td><input type='text' class='form-control' name='an' disabled></td></tr>
+                              <tr><th scope='row'>Tempat Lahir</th> <td><input type='text' class='form-control' name='bb' disabled></td></tr>
+                              <tr><th scope='row'>Tanggal Lahir</th> <td><input type='text' class='form-control datepicker' name='bc' disabled></td></tr>
+                              <tr><th scope='row'>Jenis Kelamin</th> <td><select class='form-control' name='bd' disabled> 
+                                                                            <option value='0' selected>- Pilih Jenis Kelamin -</option>
+                                                                            <option value='Laki-Laki'>Laki-Laki</option>
+                                                                            <option value='Perempuan'>Perempuan</option></select>
+                                                                            </td></tr>
+                              <tr><th scope='row'>Agama</th> <td><select class='form-control' name='be' disabled> 
+                                                                            <option value='0' selected>- Pilih Agama -</option> 
+                                                                            <option value='Islam'>Islam</option>
+                                                                            <option value='Kristen'>Kristen</option>
+                                                                            <option value='Katolik'>Katolik</option>
+                                                                            <option value='Hindu'>Hindu</option>
+                                                                            <option value='Budha'>Budha</option>
+                                                                            </select></td></tr>
+                              <tr><th scope='row'>No Handpone</th> <td><input type='text' class='form-control' name='bj' disabled></td></tr>
+                              <tr><th scope='row'>Alamat Email</th> <td><input type='text' class='form-control' name='bk' disabled></td></tr>
+                             
+                              <tr><th scope='row'>Status Siswa</th> <td><input type='radio' name='bo' value='Aktif' disabled> Aktif
+                                                                        <input type='radio' name='bo' value='Tidak Aktif' disabled> Tidak Aktif </td></tr>
+
+                              <tr><th scope='row'>Foto</th>             <td><input type='file' name='file' disabled>
+                              </td></tr>
+
+                            </tbody>
+                            </table>
+                          </div>
+                          <div class='col-md-6'>
+                            <table class='table table-condensed table-bordered'>
+                            <tbody>
+                 <tr bgcolor=#e3e3e3><th width='130px' scope='row'>Nama Ayah</th> <td><input type='text' class='form-control' name='ca' disabled></td></tr>
+                         
+                              <tr><th scope='row'>No Telpon</th> <td><input type='text' class='form-control' name='cg' disabled></td></tr>
+                              <tr><th scope='row' coslpan='2'><br></th></tr>
+                              <tr bgcolor=#e3e3e3><th scope='row'>Nama Ibu</th> <td><input type='text' class='form-control' name='ch' disabled></td></tr>
+                            
+                              <tr><th scope='row'>No Telpon</th> <td><input type='text' class='form-control' name='cn' disabled></td></tr>
+                              <tr><th scope='row' coslpan='2'><br></th></tr>
+                              <tr bgcolor=#e3e3e3><th scope='row'>Nama Wali</th> <td><input type='text' class='form-control' name='co' disabled></td></tr>
+                            </tbody>
+                            </table>
+                          </div>  
+                          <div style='clear:both'></div>
+                          <div class='box-footer'>
+                            <button type='submit' name='cek' class='btn btn-info'>Simpan</button>
+                          </div> 
+                          </form>
+                      </div>
+
+                     
+                    </div>
+                  </div>
+
+                </div>
+            </div>
+        </div>";
+}elseif($_GET[act]=='nis'){
+  cek_session_admin();
+  if (isset($_POST[cek])){
+    $nis = $_POST['ab'];
+     
+
+   $cek = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa where nis='$nis'"));
+   if($cek > 0){
+    // echo "<script>window.alert('NIS Sudah Ada!');</script>";
+       echo "<script>window.location='index.php?view=siswa&act=nis';</script>";
+
+   }else{
+          echo "<script>document.location='index.php?view=siswa&act=tambahsiswa&nis=$nis';</script>";
+    }
+         
+  }
+
+    echo "<div class='col-md-12'>
+              <div class='box box-info'>
+                <div class='box-header with-border'>
+                  <h3 class='box-title'>Tambah Data Siswa</h3>
+                </div>
+                <div class='box-body'>
+
+                  <div class='panel-body'>
+                    <ul id='myTabs' class='nav nav-tabs' role='tablist'>
+                      <li role='presentation' class='active'><a href='#siswa' id='siswa-tab' role='tab' data-toggle='tab' aria-controls='siswa' aria-expanded='true'>Data </a></li>
+                      
+                    </ul><br>
+
+                    <div id='myTabContent' class='tab-content'>
+                      <div role='tabpanel' class='tab-pane fade active in' id='siswa' aria-labelledby='siswa-tab'>
+                          <form action='' method='POST' enctype='multipart/form-data' class='form-horizontal'>
+                          <div class='col-md-6'>
+                            <table class='table table-condensed table-bordered'>
+                            <tbody>
+                             
+                              <tr><th scope='row'>NIS</th> <td><input type='text' class='form-control' name='ab'></td></tr>
+                              <tr><th scope='row' style='color:red;'>**NIS Sudah Ada !!</th> <td></td></tr>
+                            <tr><th scope='row'>Password</th> <td><input type='text' class='form-control' name='ac' disabled></td></tr>
+                              <tr><th scope='row'>Nama Siswa</th> <td><input type='text' class='form-control' name='ad' disabled></td></tr>
+                              <tr><th scope='row'>Kelas</th> <td><select class='form-control' name='ae' disabled> 
+                                                                            <option value='0' selected>- Pilih Kelas -</option>"; 
+                                                                              $kelas = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelas order by kode_kelas asc");
+                                                                              while($a = mysqli_fetch_array($kelas)){
+                                                                                  echo "<option value='$a[kode_kelas]'>$a[nama_kelas]</option>";
+                                                                              }
+                                                                    echo "</select></td></tr>
+                              <tr><th scope='row'>Angkatan</th> <td><input type='text' class='form-control' name='af' disabled></td></tr>
+                             
+                              <tr><th scope='row'>Alamat Siswa</th> <td><input type='text' class='form-control' name='ah' disabled></td></tr>
+                             
+                              <tr><th scope='row'>Status Awal</th> <td><input type='text' class='form-control' name='an' disabled></td></tr>
+                              <tr><th scope='row'>Tempat Lahir</th> <td><input type='text' class='form-control' name='bb' disabled></td></tr>
+                              <tr><th scope='row'>Tanggal Lahir</th> <td><input type='text' class='form-control datepicker' name='bc' disabled></td></tr>
+                              <tr><th scope='row'>Jenis Kelamin</th> <td><select class='form-control' name='bd' disabled> 
+                                                                            <option value='0' selected>- Pilih Jenis Kelamin -</option>
+                                                                            <option value='Laki-Laki'>Laki-Laki</option>
+                                                                            <option value='Perempuan'>Perempuan</option></select>
+                                                                            </td></tr>
+                              <tr><th scope='row'>Agama</th> <td><select class='form-control' name='be' disabled> 
+                                                                            <option value='0' selected>- Pilih Agama -</option> 
+                                                                            <option value='Islam'>Islam</option>
+                                                                            <option value='Kristen'>Kristen</option>
+                                                                            <option value='Katolik'>Katolik</option>
+                                                                            <option value='Hindu'>Hindu</option>
+                                                                            <option value='Budha'>Budha</option>
+                                                                            </select></td></tr>
+                              <tr><th scope='row'>No Handpone</th> <td><input type='text' class='form-control' name='bj' disabled></td></tr>
+                              <tr><th scope='row'>Alamat Email</th> <td><input type='text' class='form-control' name='bk' disabled></td></tr>
+                             
+                              <tr><th scope='row'>Status Siswa</th> <td><input type='radio' name='bo' value='Aktif' disabled> Aktif
+                                                                        <input type='radio' name='bo' value='Tidak Aktif' disabled> Tidak Aktif </td></tr>
+
+                              <tr><th scope='row'>Foto</th>             <td><input type='file' name='file' disabled>
+                              </td></tr>
+
+                            </tbody>
+                            </table>
+                          </div>
+                          <div class='col-md-6'>
+                            <table class='table table-condensed table-bordered'>
+                            <tbody>
+                 <tr bgcolor=#e3e3e3><th width='130px' scope='row'>Nama Ayah</th> <td><input type='text' class='form-control' name='ca' disabled></td></tr>
+                         
+                              <tr><th scope='row'>No Telpon</th> <td><input type='text' class='form-control' name='cg' disabled></td></tr>
+                              <tr><th scope='row' coslpan='2'><br></th></tr>
+                              <tr bgcolor=#e3e3e3><th scope='row'>Nama Ibu</th> <td><input type='text' class='form-control' name='ch' disabled></td></tr>
+                            
+                              <tr><th scope='row'>No Telpon</th> <td><input type='text' class='form-control' name='cn' disabled></td></tr>
+                              <tr><th scope='row' coslpan='2'><br></th></tr>
+                              <tr bgcolor=#e3e3e3><th scope='row'>Nama Wali</th> <td><input type='text' class='form-control' name='co' disabled></td></tr>
+                            </tbody>
+                            </table>
+                          </div>  
+                          <div style='clear:both'></div>
+                          <div class='box-footer'>
+                            <button type='submit' name='cek' class='btn btn-info'>Simpan</button>
+                          </div> 
+                          </form>
+                      </div>
+
+                     
+                    </div>
+                  </div>
+
+                </div>
+            </div>
+        </div>";
+}
+elseif($_GET[act]=='tambahsiswa'){
+  cek_session_admin();
+  if (isset($_POST[tambah])){
+    $nis = $_GET['nis'];
+      $rtrw = explode('/',$_POST[ai]);
+      $rt = $rtrw[0];
+      $rw = $rtrw[1]; 
+      $nama_file1     = $_FILES['file']['name'];
+      $ab = ucfirst($_POST[ab]);
+      $ad=ucfirst($_POST[ad]);
+      $bd=ucfirst($_POST[bd]);
+      $bb=ucfirst($_POST[bb]);
+
+      $bk=ucfirst($_POST[bk]);
+      $be=ucfirst($_POST[be]);
+      $ah=ucfirst($_POST[ah]);
+      $bk=ucfirst($_POST[bk]);
+      $ca=ucfirst($_POST[ca]);
+      $ch=ucfirst($_POST[ch]);
+      $co=ucfirst($_POST[co]);
+      $af=ucfirst($_POST[af]);
+      $an=ucfirst($_POST[an]);
+      $bo=ucfirst($_POST[bo]);
+      $ae=ucfirst($_POST[ae]);
+    
+      $format=date('Y-m-d',
+      strtotime($_POST[bc]));
+    
+    $lokasi_file1    = $_FILES['file']['tmp_name'];
+    $ekstensi_file = $_FILES["file"]["type"];
+
+   $cek = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa where nis='$nis'"));
+   if($cek > 0){
+    echo "<script>window.alert('NIS Sudah Ada!');</script>";
+       echo "<script>window.location='index.php?view=siswa';</script>";
+
+   }else{
+     if($ekstensi_file == "image/jpeg" or $ekstensi_file == ""){
+
+         move_uploaded_file($_FILES["file"]["tmp_name"],"files/".$nama_file1);
+     mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_siswa VALUES('$ab','$_POST[ac]','$ad','$bd',
+                               '$bb','$format','$be','$ah',
+                               '$_POST[bj]','$bk','$ca',
+                               '$_POST[cg]','$ch',
+                              '$_POST[cn]','$co','$af','$an','$bo',
+                               '$ae','$nama_file1')");
+
+          echo "<script>window.alert('Data Berhasil di Simpan !')</script>";
+          echo "<script>document.location='index.php?view=siswa';</script>";
+      }else{
+             echo 'Update Data Gagal!';
+      }
+    }
+         
+  }
+
+    echo "<div class='col-md-12'>
+              <div class='box box-info'>
+                <div class='box-header with-border'>
+                  <h3 class='box-title'>Tambah Data Siswa</h3>
+                </div>
+                <div class='box-body'>
+
+                  <div class='panel-body'>
+                    <ul id='myTabs' class='nav nav-tabs' role='tablist'>
+                      <li role='presentation' class='active'><a href='#siswa' id='siswa-tab' role='tab' data-toggle='tab' aria-controls='siswa' aria-expanded='true'>Data </a></li>
+                      
+                    </ul><br>
+
+                    <div id='myTabContent' class='tab-content'>
+                      <div role='tabpanel' class='tab-pane fade active in' id='siswa' aria-labelledby='siswa-tab'>
+                          <form action='' method='POST' enctype='multipart/form-data' class='form-horizontal'>
+                          <div class='col-md-6'>
+                            <table class='table table-condensed table-bordered'>
+                            <tbody>
+                             
+                              <tr><th scope='row'>NIS</th> <td><input type='text' class='form-control' name='ab' value='$_GET[nis]' readonly></td></tr>
                               <tr><th scope='row'>Password</th> <td><input type='text' class='form-control' name='ac'></td></tr>
                               <tr><th scope='row'>Nama Siswa</th> <td><input type='text' class='form-control' name='ad'></td></tr>
                               <tr><th scope='row'>Kelas</th> <td><select class='form-control' name='ae'> 
                                                                             <option value='0' selected>- Pilih Kelas -</option>"; 
-                                                                              $kelas = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelas");
+                                                                              $kelas = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelas order by kode_kelas asc");
                                                                               while($a = mysqli_fetch_array($kelas)){
                                                                                   echo "<option value='$a[kode_kelas]'>$a[nama_kelas]</option>";
                                                                               }
@@ -209,16 +466,8 @@ if ($_GET[act]==''){
                               <tr><th scope='row'>Alamat Siswa</th> <td><input type='text' class='form-control' name='ah'></td></tr>
                              
                               <tr><th scope='row'>Status Awal</th> <td><input type='text' class='form-control' name='an'></td></tr>
-                             
-                            </tbody>
-                            </table>
-                          </div>
-                          <div class='col-md-6'>
-                            <table class='table table-condensed table-bordered'>
-                            <tbody>
-                
                               <tr><th scope='row'>Tempat Lahir</th> <td><input type='text' class='form-control' name='bb'></td></tr>
-                              <tr><th scope='row'>Tanggal Lahir</th> <td><input type='text' class='form-control' name='bc'></td></tr>
+                              <tr><th scope='row'>Tanggal Lahir</th> <td><input type='text' class='form-control datepicker' name='bc'></td></tr>
                               <tr><th scope='row'>Jenis Kelamin</th> <td><select class='form-control' name='bd'> 
                                                                             <option value='0' selected>- Pilih Jenis Kelamin -</option>
                                                                             <option value='Laki-Laki'>Laki-Laki</option>
@@ -237,21 +486,17 @@ if ($_GET[act]==''){
                              
                               <tr><th scope='row'>Status Siswa</th> <td><input type='radio' name='bo' value='Aktif' checked> Aktif
                                                                         <input type='radio' name='bo' value='Tidak Aktif'> Tidak Aktif </td></tr>
+
+                              <tr><th scope='row'>Foto</th>             <td><input type='file' name='file'>
+                              </td></tr>
+
                             </tbody>
                             </table>
-                          </div>  
-                          <div style='clear:both'></div>
-                          <div class='box-footer'>
-                            <button type='submit' name='tambah' class='btn btn-info'>Tambahkan</button>
-                            <a href='index.php?view=siswa'><button type='button' class='btn btn-default pull-right'>Cancel</button></a>
-                          </div> 
-                      </div>
-
-                      <div role='tabpanel' class='tab-pane fade' id='ortu' aria-labelledby='ortu-tab'>
-                          <div class='col-md-12'>
+                          </div>
+                          <div class='col-md-6'>
                             <table class='table table-condensed table-bordered'>
                             <tbody>
-                              <tr bgcolor=#e3e3e3><th width='130px' scope='row'>Nama Ayah</th> <td><input type='text' class='form-control' name='ca'></td></tr>
+                 <tr bgcolor=#e3e3e3><th width='130px' scope='row'>Nama Ayah</th> <td><input type='text' class='form-control' name='ca'></td></tr>
                          
                               <tr><th scope='row'>No Telpon</th> <td><input type='text' class='form-control' name='cg'></td></tr>
                               <tr><th scope='row' coslpan='2'><br></th></tr>
@@ -260,16 +505,17 @@ if ($_GET[act]==''){
                               <tr><th scope='row'>No Telpon</th> <td><input type='text' class='form-control' name='cn'></td></tr>
                               <tr><th scope='row' coslpan='2'><br></th></tr>
                               <tr bgcolor=#e3e3e3><th scope='row'>Nama Wali</th> <td><input type='text' class='form-control' name='co'></td></tr>
-                             
                             </tbody>
                             </table>
-                          </div>
+                          </div>  
+                          <div style='clear:both'></div>
                           <div class='box-footer'>
-                            <button type='submit' name='tambah' class='btn btn-info'>Tambahkan</button>
+                            <button type='submit' name='tambah' class='btn btn-info'>Simpan</button>
                             <a href='index.php?view=siswa'><button type='button' class='btn btn-default pull-right'>Cancel</button></a>
-                          </div>
-                          </form>
+                          </div> 
                       </div>
+
+                     
                     </div>
                   </div>
 
@@ -283,6 +529,8 @@ if ($_GET[act]==''){
       $rt = $rtrw[0];
       $rw = $rtrw[1];
       $dir_gambar = 'foto_siswa/';
+      $format=date('Y-m-d',
+      strtotime($_POST[bc]));
       $filename = basename($_FILES['ao']['name']);
       $filenamee = date("YmdHis").'-'.basename($_FILES['ao']['name']);
       $uploadfile = $dir_gambar . $filenamee;
@@ -297,13 +545,13 @@ if ($_GET[act]==''){
 
                                     
                                      tempat_lahir = '$_POST[bb]',
-                                     tanggal_lahir = '$_POST[bc]',
+                                     tanggal_lahir = '$format',
                                      jenis_kelamin = '$_POST[bd]',
                                      agama = '$_POST[be]',
                                      email = '$_POST[bk]',
-                               status_siswa = '$_POST[bo]' where nisn='$_POST[id]'");
+                               status_siswa = '$_POST[bo]' where nis='$_POST[id]'");
       
-          echo "<script>document.location='index.php?view=siswa&act=editsiswa&id=".$_POST[id]."';</script>";
+          echo "<script>document.location='index.php?view=siswa';</script>";
   }
 
   if (isset($_POST[update2])){
@@ -314,19 +562,19 @@ if ($_GET[act]==''){
                                nama_ibu        = '$_POST[ch]',
                                no_telpon_ibu   = '$_POST[cn]',
 
-                               nama_wali        = '$_POST[co]' where nisn='$_POST[id]'");
+                               nama_wali        = '$_POST[co]' where nis='$_POST[id]'");
 
-            echo "<script>document.location='index.php?view=siswa&act=editsiswa&id=".$_POST[id]."';</script>";
+            echo "<script>document.location='index.php?view=siswa;</script>";
   }
     if ($_SESSION[level] == 'siswa'){
-        $nisn = $_SESSION[id];
+        $nis = $_SESSION[id];
         $close = 'readonly=on';
     }else{
-        $nisn = $_GET[id];
+        $nis = $_GET[id];
         $close = '';
     }
     $edit = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa a LEFT JOIN rb_kelas b ON a.kode_kelas=b.kode_kelas 
-                                      where a.nisn='$nisn'");
+                                      where a.nis='$nis'");
     $s = mysqli_fetch_array($edit);
     echo "<div class='col-md-12'>
               <div class='box box-info'>
@@ -355,15 +603,12 @@ if ($_GET[act]==''){
                           <table class='table table-condensed table-bordered'>
                           <tbody>
                             <tr><th style='background-color:#E7EAEC' width='160px' rowspan='17'>";
-                                if (trim($s[foto])==''){
-                                  echo "<img class='img-thumbnail' style='width:155px' src='foto_siswa/no-image.jpg'>";
-                                }else{
-                                  echo "<img class='img-thumbnail' style='width:155px' src='foto_siswa/$s[foto]'>";
-                                }
+                               
+                                  
                             echo "</th></tr>
-                            <input type='hidden' value='$s[nisn]' name='id'>
+                            <input type='hidden' value='$s[nis]' name='id'>
                             
-                            <tr><th scope='row'>NISN</th> <td><input type='text' class='form-control' value='$s[nisn]' name='ab' $close readonly></td></tr>
+                            <tr><th scope='row'>NIS</th> <td><input type='text' class='form-control' value='$s[nis]' name='ab' $close readonly></td></tr>
                             <tr><th scope='row'>Password</th> <td><input type='text' class='form-control' value='$s[password]' name='ac'></td></tr>
                             <tr><th scope='row'>Nama Siswa</th> <td><input type='text' class='form-control' value='$s[nama]' name='ad'></td></tr>
                             <tr><th scope='row'>Kelas</th> <td><select class='form-control' name='ae' $close> 
@@ -387,13 +632,7 @@ if ($_GET[act]==''){
                             
                             <tr><th scope='row'>Alamat Siswa</th> <td><input type='text' class='form-control' value='$s[alamat]' name='ah'></td></tr>
                             <tr><th scope='row'>Status Awal</th> <td><input type='text' class='form-control' value='$s[status_awal]' name='an' $close></td></tr>
-                            <tr><th scope='row'>Ganti Foto</th>             <td><div style='position:relative;''>
-                                                                          <a class='btn btn-primary' href='javascript:;'>
-                                                                            <span class='glyphicon glyphicon-search'></span> Browse..."; ?>
-                                                                            <input type='file' class='files' name='ao' onchange='$("#upload-file-info").html($(this).val());'>
-                                                                          <?php echo "</a> <span style='width:155px' class='label label-info' id='upload-file-info'></span>
-                                                                        </div>
-                            </td></tr>
+                          
                           </tbody>
                           </table>
                         </div>
@@ -402,7 +641,7 @@ if ($_GET[act]==''){
                           <tbody>
                            
                             <tr><th scope='row'>Tempat Lahir</th> <td><input type='text' class='form-control' value='$s[tempat_lahir]' name='bb'></td></tr>
-                            <tr><th scope='row'>Tanggal Lahir</th> <td><input type='text' class='form-control' value='$s[tanggal_lahir]' name='bc'></td></tr>
+                            <tr><th scope='row'>Tanggal Lahir</th> <td><input type='text' class='form-control datepicker' value='$s[tanggal_lahir]' name='bc'></td></tr>
                             <tr><th scope='row'>Jenis Kelamin</th> <td><select class='form-control' name='bd'> 
                                                                           <option value='0' selected>- Pilih Jenis Kelamin -</option>
                                                                          
@@ -447,13 +686,9 @@ if ($_GET[act]==''){
                           <table class='table table-condensed table-bordered'>
                           <tbody>
                             <tr><th style='background-color:#E7EAEC' width='160px' rowspan='22'>";
-                                if (trim($s[foto])==''){
-                                  echo "<img class='img-thumbnail' style='width:155px' src='foto_siswa/no-image.jpg'>";
-                                }else{
-                                  echo "<img class='img-thumbnail' style='width:155px' src='foto_siswa/$s[foto]'>";
-                                }
+                                
                             echo "</th></tr>
-                            <input type='hidden' value='$s[nisn]' name='id'>
+                            <input type='hidden' value='$s[nis]' name='id'>
                             <tr bgcolor=#e3e3e3><th width='130px' scope='row'>Nama Ayah</th> <td><input type='text' class='form-control' value='$s[nama_ayah]' name='ca'></td></tr>
                          
                            
@@ -479,13 +714,13 @@ if ($_GET[act]==''){
 }elseif($_GET[act]=='detailsiswa'){
   cek_session_siswa();
     if ($_SESSION[level] == 'siswa'){
-        $nisn = $_SESSION[id];
+        $nis = $_SESSION[id];
     }else{
-        $nisn = $_GET[id];
+        $nis = $_GET[id];
     }
     $detail = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa a LEFT JOIN rb_kelas b ON a.kode_kelas=b.kode_kelas 
                    
-                                      where a.nisn='$nisn'");
+                                      where a.nis='$nis'");
     $s = mysqli_fetch_array($detail);
     echo "<div class='col-md-12'>
               <div class='box box-info'>
@@ -507,13 +742,18 @@ if ($_GET[act]==''){
                           <table class='table table-condensed table-bordered'>
                           <tbody>
                             <tr><th style='background-color:#E7EAEC' width='160px' rowspan='17'>";
-                                
+                                if (trim($s[foto])==''){
+                                  echo "<img class='img-thumbnail' style='width:155px' src='files/no-image.jpg'>";
+                                }else{
+                                  echo "<img class='img-thumbnail' style='width:155px' src='files/$s[foto]'>";
+                                }
                               if($_SESSION[level]!='kepala'){
-                                echo "<a href='index.php?view=siswa&act=editsiswa&id=$_GET[id]' class='btn btn-success btn-block'>Edit Profile</a>";
+                                echo "<a href='
+                                index.php?view=siswa&act=editsiswa&id=$_GET[id]' class='btn btn-success btn-block'>Edit Profile</a>";
                               }
                                 echo "</th>
                             </tr>
-                            <tr><th width='120px' scope='row'>NISN</th> <td>$s[nisn]</td></tr>
+                            <tr><th width='120px' scope='row'>NIS</th> <td>$s[nis]</td></tr>
                             
                             <tr><th scope='row'>Password</th> <td>$s[password]</td></tr>
                             <tr><th scope='row'>Nama Siswa</th> <td>$s[nama]</td></tr>
@@ -570,7 +810,7 @@ if ($_GET[act]==''){
                 </div>
             </div>";
 }elseif($_GET[act]=='penilaiandiri'){
-            $t = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa a JOIN rb_kelas b ON a.kode_kelas=b.kode_kelas where a.nisn='$_GET[id]'"));
+            $t = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa a JOIN rb_kelas b ON a.kode_kelas=b.kode_kelas where a.nis='$_GET[id]'"));
             echo "<div class='col-xs-12'>  
               <div class='box'>
                 <div class='box-header'>
@@ -581,7 +821,7 @@ if ($_GET[act]==''){
                         <div class='col-md-12'>
                             <table class='table table-condensed table-hover'>
                                 <tbody>
-                                  <tr><th width='120px' scope='row'>NISN</th> <td>$t[nisn]</td></tr>
+                                  <tr><th width='120px' scope='row'>NIS</th> <td>$t[nis]</td></tr>
                                   <tr><th scope='row'>Nama Siswa</th>           <td>$t[nama]</td></tr>
                                   <tr><th scope='row'>Kelas</th>           <td>$t[nama_kelas]</td></tr>
                                 </tbody>
@@ -600,7 +840,7 @@ if ($_GET[act]==''){
                     $tampil = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_pertanyaan_penilaian where status='diri' ORDER BY id_pertanyaan_penilaian DESC");
                     $no = 1;
                     while($r=mysqli_fetch_array($tampil)){
-                    $jwb = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_pertanyaan_penilaian_jawab where nisn='$_GET[id]' AND id_pertanyaan_penilaian='$r[id_pertanyaan_penilaian]' AND status='diri' AND kode_kelas='$t[kode_kelas]'"));
+                    $jwb = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_pertanyaan_penilaian_jawab where nis='$_GET[id]' AND id_pertanyaan_penilaian='$r[id_pertanyaan_penilaian]' AND status='diri' AND kode_kelas='$t[kode_kelas]'"));
                     if (trim($jwb[jawaban])==''){
                       $jawab = "<i style='color:red'>Belum Ada Jawaban...</i>";
                     }else{
@@ -628,7 +868,7 @@ if ($_GET[act]==''){
                     <thead>
                       <tr>
                         <th style='width:40px'>No</th>
-                        <th>NISN</th>
+                        <th>NIS</th>
                         <th>Nama Siswa</th>
                         <th>Angkatan</th>
                         
@@ -638,20 +878,20 @@ if ($_GET[act]==''){
                     </thead>
                     <tbody>";
 
-                    $cs = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa where nisn='$_GET[id]'"));
+                    $cs = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa where nis='$_GET[id]'"));
                     $tampil = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa a LEFT JOIN rb_kelas b ON a.kode_kelas=b.kode_kelas 
                                               LEFT JOIN rb_jenis_kelamin c ON a.id_jenis_kelamin=c.id_jenis_kelamin 
                                                 
-                                                  where a.kode_kelas='$cs[kode_kelas]' AND a.angkatan='$cs[angkatan]' AND nisn!='$_GET[id]' ORDER BY a.id_siswa");
+                                                  where a.kode_kelas='$cs[kode_kelas]' AND a.angkatan='$cs[angkatan]' AND nis!='$_GET[id]' ORDER BY a.nis");
                     $no = 1;
                     while($r=mysqli_fetch_array($tampil)){
                     echo "<tr><td>$no</td>
                             
-                              <td>$r[nisn]</td>
+                              <td>$r[nis]</td>
                               <td>$r[nama]</td>
                               <td>$r[angkatan]</td>
                               <td>$r[nama_kelas]</td>
-                              <td align=center><a class='btn btn-success btn-xs' title='Lihat Penilaian' href='index.php?view=siswa&act=pertanyaan&nisn=$r[nisn]&id=$_GET[id]'><span class='glyphicon glyphicon-search'></span> Lihat Penilaian</a></td>
+                              <td align=center><a class='btn btn-success btn-xs' title='Lihat Penilaian' href='index.php?view=siswa&act=pertanyaan&nis=$r[nis]&id=$_GET[id]'><span class='glyphicon glyphicon-search'></span> Lihat Penilaian</a></td>
                           </tr>";
                       $no++;
                       }
@@ -670,16 +910,16 @@ if ($_GET[act]==''){
                 </div><!-- /.box-header -->
                 <div class="box-body">
                   <?php
-                      echo "<input type='hidden' value='$_GET[nisn]' name='nisnteman'>";
-                      $t = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa where nisn='$_GET[nisn]'"));
-                      $tt = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa where nisn='$_GET[id]'"));
+                      echo "<input type='hidden' value='$_GET[nis]' name='nisteman'>";
+                      $t = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa where nis='$_GET[nis]'"));
+                      $tt = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa where nis='$_GET[id]'"));
                       echo "<div class='col-md-12'>
                             <table class='table table-condensed table-hover'>
                                 <tbody>
-                                  <tr><th scope='row'>NISN Penilai</th>           <td>$tt[nisn]</td></tr>
+                                  <tr><th scope='row'>NIS Penilai</th>           <td>$tt[nis]</td></tr>
                                   <tr><th scope='row'>Nama Penilai</th>           <td>$tt[nama]</td></tr>
 
-                                  <tr bgcolor=#f4f4f4><th width='120px' scope='row'>NISN Teman</th> <td style='color:blue'>$t[nisn]</td></tr>
+                                  <tr bgcolor=#f4f4f4><th width='120px' scope='row'>NIS Teman</th> <td style='color:blue'>$t[nis]</td></tr>
                                   <tr bgcolor=#f4f4f4><th scope='row'>Nama Teman</th>           <td style='color:blue'>$t[nama]</td></tr>
                                 </tbody>
                             </table>
@@ -698,7 +938,7 @@ if ($_GET[act]==''){
                     $tampil = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_pertanyaan_penilaian where status='teman' ORDER BY id_pertanyaan_penilaian DESC");
                     $no = 1;
                     while($r=mysqli_fetch_array($tampil)){
-                    $jwb = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_pertanyaan_penilaian_jawab where nisn='$_GET[id]' AND nisn_teman='$_GET[nisn]' AND id_pertanyaan_penilaian='$r[id_pertanyaan_penilaian]' AND status='teman' AND kode_kelas='$tt[kode_kelas]'"));
+                    $jwb = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_pertanyaan_penilaian_jawab where nis='$_GET[id]' AND nis_teman='$_GET[nis]' AND id_pertanyaan_penilaian='$r[id_pertanyaan_penilaian]' AND status='teman' AND kode_kelas='$tt[kode_kelas]'"));
                     if (trim($jwb[jawaban])==''){
                       $jawab = "<i style='color:red'>Belum Ada Jawaban...</i>";
                     }else{

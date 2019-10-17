@@ -7,7 +7,7 @@
                     <input type="hidden" name='act' value='detailguru'>
                     <select name='tahun' style='padding:4px'>
                         <?php 
-                            echo "<option value=''>- Pilih Tahun Akademik -</option>";
+                            echo "<option value=''>- Pilih Tahun Ajaran -</option>";
                             $tahun = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_tahun_akademik");
                             while ($k = mysqli_fetch_array($tahun)){
                               if ($_GET[tahun]==$k[id_tahun_akademik]){
@@ -33,7 +33,7 @@
                         <th>Hari</th>
                         <th>Mulai</th>
                         <th>Selesai</th>
-                        <th>Semester</th>
+                        <th>Tahun Ajaran</th>
                         <?php 
                           if (isset($_GET[tahun])){
                             echo "<th>Action</th>";
@@ -71,7 +71,7 @@
                               <td>$r[id_tahun_akademik]</td>";
                               if (isset($_GET[tahun])){
                                 echo "<td style='width:255px !important'><center>
-                                          <a class='btn btn-warning btn-xs' title='Lihat Nilai Sikap Siswa' href='index.php?view=raport&act=listsiswasikap&jdwl=$r[kodejdwl]&kd=$r[kode_pelajaran]&id=$r[kode_kelas]&tahun=$_GET[tahun]'><span class='glyphicon glyphicon-th-list'></span> Sikap</a>
+                                       
                                           <a class='btn btn-success btn-xs' title='Lihat Nilai Pengetahuan Siswa' href='index.php?view=raport&act=listsiswa&jdwl=$r[kodejdwl]&kd=$r[kode_pelajaran]&id=$r[kode_kelas]&tahun=$_GET[tahun]'><span class='glyphicon glyphicon-th-list'></span> Pengetahuan</a>
                                           <a class='btn btn-primary btn-xs' title='Lihat Nilai Keterampilan Siswa' href='index.php?view=raport&act=listsiswaketerampilan&jdwl=$r[kodejdwl]&kd=$r[kode_pelajaran]&id=$r[kode_kelas]&tahun=$_GET[tahun]'><span class='glyphicon glyphicon-th-list'></span> Keterampilan</a>
                                         </center></td>";
@@ -86,3 +86,4 @@
                 </div><!-- /.box-body -->
                 </div>
             </div>
+<!--                // <a class='btn btn-warning btn-xs' title='Lihat Nilai Sikap Siswa' href='index.php?view=raport&act=listsiswasikap&jdwl=$r[kodejdwl]&kd=$r[kode_pelajaran]&id=$r[kode_kelas]&tahun=$_GET[tahun]'><span class='glyphicon glyphicon-th-list'></span> Sikap</a> -->

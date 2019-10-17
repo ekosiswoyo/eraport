@@ -5,14 +5,14 @@ if ($_GET[act]==''){
             if ($_POST[status]=='Update'){
               mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rb_nilai_extrakulikuler SET kegiatan='$_POST[a]', nilai='$_POST[b]', deskripsi='$_POST[c]' where id_nilai_extrakulikuler='$_POST[id]'");
             }else{
-              mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_nilai_extrakulikuler VALUES('','$_GET[tahun]','$_POST[nisn]','$_GET[kelas]','$_POST[a]','$_POST[b]','$_POST[c]','$_SESSION[id]','".date('Y-m-d H:i:s')."')");
+              mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_nilai_extrakulikuler VALUES('','$_GET[tahun]','$_POST[nis]','$_GET[kelas]','$_POST[a]','$_POST[b]','$_POST[c]','$_SESSION[id]','".date('Y-m-d H:i:s')."')");
             }
-        echo "<script>document.location='index.php?view=extrakulikuler&tahun=$_GET[tahun]&kelas=$_GET[kelas]#$_POST[nisn]';</script>";
+        echo "<script>document.location='index.php?view=extrakulikuler&tahun=$_GET[tahun]&kelas=$_GET[kelas]#$_POST[nis]';</script>";
     }
 
     if (isset($_GET[delete])){
         mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM rb_nilai_extrakulikuler where id_nilai_extrakulikuler='$_GET[delete]'");
-        echo "<script>document.location='index.php?view=extrakulikuler&tahun=$_GET[tahun]&kelas=$_GET[kelas]#$_POST[nisn]';</script>";
+        echo "<script>document.location='index.php?view=extrakulikuler&tahun=$_GET[tahun]&kelas=$_GET[kelas]#$_POST[nis]';</script>";
     }
 ?> 
             <div class="col-xs-12">  
@@ -37,7 +37,7 @@ if ($_GET[act]==''){
                     <select name='kelas' style='padding:4px'>
                         <?php 
                             echo "<option value=''>- Filter Kelas -</option>";
-                            $kelas = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelas");
+                            $kelas = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelas order by  kode_kelas asc ");
                             while ($k = mysqli_fetch_array($kelas)){
                               if ($_GET[kelas]==$k[kode_kelas]){
                                 echo "<option value='$k[kode_kelas]' selected>$k[kode_kelas] - $k[nama_kelas]</option>";
@@ -55,7 +55,7 @@ if ($_GET[act]==''){
                   echo "<table id='example' class='table table-bordered table-striped'>
                     <thead>
                       <tr><th rowspan='2'>No</th>
-                        <th>NISN</th>
+                        <th>NIS</th>
                         <th width='170px'>Nama Siswa</th>
                         <th width='240px'><center>Kegiatan Extrakulikuler</center></th>
                         <th><center>Nilai</center></th>
@@ -66,7 +66,7 @@ if ($_GET[act]==''){
                     <tbody>";
 
                   if ($_GET[kelas] != '' AND $_GET[tahun] != ''){
-                    $tampil = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa a LEFT JOIN rb_kelas b ON a.kode_kelas=b.kode_kelas where a.kode_kelas='$_GET[kelas]' ORDER BY a.id_siswa");
+                    $tampil = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa a LEFT JOIN rb_kelas b ON a.kode_kelas=b.kode_kelas where a.kode_kelas='$_GET[kelas]' ORDER BY a.nis");
                   }
                     $no = 1;
                     while($r=mysqli_fetch_array($tampil)){
@@ -77,12 +77,12 @@ if ($_GET[act]==''){
                           $name = 'Simpan';
                       }
 
-                  if ($_GET[nisn]==$r[nisn]){   
+                  if ($_GET[nis]==$r[nis]){   
                     echo "<form action='index.php?view=extrakulikuler&tahun=$_GET[tahun]&kelas=$_GET[kelas]' method='POST'>
                             <tr><td>$no</td>
-                              <td>$r[nisn]</td>
-                              <td style='font-size:12px' id='$r[nisn]'>$r[nama]</td>
-                              <input type='hidden' name='nisn' value='$r[nisn]'>
+                              <td>$r[nis]</td>
+                              <td style='font-size:12px' id='$r[nis]'>$r[nama]</td>
+                              <input type='hidden' name='nis' value='$r[nis]'>
                               <input type='hidden' name='id' value='$e[id_nilai_extrakulikuler]'>
                               <input type='hidden' name='status' value='$name'>
                               <td><input type='text' name='a' class='form-control' style='width:100%; color:blue' placeholder='Tuliskan Kegiatan...' value='$e[kegiatan]'></td>
@@ -94,10 +94,10 @@ if ($_GET[act]==''){
                   }else{
                     echo "<form action='index.php?view=extrakulikuler&tahun=$_GET[tahun]&kelas=$_GET[kelas]' method='POST'>
                             <tr><td>$no</td>
-                              <td>$r[nisn]</td>
-                              <td style='font-size:12px' id='$r[nisn]'>$r[nama]</td>
-                              <input type='hidden' name='nisn' value='$r[nisn]'>
-                              <input type='hidden' name='nisn' value='$r[nisn]'>
+                              <td>$r[nis]</td>
+                              <td style='font-size:12px' id='$r[nis]'>$r[nama]</td>
+                              <input type='hidden' name='nis' value='$r[nis]'>
+                              <input type='hidden' name='nis' value='$r[nis]'>
                               <td><input type='text' name='a' class='form-control' style='width:100%; color:blue' placeholder='Tuliskan Kegiatan...'></td>
                               <td><center><input type='text' class='form-control'  name='b' style='width:50px; text-align:center; padding:0px; color:blue'></center></td>
                               <td><input type='text' name='c' class='form-control' style='width:100%; color:blue' placeholder='Tuliskan Deskripsi...'></td>
@@ -106,7 +106,7 @@ if ($_GET[act]==''){
                           </form>";
                   }
 
-                            $pe = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_nilai_extrakulikuler where id_tahun_akademik='$_GET[tahun]' AND nisn='$r[nisn]' AND kode_kelas='$_GET[kelas]'");
+                            $pe = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_nilai_extrakulikuler where id_tahun_akademik='$_GET[tahun]' AND nis='$r[nis]' AND kode_kelas='$_GET[kelas]'");
                             while ($n = mysqli_fetch_array($pe)){
                                 echo "<tr>
                                         <td></td>
@@ -115,8 +115,8 @@ if ($_GET[act]==''){
                                         <td>$n[kegiatan]</td>
                                         <td align=center>$n[nilai]</td>
                                         <td>$n[deskripsi]</td>
-                                        <td align=center><a href='index.php?view=extrakulikuler&tahun=".$_GET[tahun]."&kelas=".$_GET[kelas]."&edit=".$n[id_nilai_extrakulikuler]."&nisn=".$r[nisn]."#$r[nisn]' class='btn btn-xs btn-success'><span class='glyphicon glyphicon-edit'></span></a>
-                                                        <a href='index.php?view=extrakulikuler&tahun=".$_GET[tahun]."&kelas=".$_GET[kelas]."&delete=".$n[id_nilai_extrakulikuler]."&nisn=".$r[nisn]."' class='btn btn-xs btn-danger' onclick=\"return confirm('Apa anda yakin untuk hapus Data ini?')\"><span class='glyphicon glyphicon-remove'></span></a></td>
+                                        <td align=center><a href='index.php?view=extrakulikuler&tahun=".$_GET[tahun]."&kelas=".$_GET[kelas]."&edit=".$n[id_nilai_extrakulikuler]."&nis=".$r[nis]."#$r[nis]' class='btn btn-xs btn-success'><span class='glyphicon glyphicon-edit'></span></a>
+                                                        <a href='index.php?view=extrakulikuler&tahun=".$_GET[tahun]."&kelas=".$_GET[kelas]."&delete=".$n[id_nilai_extrakulikuler]."&nis=".$r[nis]."' class='btn btn-xs btn-danger' onclick=\"return confirm('Apa anda yakin untuk hapus Data ini?')\"><span class='glyphicon glyphicon-remove'></span></a></td>
                                       </tr>";
                             }
                       $no++;

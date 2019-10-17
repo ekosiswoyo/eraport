@@ -1,5 +1,5 @@
 <?php if ($_GET[act]==''){
-  $k = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelas where kode_kelas='$_GET[id]'"));
+  $k = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelas where kode_kelas='$_SESSION[kode_kelas]'"));
   $t = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_tahun_akademik where id_tahun_akademik='$_GET[tahun]'"));
 ?>
             <div class="col-xs-12">  
@@ -21,19 +21,7 @@
                             }
                         ?>
                     </select>
-                    <select name='id' style='padding:4px'>
-                        <?php 
-                            echo "<option value=''>- Filter Kelas -</option>";
-                            $kelas = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelas");
-                            while ($k = mysqli_fetch_array($kelas)){
-                              if ($_GET[id]==$k[kode_kelas]){
-                                echo "<option value='$k[kode_kelas]' selected>$k[kode_kelas] - $k[nama_kelas]</option>";
-                              }else{
-                                echo "<option value='$k[kode_kelas]'>$k[kode_kelas] - $k[nama_kelas]</option>";
-                              }
-                            }
-                        ?>
-                    </select>
+                   
                     <input type="submit" style='margin-top:-4px' class='btn btn-success btn-sm' value='Lihat'>
                   </form>
                 </div><!-- /.box-header -->
@@ -42,7 +30,7 @@
                     <thead>
                       <tr>
                         <th>No</th>
-                        <th>NISN</th>
+                        <th>NIS</th>
                         <th>Nama Siswa</th>
                         <th>Jenis Kelamin</th>
                         <th>Action</th>
@@ -50,16 +38,18 @@
                     </thead>
                     <tbody>
                   <?php 
+                   if ($_GET[tahun] != '' ){
                     $tampil = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa
-                                                where kode_kelas='$_GET[id]' ORDER BY id_siswa");
+                                                where kode_kelas='$_SESSION[kode_kelas]' ORDER BY nis");
+                  }
                     $no = 1;
                     while($r=mysqli_fetch_array($tampil)){
                     echo "<tr><td width=40px>$no</td>
-                              <td>$r[nisn]</td>
+                              <td>$r[nis]</td>
                               <td>$r[nama]</td>
                               <td>$r[jenis_kelamin]</td>
                               <td width='90px'><center>
-                                <a target='_BLANK' class='btn btn-primary btn-xs' href='print-raport_uts.php?id=$r[nisn]&kelas=$r[kode_kelas]&tahun=$_GET[tahun]'><span class='glyphicon glyphicon-print'></span> Print Raport UTS</a>
+                                <a target='_BLANK' class='btn btn-primary btn-xs' href='print-raport_uts.php?id=$r[nis]&kelas=$r[kode_kelas]&tahun=$_GET[tahun]'><span class='glyphicon glyphicon-print'></span> Print Raport UTS</a>
                               </center></td>";
                             echo "</tr>";
                       $no++;
@@ -68,11 +58,7 @@
                     </tbody>
                   </table>
                 </div><!-- /.box-body -->
-                <?php 
-                    if ($_GET[kelas] == '' AND $_GET[tahun] == ''){
-                        echo "<center style='padding:60px; color:blue'>TIDAK ADA DATA !<br>Silahkan Input Angkatan dan Memilih Kelas Terlebih dahulu...</center>";
-                    }
-                ?>
+               
               </div>
             </div>
 

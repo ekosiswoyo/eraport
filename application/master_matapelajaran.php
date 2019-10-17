@@ -35,7 +35,7 @@
                         echo "<td><center>
                                 <a class='fa fa-fw fa-search' title='Detail Data' href='?view=matapelajaran&act=detail&id=$r[kode_pelajaran]'></a>
                                 <a class='fa fa-fw fa-edit' title='Edit Data' href='?view=matapelajaran&act=edit&id=$r[kode_pelajaran]'></a>
-                                <a class='fa fa-fw fa-eraser' title='Delete Data' href='?view=matapelajaran&hapus=$r[kode_pelajaran]'></a>
+                                <a class='fa fa-fw fa-eraser' onclick=\"return confirm('Apa anda yakin untuk hapus Data ini?')\" title='Delete Data' href='?view=matapelajaran&hapus=$r[kode_pelajaran]'></a>
                               </center></td>";
                               }
                             echo "</tr>";
@@ -56,7 +56,7 @@
 }elseif($_GET[act]=='edit'){
     if (isset($_POST[update])){
         mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rb_mata_pelajaran SET 
-                                         kelompok_mata_pelajaran = '$_POST[b]',
+                                        id_kelompok_mata_pelajaran = '$_POST[b]',
                                          nip = '$_POST[d]',
                                          namamatapelajaran = '$_POST[f]',
                                          kompetensi_umum = '$_POST[i]',
@@ -108,11 +108,17 @@
                     <label for=''>Kompetensi Khusus</label>
                     <input type='text' class='form-control' name='j' value='$s[kompetensi_khusus]'>
                     </div>
-                    
                     <div class='form-group'>
-                    <label for=''>Kelompok</label>
-                    <input type='text' class='form-control' name='b' value='$s[kelompok_mata_pelajaran]'>
-                    </div>
+                <label for=''>Kelompok</label>
+                <select class='form-control' name='b'> 
+                             <option value='0' selected>- Pilih Kelompok Mata -</option>"; 
+                              $guru = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelompok_mata_pelajaran");
+                                  while($a = mysqli_fetch_array($guru)){
+                                       echo "<option value='$a[id_kelompok_mata_pelajaran]'>$a[nama_kelompok_mata_pelajaran]</option>";
+                                  }
+                             echo "</select>
+                </div>
+                   
                     <div class='form-group'>
                     <label for=''>Aktif</label>";
                         if ($s[aktif]=='Ya'){
@@ -137,6 +143,8 @@
 }elseif($_GET[act]=='tambah'){
     if (isset($_POST[tambah])){
         mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_mata_pelajaran VALUES('$_POST[a]','$_POST[b]','$_POST[d]','$_POST[f]','$_POST[i]','$_POST[j]','$_POST[m]')");
+        
+          echo "<script>window.alert('Data Berhasil di Simpan !')</script>";
         echo "<script>document.location='index.php?view=matapelajaran';</script>";
     }
 

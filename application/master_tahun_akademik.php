@@ -34,7 +34,7 @@
                               if($_SESSION[level]!='kepala'){
                         echo "<td><center>
                                 <a class='fa fa-fw fa-edit' title='Edit Data' href='index.php?view=tahunakademik&act=edit&id=$r[id_tahun_akademik]'></a>
-                                <a class='fa fa-fw fa-eraser' title='Delete Data' href='index.php?view=tahunakademik&hapus=$r[id_tahun_akademik]'></a>
+                                <a class='fa fa-fw fa-eraser' title='Delete Data' onclick=\"return confirm('Apa anda yakin untuk hapus Data ini?')\" href='index.php?view=tahunakademik&hapus=$r[id_tahun_akademik]'></a>
                               </center></td>";
                               }
                             echo "</tr>";
@@ -109,6 +109,8 @@
 }elseif($_GET[act]=='tambah'){
     if (isset($_POST[tambah])){
         mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_tahun_akademik VALUES('$_POST[a]','$_POST[b]','$_POST[c]','$_POST[d]')");
+        
+          echo "<script>window.alert('Data Berhasil di Simpan !')</script>";
         echo "<script>document.location='index.php?view=tahunakademik';</script>";
     }
 

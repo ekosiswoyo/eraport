@@ -1,5 +1,5 @@
 <?php if ($_GET[act]==''){ 
-  $k = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelas where kode_kelas='$_GET[id]'"));
+  $k = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelas where kode_kelas='$_SESSION[kode_kelas]'"));
   $t = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_tahun_akademik where id_tahun_akademik='$_GET[tahun]'"));
 ?>
             <div class="col-xs-12">  
@@ -21,19 +21,7 @@
                             }
                         ?>
                     </select>
-                    <select name='id' style='padding:4px'>
-                        <?php 
-                            echo "<option value=''>- Filter Kelas -</option>";
-                            $kelas = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelas");
-                            while ($k = mysqli_fetch_array($kelas)){
-                              if ($_GET[id]==$k[kode_kelas]){
-                                echo "<option value='$k[kode_kelas]' selected>$k[kode_kelas] - $k[nama_kelas]</option>";
-                              }else{
-                                echo "<option value='$k[kode_kelas]'>$k[kode_kelas] - $k[nama_kelas]</option>";
-                              }
-                            }
-                        ?>
-                    </select>
+                   
                     <input type="submit" style='margin-top:-4px' class='btn btn-success btn-sm' value='Lihat'>
                   </form>
                 </div><!-- /.box-header -->
@@ -42,7 +30,7 @@
                     <thead>
                       <tr>
                         <th>No</th>
-                        <th>NISN</th>
+                        <th>NIS</th>
                         <th>Nama Siswa</th>
                         <th>Jenis Kelamin</th>
                         <th>Action</th>
@@ -50,25 +38,29 @@
                     </thead>
                     <tbody>
                   <?php 
+                   if ($_GET[tahun] != '' ){
                     $tampil = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa 
-                                                where kode_kelas='$_GET[id]' ORDER BY id_siswa");
+                                                where kode_kelas='$_SESSION[kode_kelas]' ORDER BY nis");
+                  }
                     $no = 1;
                     while($r=mysqli_fetch_array($tampil)){
                     echo "<tr><td width=40px>$no</td>
 
-                              <td>$r[nisn]</td>
+                              <td>$r[nis]</td>
                               <td>$r[nama]</td>
                               <td>$r[jenis_kelamin]</td>
-                              <td width='420px'><center>
-                                <a target='_BLANK' class='btn btn-success btn-xs' href='print_raport/print-hal.php?id=$r[nisn]&kelas=$r[kode_kelas]&tahun=$_GET[tahun]'><span class='glyphicon glyphicon-print'></span> Cover</a>
-                                <a target='_BLANK' class='btn btn-success btn-xs' href='print_raport/print-hal1.php?id=$r[nisn]&kelas=$r[kode_kelas]&tahun=$_GET[tahun]'><span class='glyphicon glyphicon-print'></span> Hal 1</a>
-                                <a target='_BLANK' class='btn btn-success btn-xs' href='print_raport/print-hal2.php?id=$r[nisn]&kelas=$r[kode_kelas]&tahun=$_GET[tahun]'><span class='glyphicon glyphicon-print'></span> Hal 2</a>
-                                <a target='_BLANK' class='btn btn-success btn-xs' href='print_raport/print-hal3.php?id=$r[nisn]&kelas=$r[kode_kelas]&tahun=$_GET[tahun]'><span class='glyphicon glyphicon-print'></span> Hal 3</a>
-                                <a target='_BLANK' class='btn btn-success btn-xs' href='print_raport/print-hal4.php?id=$r[nisn]&kelas=$r[kode_kelas]&tahun=$_GET[tahun]'><span class='glyphicon glyphicon-print'></span> Hal 4</a>
-                                <a target='_BLANK' class='btn btn-success btn-xs' href='print_raport/print-hal5.php?id=$r[nisn]&kelas=$r[kode_kelas]&tahun=$_GET[tahun]'><span class='glyphicon glyphicon-print'></span> Hal 5</a>
-                                <a target='_BLANK' class='btn btn-success btn-xs' href='print_raport/print-hal6.php?id=$r[nisn]&kelas=$r[kode_kelas]&tahun=$_GET[tahun]'><span class='glyphicon glyphicon-print'></span> Hal 6</a>
-                                <a target='_BLANK' class='btn btn-success btn-xs' href='print_raport/print-hal7.php?id=$r[nisn]&kelas=$r[kode_kelas]&tahun=$_GET[tahun]'><span class='glyphicon glyphicon-print'></span> Hal 7</a>
-                              </center></td>";
+                              <td width='420px'>
+                                <a target='_BLANK' class='btn btn-success btn-xs' href='print_raport/print-hal.php?id=$r[nis]&kelas=$r[kode_kelas]&tahun=$_GET[tahun]'><span class='glyphicon glyphicon-print'></span> Cover</a>
+                                <a target='_BLANK' class='btn btn-success btn-xs' href='print_raport/print-hal1.php?id=$r[nis]&kelas=$r[kode_kelas]&tahun=$_GET[tahun]'><span class='glyphicon glyphicon-print'></span> Hal 1</a>
+                                <a target='_BLANK' class='btn btn-success btn-xs' href='print_raport/print-hal2.php?id=$r[nis]&kelas=$r[kode_kelas]&tahun=$_GET[tahun]'><span class='glyphicon glyphicon-print'></span> Hal 2</a>
+                                <a target='_BLANK' class='btn btn-success btn-xs' href='print_raport/print-hal3.php?id=$r[nis]&kelas=$r[kode_kelas]&tahun=$_GET[tahun]'><span class='glyphicon glyphicon-print'></span> Hal 3</a>
+                                <a target='_BLANK' class='btn btn-success btn-xs' href='print_raport/print-hal4.php?id=$r[nis]&kelas=$r[kode_kelas]&tahun=$_GET[tahun]'><span class='glyphicon glyphicon-print'></span> Hal 4</a>
+                             
+                             <a target='_BLANK' class='btn btn-success btn-xs' href='print_raport/print-hal5.php?id=$r[nis]&kelas=$r[kode_kelas]&tahun=$_GET[tahun]'><span class='glyphicon glyphicon-print'></span> Hal 5</a>
+                             
+                                <a target='_BLANK' class='btn btn-success btn-xs' href='print_raport/print-hal6.php?id=$r[nis]&kelas=$r[kode_kelas]&tahun=$_GET[tahun]'><span class='glyphicon glyphicon-print'></span> Hal 6</a>
+                                <a target='_BLANK' class='btn btn-success btn-xs' href='print_raport/print-hal7.php?id=$r[nis]&kelas=$r[kode_kelas]&tahun=$_GET[tahun]'><span class='glyphicon glyphicon-print'></span> Hal 7</a>
+                             </td>";
                             echo "</tr>";
                       $no++;
                       }
@@ -76,11 +68,32 @@
                     </tbody>
                   </table>
                 </div><!-- /.box-body -->
-               <?php 
-                    if ($_GET[kelas] == '' AND $_GET[tahun] == ''){
-                        echo "<center style='padding:60px; color:blue'>TIDAK ADA DATA !<br>Silahkan Input Angkatan dan Memilih Kelas Terlebih dahulu...</center>";
-                    }
-                ?>
+              
+              </div>
+            </div>
+
+
+
+
+             <div class="col-xs-12">  
+              <div class="box">
+                <div class="box-header">
+                  <h3 class="box-title">Cetak Raport Semester Siswa <?php echo $_GET[tahun]; ?></h3>
+                 
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                   <h3>Keterangan : </h3>
+                   <p>- Cover : Halaman Depan </p>
+                   <p>- Hal 1 : Data alamat Sekolah </p>
+                   <p>- Hal 2 : Identitas Siswa </p>
+                   <p>- Hal 3 : Data Capaian Belajar </p>
+                   <p>- Hal 4 : Nilai Pengetahuan </p>
+                   <p>- Hal 5 : Nilai Keterampilan </p>
+                   <p>- hal 6 : Deskripsi Pengetahuan dan Keterampilan </p>
+                   <p>- Hal 7 : data nilai extra, prestasi, keidakhadiran </p>
+
+                </div><!-- /.box-body -->
+               
               </div>
             </div>
 

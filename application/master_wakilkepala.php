@@ -3,6 +3,7 @@
               <div class="box">
                 <div class="box-header">
                   <h3 class="box-title">Data Kepala Sekolah </h3>
+                  <a style='margin-right:5px' class='pull-right btn btn-primary btn-sm' href='index.php?view=wakilkepala&act=tambahkepala'>Tambahkan Data Kepala Sekolah</a>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                   <table id="example1" class="table table-bordered table-striped">
@@ -15,6 +16,7 @@
                         <th>No Telpon</th>
                         <th>Jabatan</th>
                         <th>Level</th>
+                        <th>Status</th>
                         <th style='width:70px'>Action</th>
                       </tr>
                     </thead>
@@ -30,6 +32,7 @@
                               <td>$r[no_telpon]</td>
                               <td>$r[jabatan]</td>
                               <td>$r[level]</td>
+                              <td>$r[aktif]</td>
                               <td><center>
                                 <a class='fa fa-fw fa-edit' title='Edit Data' href='?view=wakilkepala&act=edit&id=$r[id_user]'></a>
                               </center></td>";
@@ -45,6 +48,45 @@
               </div><!-- /.box -->
             </div>
 <?php 
+}
+elseif($_GET[act]=='tambahkepala'){
+  cek_session_admin();
+  if (isset($_POST[tambah])){
+    mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_users VALUES('','$_POST[a]','$_POST[b]','$_POST[c]','$_POST[d]','$_POST[e]','$_POST[f]','kepala','Y')");
+    
+      echo "<script>window.alert('Data Berhasil di Simpan !')</script>";
+    echo "<script>document.location='index.php?view=wakilkepala';</script>";
+  }
+
+
+  echo "<div class='col-md-12'>
+  <div class='box box-info'>
+    <div class='box-header with-border'>
+      <h3 class='box-title'>Tambah Data Login Kepala Sekolah</h3>
+    </div>
+  <div class='box-body'>
+  <form method='POST' class='form-horizontal' action='' enctype='multipart/form-data'>
+    <div class='col-md-12'>
+      <table class='table table-condensed table-bordered'>
+      <tbody>
+        <input type='hidden' name='id' value='$s[id_user]'>
+        <tr><th width='120px' scope='row'>Username</th> <td><input type='text' class='form-control' name='a'> </td></tr>
+        <tr><th scope='row'>Password</th>               <td><input type='text' class='form-control' name='b'></td></tr>
+        <tr><th scope='row'>Nama Lengkap</th>           <td><input type='text' class='form-control' name='c'></td></tr>
+        <tr><th scope='row'>Alamat Email</th>           <td><input type='text' class='form-control' name='d'></td></tr>
+        <tr><th scope='row'>No Telpon</th>              <td><input type='text' class='form-control' name='e'></td></tr>
+        <tr><th scope='row'>Jabatan</th>                <td><input type='text' class='form-control' name='f'></td></tr>
+      </tbody>
+      </table>
+    </div>
+  </div>
+  <div class='box-footer'>
+        <button type='submit' name='tambah' class='btn btn-info'>Tambah</button>
+        <a href='index.php?view=wakilkepala'><button class='btn btn-default pull-right'>Cancel</button></a>
+        
+      </div>
+  </form>
+</div>";
 }elseif($_GET[act]=='edit'){
     if (isset($_POST[update])){
       $data = md5($_POST[b]);
@@ -84,6 +126,10 @@
                     <tr><th scope='row'>Alamat Email</th>           <td><input type='text' class='form-control' name='d' value='$s[email]'></td></tr>
                     <tr><th scope='row'>No Telpon</th>              <td><input type='text' class='form-control' name='e' value='$s[no_telpon]'></td></tr>
                     <tr><th scope='row'>Jabatan</th>                <td><input type='text' class='form-control' name='f' value='$s[jabatan]'></td></tr>
+                    <tr><th scope='row'>Aktif</th>                <td> <input type='radio' name='f' value='Y' checked> Ya
+                    <input type='radio' name='f' value='N'> Tidak </td></tr>
+                    
+
                   </tbody>
                   </table>
                 </div>

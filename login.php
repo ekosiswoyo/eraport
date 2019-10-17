@@ -48,16 +48,17 @@
   <!-- <img src="gambarku.jpg" alt="gambar" class="bg" /> -->
 
   <a href="../../index2.html"> </a>
+    
+         
+         <img src="logo.png" width="10%;height:5%;"><br>
 
-    <b> Sistem Informasi Nilai Raport</b> 
-        <h3> Sekolah Menengah Pertama Negeri 2 Kajen </h3>
-
-    <div class="login-box" style="border: 10px inset green;background-color:#ffffff;">
-      <div class="login-logo" style="background-color:#ffffff;">
-      <img src="logo.png" width="30%;height:30%;"><br>
-        
+        <h2> Sistem Informasi Nilai Raport (SINIRA)</h2> 
+        <h3> Sekolah Menengah Pertama (SMP) Negeri 2 Kajen </h3>
+    <div class="login-box" style="">
+      <div class="login-logo" style="background-color:;">
+     
       </div><!-- /.login-logo -->
-      <div class="login-box-body"  style="background-color:#ffffff;">
+      <div class="login-box-body"  style="background-color:;">
         <p class="login-box-msg">Silahkan Login Pada Form dibawah ini</p>
 
         <form action="" method="post">
@@ -112,7 +113,7 @@ if (isset($_POST[login])){
  $pass=hash("sha512",$data);
  $admin = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_users WHERE username='".anti_injection($_POST[a])."' AND password='$pass'");
  $guru = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_guru WHERE nip='".anti_injection($_POST[a])."' AND password='$passlain'");
- $siswa = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa WHERE nisn='".anti_injection($_POST[a])."' AND password='$passlain'");
+ $siswa = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa WHERE nis='".anti_injection($_POST[a])."' AND password='$passlain'");
  
  $hitungadmin = mysqli_num_rows($admin);
  $hitungguru = mysqli_num_rows($guru);
@@ -136,7 +137,7 @@ if (isset($_POST[login])){
     echo "<script>document.location='index.php';</script>";
  }elseif ($hitungsiswa >= 1){
     $r = mysqli_fetch_array($siswa);
-    $_SESSION[id]     = $r[nisn];
+    $_SESSION[id]     = $r[nis];
     $_SESSION[namalengkap]  = $r[nama];
     $_SESSION[kode_kelas]     = $r[kode_kelas];
     $_SESSION[angkatan]     = $r[angkatan];

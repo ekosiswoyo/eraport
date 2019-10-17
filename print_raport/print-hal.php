@@ -3,7 +3,7 @@ session_start();
 error_reporting(0);
 include "../config/koneksi.php"; 
 include "../config/fungsi_indotgl.php"; 
-$s = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa where nisn='$_GET[id]'"));
+$s = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa where nis='$_GET[id]'"));
 ?>
 <html>
 <head>
@@ -18,7 +18,7 @@ $s = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM 
         <h3 style='border:1px solid #000; width:82%; padding:6px'><?php echo $s[nama]; ?></h3><br><br>
 
         NIS / NISN<br>
-        <h3 style='border:1px solid #000; width:82%; padding:3px'><?php echo "$s[nipd] / $s[nisn]"; ?></h3><br><br><br><br><br><br>
+        <h3 style='border:1px solid #000; width:82%; padding:3px'><?php echo "$s[nis] / "; ?></h3><br><br><br><br><br><br>
 
         <p style='font-size:22px'>KEMENTERIAN PENDIDIKAN DAN KEBUDAYAAN <br>REPUBLIK INDONESIA</p>
     </center>

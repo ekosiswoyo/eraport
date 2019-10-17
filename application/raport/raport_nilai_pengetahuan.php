@@ -1,16 +1,16 @@
 <?php 
     if (isset($_POST[simpan])){
             if ($_POST[status]=='Update'){
-              mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rb_nilai_pengetahuan SET kd='$_POST[a]', nilai1='$_POST[b]', nilai2='$_POST[c]', nilai3='$_POST[d]', nilai4='$_POST[e]', deskripsi='$_POST[g]' where id_nilai_pengetahuan='$_POST[id]'");
+              mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rb_nilai_pengetahuan SET kd='$_POST[a]', nilai1='$_POST[b]', nilai2='$_POST[c]', nilai3='$_POST[d]', nilai4='$_POST[e]', nilai5='$_POST[f]', deskripsi='$_POST[g]' where id_nilai_pengetahuan='$_POST[id]'");
             }else{
-              mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_nilai_pengetahuan VALUES('','$_GET[jdwl]','$_POST[nisn]','$_POST[a]','$_POST[b]','$_POST[c]','$_POST[d]','$_POST[e]','$_POST[g]','$_SESSION[id]','".date('Y-m-d H:i:s')."')");
+              mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_nilai_pengetahuan VALUES('','$_GET[jdwl]','$_POST[nis]','$_POST[a]','$_POST[b]','$_POST[c]','$_POST[d]','$_POST[e]','$_POST[f]','$_POST[g]','$_SESSION[id]','".date('Y-m-d H:i:s')."')");
             }
-        echo "<script>document.location='index.php?view=raport&act=listsiswa&jdwl=$_GET[jdwl]&kd=$_GET[kd]&id=$_GET[id]&tahun=$_GET[tahun]#$_POST[nisn]';</script>";
+        echo "<script>document.location='index.php?view=raport&act=listsiswa&jdwl=$_GET[jdwl]&kd=$_GET[kd]&id=$_GET[id]&tahun=$_GET[tahun]#$_POST[nis]';</script>";
     }
 
     if (isset($_GET[delete])){
         mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM rb_nilai_pengetahuan where id_nilai_pengetahuan='$_GET[delete]'");
-        echo "<script>document.location='index.php?view=raport&act=listsiswa&jdwl=$_GET[jdwl]&kd=$_GET[kd]&id=$_GET[id]&tahun=$_GET[tahun]#$_GET[nisn]';</script>";
+        echo "<script>document.location='index.php?view=raport&act=listsiswa&jdwl=$_GET[jdwl]&kd=$_GET[kd]&id=$_GET[id]&tahun=$_GET[tahun]#$_GET[nis]';</script>";
     }
 
     $d = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelas where kode_kelas='$_GET[id]'"));
@@ -39,7 +39,9 @@
                                   <th style='border:1px solid #e3e3e3' width='30px' rowspan='2'>No</th>
                                   <th style='border:1px solid #e3e3e3' width='170px' rowspan='2'>Nama Lengkap</th>
                                   <th style='border:1px solid #e3e3e3; width:55px' rowspan='2'><center>KD</center></th>
-                                  <th style='border:1px solid #e3e3e3' colspan='3'><center>HPH</center></th>
+                                  <th style='border:1px solid #e3e3e3' colspan='3'><center>HPH</center></th> 
+                                  <th style='border:1px solid #e3e3e3; width:55px' rowspan='2'><center>PTS</center></th>
+                                  
                                   <th style='border:1px solid #e3e3e3; width:55px' rowspan='2'><center>PAS</center></th>
                                   
                                   <th style='border:1px solid #e3e3e3; width:55px' rowspan='2'><center>RN</center></th>
@@ -54,7 +56,7 @@
                                   
                               <tbody>";
                               $no = 1;
-                              $tampil = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa where kode_kelas='$_GET[id]' ORDER BY id_siswa");
+                              $tampil = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa where kode_kelas='$_GET[id]' ORDER BY nis");
                               while($r=mysqli_fetch_array($tampil)){
                                   if (isset($_GET[edit])){
                                       $e = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_nilai_pengetahuan where id_nilai_pengetahuan='$_GET[edit]'"));
@@ -62,19 +64,33 @@
                                   }else{
                                       $name = 'Simpan';
                                   }
-                                  if ($_GET[nisn]==$r[nisn]){
+                                  if ($_GET[nis]==$r[nis]){
                                     echo "<form action='index.php?view=raport&act=listsiswa&jdwl=$_GET[jdwl]&kd=$_GET[kd]&id=$_GET[id]&tahun=$_GET[tahun]' method='POST'>
                                       <tr>
                                         <td>$no</td>
-                                        <td style='font-size:12px' id='$r[nisn]'>$r[nama]</td>
-                                        <input type='hidden' name='nisn' value='$r[nisn]'>
+                                        <td style='font-size:12px' id='$r[nis]'>$r[nama]</td>
+                                        <input type='hidden' name='nis' value='$r[nis]'>
                                         <input type='hidden' name='id' value='$e[id_nilai_pengetahuan]'>
                                         <input type='hidden' name='status' value='$name'>
-                                        <td align=center><input type='text' name='a' value='$e[kd]' style='width:35px; text-align:center; padding:0px'></td>
+                                        <td align=center>
+                                        <select name='a' style='width:35px; text-align:center; padding:0px'>
+
+                                        <option value='$e[kd]'>$e[kd]</option>
+                                        <option value='K-1'>K-1</option>
+                                        <option value='K-2'>K-2</option>
+                                        <option value='K-3'>K-3</option>
+                                        <option value='K-4'>K-4</option>
+                                        <option value='K-5'>K-5</option>
+                                        <option value='K-6'>K-6</option>
+                                        <option value='K-7'>K-7</option>
+                                        <option value='K-8'>K-8</option>
+                                        </select>
+                                       </td>
                                         <td align=center><input type='text' name='b' value='$e[nilai1]' style='width:35px; text-align:center; padding:0px'></td>
                                         <td align=center><input type='text' name='c' value='$e[nilai2]' style='width:35px; text-align:center; padding:0px'></td>
                                         <td align=center><input type='text' name='d' value='$e[nilai3]' style='width:35px; text-align:center; padding:0px'></td>
                                         <td align=center><input type='text' name='e' value='$e[nilai4]' style='width:35px; text-align:center; padding:0px'></td>
+                                        <td align=center><input type='text' name='f' value='$e[nilai5]' style='width:35px; text-align:center; padding:0px'></td>
                                        
                                         <td align=center><input type='text' style='width:35px; background:#e3e3e3; border:1px solid #e3e3e3;' disabled></td>
                                         <td align=center><input type='text' style='width:35px; background:#e3e3e3; border:1px solid #e3e3e3;' disabled></td>
@@ -86,15 +102,27 @@
                                     echo "<form action='index.php?view=raport&act=listsiswa&jdwl=$_GET[jdwl]&kd=$_GET[kd]&id=$_GET[id]&tahun=$_GET[tahun]' method='POST'>
                                       <tr>
                                         <td>$no</td>
-                                        <td style='font-size:12px' id='$r[nisn]'>$r[nama]</td>
-                                        <input type='hidden' name='nisn' value='$r[nisn]'>
+                                        <td style='font-size:12px' id='$r[nis]'>$r[nama]</td>
+                                        <input type='hidden' name='nis' value='$r[nis]'>
                                         <input type='hidden' name='id' value='$e[id_nilai_pengetahuan]'>
                                         <input type='hidden' name='status' value='$name'>
-                                        <td align=center><input type='text' name='a' style='width:35px; text-align:center; padding:0px'></td>
+                                        <td align=center>
+                                        <select name='a' style='width:35px; text-align:center; padding:0px'>
+                                        <option value='K-1'>K-1</option>
+                                        <option value='K-2'>K-2</option>
+                                        <option value='K-3'>K-3</option>
+                                        <option value='K-4'>K-4</option>
+                                        <option value='K-5'>K-5</option>
+                                        <option value='K-6'>K-6</option>
+                                        <option value='K-7'>K-7</option>
+                                        <option value='K-8'>K-8</option>
+                                        </select></td>
                                         <td align=center><input type='text' name='b' style='width:35px; text-align:center; padding:0px'></td>
                                         <td align=center><input type='text' name='c' style='width:35px; text-align:center; padding:0px'></td>
                                         <td align=center><input type='text' name='d' style='width:35px; text-align:center; padding:0px'></td>
                                         <td align=center><input type='text' name='e' style='width:35px; text-align:center; padding:0px'></td>
+                                        <td align=center><input type='text' name='f'  style='width:35px; text-align:center; padding:0px'></td>
+                                       
                                         
                                         <td align=center><input type='text' style='width:35px; background:#e3e3e3; border:1px solid #e3e3e3;' disabled></td>
                                         <td align=center><input type='text' style='width:35px; background:#e3e3e3; border:1px solid #e3e3e3;' disabled></td>
@@ -104,9 +132,9 @@
                                       </form>";
                                   }
 
-                                    $pe = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_nilai_pengetahuan where kodejdwl='$_GET[jdwl]' AND nisn='$r[nisn]'");
+                                    $pe = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_nilai_pengetahuan where kodejdwl='$_GET[jdwl]' AND nis='$r[nis]'");
                                     while ($n = mysqli_fetch_array($pe)){
-                                    $ratarata = average(array($n[nilai1],$n[nilai2],$n[nilai3],$n[nilai4]));
+                                    $ratarata = average(array($n[nilai1],$n[nilai2],$n[nilai3],$n[nilai4],$n[nilai5]));
                                     $cekpredikat = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_predikat where kode_kelas='$_GET[id]'"));
                                     if ($cekpredikat >= 1){
                                       $grade1 = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM `rb_predikat` where (".number_format($ratarata)." >=nilai_a) AND (".number_format($ratarata)." <= nilai_b)"));
@@ -122,14 +150,15 @@
                                         <td align=center>$n[nilai2]</td>
                                         <td align=center>$n[nilai3]</td>
                                         <td align=center>$n[nilai4]</td>
+                                        <td align=center>$n[nilai5]</td>
                                         <td align=center>".number_format($ratarata)."</td>
                                         <td align=center>$grade1[grade]</td>
                                         <td>$n[deskripsi]</td>
-                                        <td align=center><a href='index.php?view=raport&act=listsiswa&jdwl=".$_GET[jdwl]."&kd=".$_GET[kd]."&id=".$_GET[id]."&tahun=".$_GET[tahun]."&edit=".$n[id_nilai_pengetahuan]."&nisn=".$r[nisn]."#$r[nisn]' class='btn btn-xs btn-success'><span class='glyphicon glyphicon-edit'></span></a>
-                                                        <a href='index.php?view=raport&act=listsiswa&jdwl=".$_GET[jdwl]."&kd=".$_GET[kd]."&id=".$_GET[id]."&tahun=".$_GET[tahun]."&delete=".$n[id_nilai_pengetahuan]."&nisn=".$r[nisn]."' class='btn btn-xs btn-danger' onclick=\"return confirm('Apa anda yakin untuk hapus Data ini?')\"><span class='glyphicon glyphicon-remove'></span></a></td>
+                                        <td align=center><a href='index.php?view=raport&act=listsiswa&jdwl=".$_GET[jdwl]."&kd=".$_GET[kd]."&id=".$_GET[id]."&tahun=".$_GET[tahun]."&edit=".$n[id_nilai_pengetahuan]."&nis=".$r[nis]."#$r[nis]' class='btn btn-xs btn-success'><span class='glyphicon glyphicon-edit'></span></a>
+                                                        <a href='index.php?view=raport&act=listsiswa&jdwl=".$_GET[jdwl]."&kd=".$_GET[kd]."&id=".$_GET[id]."&tahun=".$_GET[tahun]."&delete=".$n[id_nilai_pengetahuan]."&nis=".$r[nis]."' class='btn btn-xs btn-danger' onclick=\"return confirm('Apa anda yakin untuk hapus Data ini?')\"><span class='glyphicon glyphicon-remove'></span></a></td>
                                       </tr>";
                                     }
-                                      $maxn = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT ((nilai1+nilai2+nilai3+nilai4)/4) as rata_rata, deskripsi FROM rb_nilai_pengetahuan where kodejdwl='$_GET[jdwl]' AND nisn='$r[nisn]' ORDER BY rata_rata DESC LIMIT 1"));
+                                      $maxn = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT ((nilai1+nilai2+nilai3+nilai4+nilai5)/5) as rata_rata, deskripsi FROM rb_nilai_pengetahuan where kodejdwl='$_GET[jdwl]' AND nis='$r[nis]' ORDER BY rata_rata DESC LIMIT 1"));
                                       $cekpredikat1 = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_predikat where kode_kelas='$_GET[id]'"));
                                       if ($cekpredikat1 >= 1){
                                         $grade2 = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM `rb_predikat` where (".number_format($maxn[rata_rata])." >=nilai_a) AND (".number_format($maxn[rata_rata])." <= nilai_b) AND kode_kelas='$_GET[id]'"));
@@ -137,7 +166,7 @@
                                         $grade2 = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM `rb_predikat` where (".number_format($maxn[rata_rata])." >=nilai_a) AND (".number_format($maxn[rata_rata])." <= nilai_b)"));
                                       }
                                       
-                                      $rapn = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT sum((nilai1+nilai2+nilai3+nilai4)/4)/count(nisn) as raport FROM rb_nilai_pengetahuan where kodejdwl='$_GET[jdwl]' AND nisn='$r[nisn]'"));
+                                      $rapn = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT sum((nilai1+nilai2+nilai3+nilai4+nilai5)/5)/count(nis) as raport FROM rb_nilai_pengetahuan where kodejdwl='$_GET[jdwl]' AND nis='$r[nis]'"));
                                       $cekpredikat2 = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_predikat where kode_kelas='$_GET[id]'"));
                                       if ($cekpredikat2 >= 1){
                                         $grade3 = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM `rb_predikat` where (".number_format($rapn[raport])." >=nilai_a) AND (".number_format($rapn[raport])." <= nilai_b)"));
@@ -147,13 +176,13 @@
 
                                       echo "<tr>
                                               <td></td><td></td>
-                                              <td align=center colspan='5'>Nilai Max/Min</td>
+                                              <td align=center colspan='6'>Nilai Max/Min</td>
                                               <td align=center>".number_format($maxn[rata_rata])."</td>
                                               <td align=center>$grade2[grade]</td><td></td>
                                             </tr>
                                             <tr>
                                               <td></td><td></td>
-                                              <td align=center colspan='5'>Raport</td>
+                                              <td align=center colspan='6'>Raport</td>
                                               <td align=center>".number_format($rapn[raport])."</td>
                                               <td align=center>$grade3[grade]</td><td>$maxn[deskripsi]</td>
                                             </tr>";

@@ -5,13 +5,13 @@
           $a   = $_POST['a'.$ia];
           $b   = $_POST['b'.$ia];
           $c   = $_POST['c'.$ia];
-          $nisn   = $_POST['nisn'.$ia];
+          $nis   = $_POST['nis'.$ia];
           if ($a != '' OR $b != '' OR $c != ''){
-            $cek = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_nilai_sikap where kodejdwl='$_POST[jdwl]' AND nisn='$nisn' AND status='$_POST[status]'"));
+            $cek = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_nilai_sikap where kodejdwl='$_POST[jdwl]' AND nis='$nis' AND status='$_POST[status]'"));
             if ($cek >= '1'){
-              mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rb_nilai_sikap SET positif='$a', negatif='$b', deskripsi='$c' where kodejdwl='$_GET[jdwl]' AND nisn='$nisn' AND status='$_POST[status]'");
+              mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rb_nilai_sikap SET positif='$a', negatif='$b', deskripsi='$c' where kodejdwl='$_GET[jdwl]' AND nis='$nis' AND status='$_POST[status]'");
             }else{
-              mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_nilai_sikap VALUES('','$_GET[jdwl]','$nisn','$a','$b','$c','$_POST[status]','$_SESSION[id]','".date('Y-m-d H:i:s')."')");
+              mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_nilai_sikap VALUES('','$_GET[jdwl]','$nis','$a','$b','$c','$_POST[status]','$_SESSION[id]','".date('Y-m-d H:i:s')."')");
             }
           }
         }
@@ -53,25 +53,25 @@
                             <table class='table table-bordered table-striped'>
                                 <tr>
                                   <th style='border:1px solid #e3e3e3' width='30px' rowspan='2'>No</th>
-                                  <th style='border:1px solid #e3e3e3' width='80px' rowspan='2'>NISN</th>
+                                  <th style='border:1px solid #e3e3e3' width='80px' rowspan='2'>NIS</th>
                                   <th style='border:1px solid #e3e3e3' width='190px' rowspan='2'>Nama Lengkap</th>
                                   <th style='border:1px solid #e3e3e3' colspan='3'><center>Penilaian Spiritual</center></th>
                                 </tr>
                                 <tr>
                                   <th style='border:1px solid #e3e3e3;'><center>Positif</center></th>
                                   <th style='border:1px solid #e3e3e3;'><center>Negatif</center></th>
-                                  <th style='border:1px solid #e3e3e3;'><center>Desktipsi</center></th>
+                                  <th style='border:1px solid #e3e3e3;'><center>Deskripsi</center></th>
                                 </tr>
                               <tbody>";
                               $no = 1;
-                              $tampil = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa where kode_kelas='$_GET[id]' ORDER BY id_siswa");
+                              $tampil = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa where kode_kelas='$_GET[id]' ORDER BY nis");
                               while($r=mysqli_fetch_array($tampil)){
-                                $des = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_nilai_sikap where kodejdwl='$_GET[jdwl]' AND nisn='$r[nisn]' AND status='spiritual'"));
+                                $des = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_nilai_sikap where kodejdwl='$_GET[jdwl]' AND nis='$r[nis]' AND status='spiritual'"));
                                   echo "<tr>
                                         <td>$no</td>
-                                        <td>$r[nisn]</td>
+                                        <td>$r[nis]</td>
                                         <td>$r[nama]</td>
-                                        <input type='hidden' name='nisn".$no."' value='$r[nisn]'>
+                                        <input type='hidden' name='nis".$no."' value='$r[nis]'>
                                         <td align=center><textarea name='a".$no."' class='form-control' style='width:100%; color:blue' placeholder=' Tuliskan Positif...'>$des[positif]</textarea></td>
                                         <td align=center><textarea name='b".$no."' class='form-control' style='width:100%; color:blue' placeholder=' Tuliskan Negatif...'>$des[negatif]</textarea></td>
                                         <td align=center><textarea name='c".$no."' class='form-control' style='width:100%; color:blue' placeholder=' Tuliskan Deskripsi...'>$des[deskripsi]</textarea></td>
@@ -99,25 +99,25 @@
                             <table class='table table-bordered table-striped'>
                                 <tr>
                                   <th style='border:1px solid #e3e3e3' width='30px' rowspan='2'>No</th>
-                                  <th style='border:1px solid #e3e3e3' width='80px' rowspan='2'>NISN</th>
+                                  <th style='border:1px solid #e3e3e3' width='80px' rowspan='2'>NIS</th>
                                   <th style='border:1px solid #e3e3e3' width='190px' rowspan='2'>Nama Lengkap</th>
                                   <th style='border:1px solid #e3e3e3' colspan='3'><center>Penilaian Sosial</center></th>
                                 </tr>
                                 <tr>
                                   <th style='border:1px solid #e3e3e3;'><center>Positif</center></th>
                                   <th style='border:1px solid #e3e3e3;'><center>Negatif</center></th>
-                                  <th style='border:1px solid #e3e3e3;'><center>Desktipsi</center></th>
+                                  <th style='border:1px solid #e3e3e3;'><center>Deskripsi</center></th>
                                 </tr>
                               <tbody>";
                               $no = 1;
-                              $tampil = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa where kode_kelas='$_GET[id]' ORDER BY id_siswa");
+                              $tampil = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa where kode_kelas='$_GET[id]' ORDER BY nis");
                               while($r=mysqli_fetch_array($tampil)){
-                                $des = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_nilai_sikap where kodejdwl='$_GET[jdwl]' AND nisn='$r[nisn]' AND status='sosial'"));
+                                $des = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_nilai_sikap where kodejdwl='$_GET[jdwl]' AND nis='$r[nis]' AND status='sosial'"));
                                   echo "<tr>
                                         <td>$no</td>
-                                        <td>$r[nisn]</td>
+                                        <td>$r[nis]</td>
                                         <td>$r[nama]</td>
-                                        <input type='hidden' name='nisn".$no."' value='$r[nisn]'>
+                                        <input type='hidden' name='nis".$no."' value='$r[nis]'>
                                         <td align=center><textarea name='a".$no."' class='form-control' style='width:100%; color:blue' placeholder=' Tuliskan Positif...'>$des[positif]</textarea></td>
                                         <td align=center><textarea name='b".$no."' class='form-control' style='width:100%; color:blue' placeholder=' Tuliskan Negatif...'>$des[negatif]</textarea></td>
                                         <td align=center><textarea name='c".$no."' class='form-control' style='width:100%; color:blue' placeholder=' Tuliskan Deskripsi...'>$des[deskripsi]</textarea></td>

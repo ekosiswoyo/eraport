@@ -8,13 +8,13 @@ if ($_GET[act]==''){
           $b   = $_POST['b'.$ia];
           $c   = $_POST['c'.$ia];
           $d   = $_POST['d'.$ia];
-          $nisn   = $_POST['nisn'.$ia];
+          $nis   = $_POST['nis'.$ia];
           if ($a != '' OR $b != '' OR $c != '' OR $d != ''){
-            $cek = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_nilai_sikap_semester where id_tahun_akademik='$_POST[tahun]' AND nisn='$nisn' AND kode_kelas='$_POST[kelas]'"));
+            $cek = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_nilai_sikap_semester where id_tahun_akademik='$_POST[tahun]' AND nis='$nis' AND kode_kelas='$_POST[kelas]'"));
             if ($cek >= '1'){
-              mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rb_nilai_sikap_semester SET spiritual_predikat='$a', spiritual_deskripsi='$b', sosial_predikat='$c', sosial_deskripsi='$d' where id_tahun_akademik='$_POST[tahun]' AND nisn='$nisn' AND kode_kelas='$_POST[kelas]'");
+              mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rb_nilai_sikap_semester SET spiritual_predikat='$a', spiritual_deskripsi='$b', sosial_predikat='$c', sosial_deskripsi='$d' where id_tahun_akademik='$_POST[tahun]' AND nis='$nis' AND kode_kelas='$_POST[kelas]'");
             }else{
-              mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_nilai_sikap_semester VALUES('','$_POST[tahun]','$nisn','$_POST[kelas]','$a','$b','$c','$d','$_SESSION[id]','".date('Y-m-d H:i:s')."')");
+              mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_nilai_sikap_semester VALUES('','$_POST[tahun]','$nis','$_POST[kelas]','$a','$b','$c','$d','$_SESSION[id]','".date('Y-m-d H:i:s')."')");
             }
           } 
         }
@@ -43,7 +43,7 @@ if ($_GET[act]==''){
                     <select name='kelas' style='padding:4px'>
                         <?php 
                             echo "<option value=''>- Filter Kelas -</option>";
-                            $kelas = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelas");
+                            $kelas = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelas order by kode_kelas asc");
                             while ($k = mysqli_fetch_array($kelas)){
                               if ($_GET[kelas]==$k[kode_kelas]){
                                 echo "<option value='$k[kode_kelas]' selected>$k[kode_kelas] - $k[nama_kelas]</option>";
@@ -64,7 +64,7 @@ if ($_GET[act]==''){
                   echo "<table id='example' class='table table-bordered table-striped'>
                     <thead>
                       <tr><th rowspan='2'>No</th>
-                        <th rowspan='2'>NISN</th>
+                        <th rowspan='2'>NIS</th>
                         <th rowspan='2'>Nama Siswa</th>
                         <th colspan='2'><center>Sikap Spiritual</center></th>
                         <th colspan='2'><center>Sikap Sosial</center></th>
@@ -79,15 +79,15 @@ if ($_GET[act]==''){
                     <tbody>";
 
                   if ($_GET[kelas] != '' AND $_GET[tahun] != ''){
-                    $tampil = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa a LEFT JOIN rb_kelas b ON a.kode_kelas=b.kode_kelas where a.kode_kelas='$_GET[kelas]' ORDER BY a.id_siswa");
+                    $tampil = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa a LEFT JOIN rb_kelas b ON a.kode_kelas=b.kode_kelas where a.kode_kelas='$_GET[kelas]' ORDER BY a.nis");
                   }
                     $no = 1;
                     while($r=mysqli_fetch_array($tampil)){
-                      $n = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_nilai_sikap_semester where id_tahun_akademik='$_GET[tahun]' AND nisn='$r[nisn]' AND kode_kelas='$_GET[kelas]'"));
+                      $n = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_nilai_sikap_semester where id_tahun_akademik='$_GET[tahun]' AND nis='$r[nis]' AND kode_kelas='$_GET[kelas]'"));
                     echo "<tr><td>$no</td>
-                              <td>$r[nisn]</td>
+                              <td>$r[nis]</td>
                               <td>$r[nama]</td>
-                              <input type='hidden' name='nisn".$no."' value='$r[nisn]'>
+                              <input type='hidden' name='nis".$no."' value='$r[nis]'>
                               <td><center><input type='text' name='a".$no."' value='$n[spiritual_predikat]' style='width:70px; text-align:center; padding:0px; color:blue'></center></td>
                               <td><textarea name='b".$no."' class='form-control' style='width:100%; color:blue' placeholder='Tuliskan Deskripsi...'>$n[spiritual_deskripsi]</textarea></td>
                               <td><center><input type='text' name='c".$no."' value='$n[sosial_predikat]' style='width:70px; text-align:center; padding:0px; color:blue'></center></td>

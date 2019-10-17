@@ -2,7 +2,8 @@
           <!-- Sidebar user panel -->
           <div class="user-panel">
             <div class="pull-left image">
-              <img src="<?php echo $foto; ?>" class="img-circle" alt="User Image">
+              <!-- <img src="<?php echo $foto; ?>" class="img-circle" alt="User Image"> -->
+              <br>
             </div>
             <div class="pull-left info">
               <p><?php echo $nama; ?></p>
@@ -19,7 +20,7 @@
               <a href="#"><i class="fa fa-th"></i> <span>Data Master</span><i class="fa fa-angle-left pull-right"></i></a>
               <ul class="treeview-menu">
                 <li><a href="index.php?view=predikat"><i class="fa fa-circle-o"></i> Data Predikat</a></li>
-                <li><a href="index.php?view=tahunakademik"><i class="fa fa-circle-o"></i> Data Tahun Akademik</a></li>
+                <!-- <li><a href="index.php?view=tahunakademik"><i class="fa fa-circle-o"></i> Data Tahun Akademik</a></li> -->
                 <li><a href="index.php?view=kelas"><i class="fa fa-circle-o"></i> Data Kelas</a></li>
               </ul>
             </li>
@@ -47,15 +48,6 @@
             </li>
 
 
-            <li class="treeview">
-              <a href="#"><i class="fa fa-calendar"></i> <span>Laporan Nilai Siswa</span><i class="fa fa-angle-left pull-right"></i></a>
-              <ul class="treeview-menu">
-               
-                <li><a href="index.php?view=raportcetakuts"><i class="fa fa-circle-o"></i> Cetak Raport UTS</a></li>
-
-                <li><a href="index.php?view=raportcetak"><i class="fa fa-circle-o"></i> Cetak Raport</a></li>
-                <!--<li><a href="index.php?view=bukuinduk"><i class="fa fa-circle-o"></i> Cetak Buku Induk</a></li>-->
-              </ul>
-            </li>
+          
           </ul>
         </section>

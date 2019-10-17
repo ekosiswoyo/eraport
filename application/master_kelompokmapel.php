@@ -30,7 +30,7 @@
                               if($_SESSION[level]!='kepala'){
                         echo "<td><center>
                                 <a class='fa fa-fw fa-edit' title='Edit Data' href='index.php?view=kelompokmapel&act=edit&id=$r[id_kelompok_mata_pelajaran]'></a>
-                                <a class='fa fa-fw fa-eraser' title='Delete Data' href='index.php?view=kelompokmapel&hapus=$r[id_kelompok_mata_pelajaran]'></a>
+                                <a class='fa fa-fw fa-eraser' onclick=\"return confirm('Apa anda yakin untuk hapus Data ini?')\" title='Delete Data' href='index.php?view=kelompokmapel&hapus=$r[id_kelompok_mata_pelajaran]'></a>
                               </center></td>";
                               }
                             echo "</tr>";
@@ -88,6 +88,8 @@
 }elseif($_GET[act]=='tambah'){
     if (isset($_POST[tambah])){
         mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_kelompok_mata_pelajaran VALUES('','$_POST[a]','$_POST[b]')");
+        
+          echo "<script>window.alert('Data Berhasil di Simpan !')</script>";
         echo "<script>document.location='index.php?view=kelompokmapel';</script>";
     }
 

@@ -54,20 +54,20 @@
                                         AND b.id_kelompok_mata_pelajaran='$k[id_kelompok_mata_pelajaran]'");
         $no = 1;
         while ($m = mysqli_fetch_array($mapel)){
-        $rapn = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT sum((nilai1+nilai2+nilai3+nilai4+nilai5)/5)/count(nisn) as raport FROM rb_nilai_pengetahuan where kodejdwl='$m[kodejdwl]' AND nisn='$iden[nisn]'"));
-        $cekpredikat = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_predikat where kode_kelas='$_SESSION[kelas]'"));
+        $rapn = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT sum((nilai1+nilai2+nilai3+nilai4+nilai5)/5)/count(nis) as raport FROM rb_nilai_pengetahuan where kodejdwl='$m[kodejdwl]' AND nis='$iden[nis]'"));
+        $cekpredikat = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_predikat"));
             if ($cekpredikat >= 1){
-                $grade3 = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM `rb_predikat` where (".number_format($rapn[raport])." >=nilai_a) AND (".number_format($rapn[raport])." <= nilai_b) AND kode_kelas='$_SESSION[kelas]'"));
+                $grade3 = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM `rb_predikat` where (".number_format($rapn[raport])." >=nilai_a) AND (".number_format($rapn[raport])." <= nilai_b)"));
             }else{
-                $grade3 = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM `rb_predikat` where (".number_format($rapn[raport])." >=nilai_a) AND (".number_format($rapn[raport])." <= nilai_b) AND kode_kelas='0'"));
+                $grade3 = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM `rb_predikat` where (".number_format($rapn[raport])." >=nilai_a) AND (".number_format($rapn[raport])." <= nilai_b)"));
             }
 
-        $rapnk = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT sum(GREATEST(nilai1,nilai2,nilai3,nilai4,nilai5,nilai6))/count(nisn) as raport FROM rb_nilai_keterampilan where kodejdwl='$m[kodejdwl]' AND nisn='$iden[nisn]'"));
-        $cekpredikat2 = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_predikat where kode_kelas='$_SESSION[kelas]'"));
+        $rapnk = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT sum(GREATEST(nilai1,nilai2,nilai3,nilai4,nilai5,nilai6))/count(nis) as raport FROM rb_nilai_keterampilan where kodejdwl='$m[kodejdwl]' AND nis='$iden[nis]'"));
+        $cekpredikat2 = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_predikat"));
             if ($cekpredikat2 >= 1){
-                $grade = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM `rb_predikat` where (".number_format($rapnk[raport])." >=nilai_a) AND (".number_format($rapnk[raport])." <= nilai_b) AND kode_kelas='$_SESSION[kelas]'"));
+                $grade = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM `rb_predikat` where (".number_format($rapnk[raport])." >=nilai_a) AND (".number_format($rapnk[raport])." <= nilai_b)"));
             }else{
-                $grade = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM `rb_predikat` where (".number_format($rapnk[raport])." >=nilai_a) AND (".number_format($rapnk[raport])." <= nilai_b) AND kode_kelas='0'"));
+                $grade = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM `rb_predikat` where (".number_format($rapnk[raport])." >=nilai_a) AND (".number_format($rapnk[raport])." <= nilai_b)"));
             }
 
         echo "<tr>

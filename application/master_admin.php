@@ -3,7 +3,7 @@
               <div class="box">
                 <div class="box-header">
                   <h3 class="box-title">Data Administrator </h3>
-                  <a class='pull-right btn btn-primary btn-sm' href='index.php?view=admin&act=add'>ADD</a>
+                  <a class='pull-right btn btn-primary btn-sm' href='index.php?view=admin&act=add'>Tambahkan</a>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                   <table id="example1" class="table table-bordered table-striped">
@@ -33,7 +33,7 @@
                               <td>$r[level]</td>
                               <td><center>
                                 <a class='btn btn-success btn-xs' title='Edit Data' href='?view=admin&act=edit&id=$r[id_user]'><span class='glyphicon glyphicon-edit'></span></a>
-                                <a class='btn btn-danger btn-xs' title='Delete Data' href='?view=admin&hapus=$r[id_user]'><span class='glyphicon glyphicon-remove'></span></a>
+                                <a class='btn btn-danger btn-xs' title='Delete Data' onclick=\"return confirm('Apa anda yakin untuk hapus Data ini?')\" href='?view=admin&hapus=$r[id_user]'><span class='glyphicon glyphicon-remove'></span></a>
                               </center></td>";
                             echo "</tr>";
                       $no++;
@@ -68,6 +68,8 @@
                                          no_telpon = '$_POST[e]',
                                          jabatan = '$_POST[f]' where id_user='$_POST[id]'");
       }
+      
+          echo "<script>window.alert('Data Berhasil di Simpan !')</script>";
       echo "<script>document.location='index.php?view=admin';</script>";
     }
     $edit = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_users a where a.id_user='$_GET[id]'");

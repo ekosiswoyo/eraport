@@ -62,6 +62,8 @@
                                          nilai_b = '$_POST[b]',
                                          grade = '$_POST[c]',
                                          keterangan = '$_POST[d]' where id_predikat='$_POST[id]'");
+
+          echo "<script>window.alert('Data Berhasil di Edit !')</script>";
       echo "<script>document.location='index.php?view=predikat';</script>";
     }
     $edit = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_predikat where id_predikat='$_GET[id]'");

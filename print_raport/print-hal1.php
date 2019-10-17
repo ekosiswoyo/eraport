@@ -25,6 +25,9 @@ include "../config/fungsi_indotgl.php";
         <tr><td width='180px'>Kecamatan</td>      <td width='10px'> : </td><td> Kec. Kajen</td></tr>
         <tr><td width='180px'>Kabupaten/Kota</td> <td width='10px'> : </td><td> Kab. Pekalongan</td></tr>
         <tr><td width='180px'>Provinsi</td>       <td width='10px'> : </td><td> Jawa Tengah</td></tr>
-    </table>
+</table><br><br><br>
+<footer>
+<center>Halaman 1</center>
+</footer>
 </body>
 </html>

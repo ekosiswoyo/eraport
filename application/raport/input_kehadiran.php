@@ -5,14 +5,14 @@ if ($_GET[act]==''){
             if ($_POST[status]=='Update'){
               mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rb_kehadiran SET sakit='$_POST[a]', izin='$_POST[b]', alpha='$_POST[c]' where id_kehadiran='$_POST[id]'");
             }else{
-              mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_kehadiran VALUES('','$_POST[nisn]','$_SESSION[kode_kelas]','$_POST[a]','$_POST[b]','$_POST[c]')");
+              mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_kehadiran VALUES('','$_POST[nis]','$_SESSION[kode_kelas]','$_POST[a]','$_POST[b]','$_POST[c]')");
             }
-        echo "<script>document.location='index.php?view=kehadiran&kelas=$_SESSION[kode_kelas]#$_POST[nisn]';</script>";
+        echo "<script>document.location='index.php?view=kehadiran&kelas=$_SESSION[kode_kelas]#$_POST[nis]';</script>";
     }
 
     if (isset($_GET[delete])){
         mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM rb_kehadiran where id_kehadiran='$_GET[delete]'");
-        echo "<script>document.location='index.php?view=kehadiran&kelas=$_SESSION[kode_kelas]#$_POST[nisn]';</script>";
+        echo "<script>document.location='index.php?view=kehadiran&kelas=$_SESSION[kode_kelas]#$_POST[nis]';</script>";
     }
 ?> 
             <div class="col-xs-12">  
@@ -22,7 +22,7 @@ if ($_GET[act]==''){
                   echo "<table id='example' class='table table-bordered table-striped'>
                     <thead>
                       <tr><th rowspan='2'>No</th>
-                        <th>NISN</th>
+                        <th>NIS</th>
                         <th width='170px'>Nama Siswa</th>
                         <th width='270px'><center>Sakit</center></th>
                         <th width='270px'><center>Izin</center></th>
@@ -33,7 +33,7 @@ if ($_GET[act]==''){
                     <tbody>";
 
                  
-                    $tampil = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa a, rb_kelas b, rb_guru c WHERE a.kode_kelas=b.kode_kelas AND a.kode_kelas=c.kode_kelas AND a.kode_kelas='$_SESSION[kode_kelas]' ORDER BY a.id_siswa");
+                    $tampil = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa a, rb_kelas b, rb_guru c WHERE a.kode_kelas=b.kode_kelas AND a.kode_kelas=c.kode_kelas AND a.kode_kelas='$_SESSION[kode_kelas]' group by a.nis ORDER BY a.nis");
                     
                     $no = 1;
                     while($r=mysqli_fetch_array($tampil)){
@@ -44,12 +44,12 @@ if ($_GET[act]==''){
                           $name = 'Simpan';
                       }
 
-                  if ($_GET[nisn]==$r[nisn]){   
+                  if ($_GET[nis]==$r[nis]){   
                     echo "<form action='index.php?view=kehadiran&tahun=$_GET[tahun]&kelas=$_GET[kelas]' method='POST'>
                             <tr><td>$no</td>
-                              <td>$r[nisn]</td>
-                              <td style='font-size:12px' id='$r[nisn]'>$r[nama]</td>
-                              <input type='hidden' name='nisn' value='$r[nisn]'>
+                              <td>$r[nis]</td>
+                              <td style='font-size:12px' id='$r[nis]'>$r[nama]</td>
+                              <input type='hidden' name='nis' value='$r[nis]'>
                               <input type='hidden' name='id' value='$e[id_kehadiran]'>
                               <input type='hidden' name='status' value='$name'>
                               <td><input type='text' name='a' class='form-control' style='width:100%; color:blue' placeholder='Jumlah Sakit' value='$e[sakit]'></td>
@@ -62,10 +62,10 @@ if ($_GET[act]==''){
                   }else{
                     echo "<form action='index.php?view=kehadiran&tahun=kelas=$_SESSION[kode_kelas]' method='POST'>
                             <tr><td>$no</td>
-                              <td>$r[nisn]</td>
-                              <td style='font-size:12px' id='$r[nisn]'>$r[nama]</td>
-                              <input type='hidden' name='nisn' value='$r[nisn]'>
-                              <input type='hidden' name='nisn' value='$r[nisn]'>
+                              <td>$r[nis]</td>
+                              <td style='font-size:12px' id='$r[nis]'>$r[nama]</td>
+                              <input type='hidden' name='nis' value='$r[nis]'>
+                              <input type='hidden' name='nis' value='$r[nis]'>
                               <td><input type='text' name='a' class='form-control' style='width:100%; color:blue' placeholder='Jumlah Sakit'></td>
                               <td><input type='text' name='b' class='form-control' style='width:100%; color:blue' placeholder='Jumlah Izin'></td>
                               <td><input type='text' name='c' class='form-control' style='width:100%; color:blue' placeholder='Jumlah Alpha'></td>
@@ -75,7 +75,7 @@ if ($_GET[act]==''){
                           </form>";
                   }
 
-                            $pe = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kehadiran where nisn='$r[nisn]' AND kode_kelas='$_SESSION[kode_kelas]'");
+                            $pe = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kehadiran where nis='$r[nis]' AND kode_kelas='$_SESSION[kode_kelas]'");
                             while ($n = mysqli_fetch_array($pe)){
                                 echo "<tr>
                                         <td></td>
@@ -84,8 +84,8 @@ if ($_GET[act]==''){
                                         <td>$n[sakit]</td>
                                         <td>$n[izin]</td>
                                         <td>$n[alpha]</td>
-                                        <td width='90px' align=center><a href='index.php?view=kehadiran&kelas=".$_GET[kelas]."&edit=".$n[id_kehadiran]."&nisn=".$r[nisn]."#$r[nisn]' class='btn btn-xs btn-success'><span class='glyphicon glyphicon-edit'></span></a>
-                                                        <a href='index.php?view=kehadiran&kelas=".$_GET[kelas]."&delete=".$n[id_kehadiran]."&nisn=".$r[nisn]."' class='btn btn-xs btn-danger' onclick=\"return confirm('Apa anda yakin untuk hapus Data ini?')\"><span class='glyphicon glyphicon-remove'></span></a></td>
+                                        <td width='90px' align=center><a href='index.php?view=kehadiran&kelas=".$_GET[kelas]."&edit=".$n[id_kehadiran]."&nis=".$r[nis]."#$r[nis]' class='btn btn-xs btn-success'><span class='glyphicon glyphicon-edit'></span></a>
+                                                        <a href='index.php?view=kehadiran&kelas=".$_GET[kelas]."&delete=".$n[id_kehadiran]."&nis=".$r[nis]."' class='btn btn-xs btn-danger' onclick=\"return confirm('Apa anda yakin untuk hapus Data ini?')\"><span class='glyphicon glyphicon-remove'></span></a></td>
                                       </tr>";
                             }
                       $no++;

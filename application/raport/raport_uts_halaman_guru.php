@@ -33,7 +33,7 @@
                         <th>Hari</th>
                         <th>Mulai</th>
                         <th>Selesai</th>
-                        <th>Semester</th>
+                        <th>Tahun akademik</th>
                         <?php 
                           if (isset($_GET[tahun])){
                             echo "<th>Action</th>";

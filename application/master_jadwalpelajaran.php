@@ -10,7 +10,7 @@
                     <input type="hidden" name='view' value='jadwalpelajaran'>
                     <select name='tahun' style='padding:4px'>
                         <?php 
-                            echo "<option value=''>- Pilih Tahun Akademik -</option>";
+                            echo "<option value=''>- Pilih Tahun Ajaran -</option>";
                             $tahun = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_tahun_akademik");
                             while ($k = mysqli_fetch_array($tahun)){
                               if ($_GET[tahun]==$k[id_tahun_akademik]){
@@ -24,7 +24,7 @@
                     <select name='kelas' style='padding:4px'>
                         <?php 
                             echo "<option value=''>- Pilih Kelas -</option>";
-                            $kelas = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelas");
+                            $kelas = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelas order by kode_kelas asc");
                             while ($k = mysqli_fetch_array($kelas)){
                               if ($_GET[kelas]==$k[kode_kelas]){
                                 echo "<option value='$k[kode_kelas]' selected>$k[kode_kelas] - $k[nama_kelas]</option>";
@@ -96,7 +96,7 @@
                 </div><!-- /.box-body -->
                 <?php 
                     if ($_GET[kelas] == '' AND $_GET[tahun] == ''){
-                        echo "<center style='padding:60px; color:blue'>TIDAK ADA DATA !<br>Silahkan Input Angkatan dan Memilih Kelas Terlebih dahulu...</center>";
+                        echo "<center style='padding:60px; color:blue'>TIDAK ADA DATA !<br>Silahkan Input Tahun Akademik dan Memilih Kelas Terlebih dahulu...</center>";
                     }
                 ?>
                 </div>
@@ -106,6 +106,8 @@
 }elseif($_GET[act]=='tambah'){
      if (isset($_POST[tambah])){
         mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_jadwal_pelajaran VALUES('','$_POST[a]','$_POST[b]','$_POST[c]','$_POST[e]','$_POST[h]','$_POST[i]','$_POST[j]','$_POST[k]')");
+        
+          echo "<script>window.alert('Data Berhasil di Simpan !')</script>";
         echo "<script>document.location='index.php?view=jadwalpelajaran';</script>";
     }
     echo "<div class='col-md-12'>
@@ -118,9 +120,9 @@
                 <div class='col-md-12'>
                   
                     <div class='form-group'>
-                    <label for=''>Tahun Akademik</label>
+                    <label for=''>Tahun Ajaran</label>
                     <select class='form-control' name='a'> 
-                      <option value='0' selected>- Pilih Tahun Akademik -</option>"; 
+                      <option value='0' selected>- Pilih Tahun Ajaran -</option>"; 
                       $tahun = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_tahun_akademik");
                       while($a = mysqli_fetch_array($tahun)){
                         echo "<option value='$a[id_tahun_akademik]'>$a[nama_tahun]</option>";
@@ -132,7 +134,7 @@
                     <label for=''>Kelas</label>
                     <select class='form-control' name='b'> 
                     <option value='0' selected>- Pilih Kelas -</option>"; 
-                    $kelas = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelas");
+                    $kelas = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelas order by kode_kelas asc");
                     while($a = mysqli_fetch_array($kelas)){
                       echo "<option value='$a[kode_kelas]'>$a[nama_kelas]</option>";
                     }
@@ -240,7 +242,7 @@
                     </td></tr>
                     <tr><th scope='row'>Kelas</th>   <td><select class='form-control' name='b'> 
                                                 <option value='0' selected>- Pilih Kelas -</option>"; 
-                                                $kelas = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelas");
+                                                $kelas = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelas order by kode_kelas asc");
                                                 while($a = mysqli_fetch_array($kelas)){
                                                   if ($e[kode_kelas]==$a[kode_kelas]){
                                                     echo "<option value='$a[kode_kelas]' selected>$a[nama_kelas]</option>";

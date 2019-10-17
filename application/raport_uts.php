@@ -115,13 +115,13 @@ cek_session_guru();
           $b  = $_POST['b'.$ia];
           $c  = $_POST['c'.$ia];
           $d  = $_POST['d'.$ia];
-          $nisn = $_POST['nisn'.$ia];
+          $nis = $_POST['nis'.$ia];
           if ($a != '' OR $b != ''){
-            $cek = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_nilai_uts where kodejdwl='$_POST[jdwl]' AND nisn='$nisn'"));
+            $cek = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_nilai_uts where kodejdwl='$_POST[jdwl]' AND nis='$nis'"));
             if ($cek >= '1'){
-              mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rb_nilai_uts SET angka_pengetahuan='$a',deskripsi_pengetahuan='$c', angka_keterampilan='$b', deskripsi_keterampilan='$d' where kodejdwl='$_POST[jdwl]' AND nisn='$nisn'");
+              mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rb_nilai_uts SET angka_pengetahuan='$a',deskripsi_pengetahuan='$c', angka_keterampilan='$b', deskripsi_keterampilan='$d' where kodejdwl='$_POST[jdwl]' AND nis='$nis'");
             }else{
-              mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_nilai_uts VALUES('','$_POST[jdwl]','$nisn','$a','$c','$b','$d','".date('Y-m-d H:i:s')."')");
+              mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_nilai_uts VALUES('','$_POST[jdwl]','$nis','$a','$c','$b','$d','".date('Y-m-d H:i:s')."')");
             }
           }
         }
@@ -156,7 +156,7 @@ cek_session_guru();
                   <table class='table table-bordered table-striped'>
                       <tr>
                         <th style='border:1px solid #e3e3e3' width='30px' rowspan='2'>No</th>
-                        <th style='border:1px solid #e3e3e3' width='90px' rowspan='2'>NISN</th>
+                        <th style='border:1px solid #e3e3e3' width='90px' rowspan='2'>NIS</th>
                         <th style='border:1px solid #e3e3e3' width='190px' rowspan='2'>Nama Lengkap</th>
                         <th style='border:1px solid #e3e3e3' colspan='3'><center>Pengetahuan</center></th>
                         <th style='border:1px solid #e3e3e3' colspan='3'><center>Keterampilan</center></th>
@@ -171,9 +171,9 @@ cek_session_guru();
                       </tr>
                     <tbody>";
                     $no = 1;
-                    $tampil = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa where kode_kelas='$_GET[id]' ORDER BY id_siswa");
+                    $tampil = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa where kode_kelas='$_GET[id]' ORDER BY nis");
                     while($r=mysqli_fetch_array($tampil)){
-                      $n = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_nilai_uts where nisn='$r[nisn]' AND kodejdwl='$_GET[jdwl]'"));
+                      $n = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_nilai_uts where nis='$r[nis]' AND kodejdwl='$_GET[jdwl]'"));
                       $cekpredikat = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_predikat"));
                       if ($cekpredikat >= 1){
                         $grade1 = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM `rb_predikat` where ($n[angka_pengetahuan] >=nilai_a) AND ($n[angka_pengetahuan] <= nilai_b)"));
@@ -181,9 +181,9 @@ cek_session_guru();
                       }
                         echo "<tr>
                               <td>$no</td>
-                              <td>$r[nisn]</td>
+                              <td>$r[nis]</td>
                               <td>$r[nama]</td>
-                              <input type='hidden' name='nisn".$no."' value='$r[nisn]'>
+                              <input type='hidden' name='nis".$no."' value='$r[nis]'>
                               <td align=center><input type='number' name='a".$no."' value='$n[angka_pengetahuan]' style='width:90px; text-align:center; padding:0px' placeholder='-'></td>
                                         <td align=center><input type='text' value='$grade1[grade]' style='width:90px; text-align:center; padding:0px' placeholder='-' disabled></td>
                                         <td align=center><input type='text' name='c".$no."' value='$n[deskripsi_pengetahuan]' style='width:90px; text-align:center; padding:0px' placeholder='-'></td>
@@ -202,6 +202,107 @@ cek_session_guru();
                 <div style='clear:both'></div>
                                 <div class='box-footer'>
                                   <button type='submit' name='simpan' class='btn btn-info'>Simpan</button>
+                                  <button type='reset' class='btn btn-default pull-right'>Cancel</button>
+                                </div>
+                </form>
+
+            </div>";
+
+}elseif($_GET[act]=='listsiswauts'){
+cek_session_guru();
+    if (isset($_POST[simpan])){
+        $jumls = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa where kode_kelas='$_GET[id]'"));
+        for ($ia=1; $ia<=$jumls; $ia++){
+          $a  = $_POST['a'.$ia];
+          $b  = $_POST['b'.$ia];
+          $c  = $_POST['c'.$ia];
+          $d  = $_POST['d'.$ia];
+          $nis = $_POST['nis'.$ia];
+          if ($a != '' OR $b != ''){
+            $cek = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_nilai_uts where kodejdwl='$_POST[jdwl]' AND nis='$nis'"));
+            if ($cek >= '1'){
+              mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rb_nilai_uts SET angka_pengetahuan='$a',deskripsi_pengetahuan='$c', angka_keterampilan='$b', deskripsi_keterampilan='$d' where kodejdwl='$_POST[jdwl]' AND nis='$nis'");
+            }else{
+              mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_nilai_uts VALUES('','$_POST[jdwl]','$nis','$a','$c','$b','$d','".date('Y-m-d H:i:s')."')");
+            }
+          }
+        }
+        echo "<script>document.location='index.php?view=raportuts&act=listsiswa&jdwl=$_GET[jdwl]&kd=$_GET[kd]&id=$_GET[id]&tahun=$_GET[tahun]';</script>";
+    }
+
+    $d = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelas where kode_kelas='$_GET[id]'"));
+    $m = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_mata_pelajaran where kode_pelajaran='$_GET[kd]'"));
+    echo "<div class='col-md-12'>
+              <div class='box box-info'>
+                <div class='box-header with-border'>
+                  <h3 class='box-title'>Input Nilai UTS Siswa</b></h3>
+                  <form style='margin-right:5px; margin-top:0px' class='pull-right' action='' method='POST'>
+                    <input type='hidden' name='id' value='$_GET[id]'>
+                    <input type='hidden' name='jdwl' value='$_GET[jdwl]'>
+
+                </div>
+              <div class='box-body'>
+
+              <div class='col-md-12'>
+              <table class='table table-condensed table-hover'>
+                  <tbody>
+                    <input type='hidden' name='id' value='$s[kodekelas]'>
+                    <tr><th width='120px' scope='row'>Kode Kelas</th> <td>$d[kode_kelas]</td></tr>
+                    <tr><th scope='row'>Nama Kelas</th>               <td>$d[nama_kelas]</td></tr>
+                    <tr><th scope='row'>Mata Pelajaran</th>           <td>$m[namamatapelajaran]</td></tr>
+                  </tbody>
+              </table>
+              </div>
+
+                <div class='col-md-12'>
+                  <table class='table table-bordered table-striped'>
+                      <tr>
+                        <th style='border:1px solid #e3e3e3' width='30px' rowspan='2'>No</th>
+                        <th style='border:1px solid #e3e3e3' width='90px' rowspan='2'>NIS</th>
+                        <th style='border:1px solid #e3e3e3' width='190px' rowspan='2'>Nama Lengkap</th>
+                        <th style='border:1px solid #e3e3e3' colspan='3'><center>Pengetahuan</center></th>
+                        <th style='border:1px solid #e3e3e3' colspan='3'><center>Keterampilan</center></th>
+                      </tr>
+                      <tr>
+                        <th style='border:1px solid #e3e3e3'><center>Angka</center></th>
+                        <th style='border:1px solid #e3e3e3'><center>Predikat</center></th>
+                        <th style='border:1px solid #e3e3e3'><center>Deskripsi</center></th>
+                        <th style='border:1px solid #e3e3e3'><center>Angka</center></th>
+                        <th style='border:1px solid #e3e3e3'><center>predikat</center></th>
+                        <th style='border:1px solid #e3e3e3'><center>Deskripsi</center></th>
+                      </tr>
+                    <tbody>";
+                    $no = 1;
+                    $tampil = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_siswa where kode_kelas='$_GET[id]' ORDER BY nis");
+                    while($r=mysqli_fetch_array($tampil)){
+                      $n = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_nilai_uts where nis='$r[nis]' AND kodejdwl='$_GET[jdwl]'"));
+                      $cekpredikat = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_predikat"));
+                      if ($cekpredikat >= 1){
+                        $grade1 = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM `rb_predikat` where ($n[angka_pengetahuan] >=nilai_a) AND ($n[angka_pengetahuan] <= nilai_b)"));
+                        $grade2 = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM `rb_predikat` where ($n[angka_keterampilan] >=nilai_a) AND ($n[angka_keterampilan] <= nilai_b)"));
+                      }
+                        echo "<tr>
+                              <td>$no</td>
+                              <td>$r[nis]</td>
+                              <td>$r[nama]</td>
+                              <input type='hidden' name='nis".$no."' value='$r[nis]'>
+                              <td align=center><input type='number' name='a".$no."' value='$n[angka_pengetahuan]' style='width:90px; text-align:center; padding:0px' placeholder='-' disabled></td>
+                                        <td align=center><input type='text' value='$grade1[grade]' style='width:90px; text-align:center; padding:0px' placeholder='-' disabled></td>
+                                        <td align=center><input type='text' name='c".$no."' value='$n[deskripsi_pengetahuan]' style='width:90px; text-align:center; padding:0px' placeholder='-' disabled></td>
+
+
+                                        <td align=center><input type='number' name='b".$no."' value='$n[angka_keterampilan]' style='width:90px; text-align:center; padding:0px' placeholder='-' disabled></td>
+                                        <td align=center><input type='text' value='$grade2[grade]' style='width:90px; text-align:center; padding:0px' placeholder='-' disabled></td>
+                                        <td align=center><input type='text' name='d".$no."' value='$n[deskripsi_keterampilan]' style='width:90px; text-align:center; padding:0px' placeholder='-' disabled></td>
+                            </tr>";
+                      $no++;
+                      }
+
+                    echo "</tbody>
+                  </table>
+                </div>
+                <div style='clear:both'></div>
+                                <div class='box-footer'>
                                   <button type='reset' class='btn btn-default pull-right'>Cancel</button>
                                 </div>
                 </form>

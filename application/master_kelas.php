@@ -36,7 +36,7 @@
                               if($_SESSION[level]!='kepala'){
                         echo "<td><center>
                                 <a class='fa fa-fw fa-edit' title='Edit Data' href='?view=kelas&act=edit&id=$r[kode_kelas]'></a>
-                                <a class='fa fa-fw fa-eraser' title='Delete Data' href='?view=kelas&hapus=$r[kode_kelas]'></a>
+                                <a class='fa fa-fw fa-eraser' onclick=\"return confirm('Apa anda yakin untuk hapus Data ini?')\" title='Delete Data' href='?view=kelas&hapus=$r[kode_kelas]'></a>
                               </center></td>";
                               }
                             echo "</tr>";
@@ -60,6 +60,8 @@
                                          nip = '$_POST[b]',
                                          nama_kelas = '$_POST[e]', 
                                          aktif = '$_POST[f]' where kode_kelas='$_POST[id]'");
+
+          echo "<script>window.alert('Data Berhasil di Edit !')</script>";
       echo "<script>document.location='index.php?view=kelas';</script>";
     }
     $edit = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT a.kode_kelas,a.nama_kelas,a.aktif, a.nip FROM rb_kelas a LEFT JOIN rb_guru b ON a.nip=b.nip 
@@ -129,6 +131,8 @@
 }elseif($_GET[act]=='tambah'){
     if (isset($_POST[tambah])){
         mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_kelas VALUES('$_POST[a]','$_POST[b]','$_POST[e]','$_POST[f]')");
+        
+          echo "<script>window.alert('Data Berhasil di Simpan !')</script>";
         echo "<script>document.location='index.php?view=kelas';</script>";
     }
 
@@ -174,7 +178,7 @@
                 </div>
               </div>
               <div class='box-footer'>
-                    <button type='submit' name='tambah' class='btn btn-info'>Tambahkan</button>
+                    <button type='submit' name='tambah' class='btn btn-info'>Simpan</button>
                     <a href='index.php?view=kelas'><button class='btn btn-default pull-right'>Cancel</button></a>
                     
                   </div>

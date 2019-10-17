@@ -12,16 +12,16 @@ $frt = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FRO
 <body onload="window.print()">
 <?php
 $t = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_tahun_akademik where id_tahun_akademik='$_GET[tahun]'"));
+$cd = substr($_GET[tahun],4,5);
 $s = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT a.*, b.*, c.nama_guru as walikelas, c.nip FROM rb_siswa a 
                                       JOIN rb_kelas b ON a.kode_kelas=b.kode_kelas 
-                                        LEFT JOIN rb_guru c ON b.nip=c.nip where a.nisn='$_GET[id]'"));
-if (substr($_GET[tahun],4,5)=='1'){ $semester = 'Ganjil'; }else{ $semester = 'Genap'; }
-
+                                        LEFT JOIN rb_guru c ON b.nip=c.nip where a.nis='$_GET[id]'"));
+if (substr($_GET[tahun],4,5)=='1'){ $semester = 'Genap'; }else{ $semester = 'Ganjil'; }
 echo "<table width=100%>
-        <tr><td width=140px>Nama Sekolah</td> <td> : SMP NEGERI 2 KAJEN </td>       <td width=140px>Kelas </td>   <td>: $s[kode_kelas]</td></tr>
+        <tr><td width=140px>Nama Sekolah</td> <td> : SMP NEGERI 2 KAJEN</td>       <td width=140px>Kelas </td>   <td>: $s[kode_kelas]</td></tr>
         <tr><td>Alamat</td>                   <td> : Jl. Pahlawan No. 737</td>     <td>Semester </td> <td>: $semester</td></tr>
-        <tr><td>Nama Peserta Didik</td>       <td> : <b>$s[nama]</b> </td>           <td>Tahun Pelajaran </td> <td>: $t[keterangan]</td></tr>
-        <tr><td>No Induk/NISN</td>            <td> : $s[nipd] / $s[nisn]</td>        <td></td></tr>
+        <tr><td>Nama Peserta Didik</td>       <td> : <b>$s[nama]</b> </td>           <td>Tahun Pelajaran </td> <td>: 2019/2020</td></tr>
+        <tr><td>No Induk Siswa</td>            <td> : $s[nipd] / $s[nis]</td>        <td></td></tr>
       </table><br>";
 
 echo "<table id='tablemodul1' width=100% border=1>
@@ -46,14 +46,14 @@ echo "<table id='tablemodul1' width=100% border=1>
                                   where a.kode_kelas='$_GET[kelas]' AND a.id_tahun_akademik='$_GET[tahun]' AND b.id_kelompok_mata_pelajaran='$k[id_kelompok_mata_pelajaran]'");
         $no = 1;
         while ($m = mysqli_fetch_array($mapel)){
-          $n = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_nilai_uts where kodejdwl='$m[kodejdwl]' AND nisn='$s[nisn]'"));
+          $n = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_nilai_uts where kodejdwl='$m[kodejdwl]' AND nis='$s[nis]'"));
           $cekpredikat = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_predikat where kode_kelas='$_GET[kelas]'"));
                       if ($cekpredikat >= 1){
-                        $grade1 = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM `rb_predikat` where ($n[angka_pengetahuan] >=nilai_a) AND ($n[angka_pengetahuan] <= nilai_b) AND kode_kelas='$_GET[kelas]'"));
-                        $grade2 = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM `rb_predikat` where ($n[angka_keterampilan] >=nilai_a) AND ($n[angka_keterampilan] <= nilai_b) AND kode_kelas='$_GET[kelas]'"));
+                        $grade1 = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM `rb_predikat` where ($n[angka_pengetahuan] >=nilai_a) AND ($n[angka_pengetahuan] <= nilai_b)"));
+                        $grade2 = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM `rb_predikat` where ($n[angka_keterampilan] >=nilai_a) AND ($n[angka_keterampilan] <= nilai_b)"));
                       }else{
-                        $grade1 = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM `rb_predikat` where ($n[angka_pengetahuan] >=nilai_a) AND ($n[angka_pengetahuan] <= nilai_b) AND kode_kelas='0'"));
-                        $grade2 = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM `rb_predikat` where ($n[angka_keterampilan] >=nilai_a) AND ($n[angka_keterampilan] <= nilai_b) AND kode_kelas='0'"));
+                        $grade1 = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM `rb_predikat` where ($n[angka_pengetahuan] >=nilai_a) AND ($n[angka_pengetahuan] <= nilai_b)"));
+                        $grade2 = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM `rb_predikat` where ($n[angka_keterampilan] >=nilai_a) AND ($n[angka_keterampilan] <= nilai_b) "));
                       }
         echo "<tr>
                 <td align=center>$no</td>
@@ -71,12 +71,12 @@ echo "<table id='tablemodul1' width=100% border=1>
 		echo "</table><br/>";
         $cekpredikat2 = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_predikat where kode_kelas='$_GET[kelas]'"));
         if ($cekpredikat2 >= 1){
-          $grade = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_predikat where kode_kelas='$_GET[kelas]'");
-          $gradea = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_predikat where kode_kelas='$_GET[kelas]'");
+          $grade = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_predikat");
+          $gradea = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_predikat");
           $total = mysqli_num_rows($grade);
         }else{
-          $grade = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_predikat where kode_kelas='0'");
-          $gradea = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_predikat where kode_kelas='0'");
+          $grade = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_predikat");
+          $gradea = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_predikat");
           $total = mysqli_num_rows($grade);
         }
           echo "<center><table width='90%' border=1 id='tablemodul1'>

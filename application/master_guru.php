@@ -4,7 +4,7 @@
                 <div class="box-header">
                   <h3 class="box-title">Semua Data Guru </h3>
                   <?php if($_SESSION[level]!='kepala'){ ?>
-                  <a class='pull-right btn btn-info btn-sm' href='index.php?view=guru&act=tambahguru'>Tambahkan Data Guru</a>
+                  <a class='pull-right btn btn-info btn-sm' href='index.php?view=guru&act=tambah'>Tambahkan Data Guru</a>
                   
                   <?php } ?>
                 </div><!-- /.box-header -->
@@ -35,7 +35,7 @@
                         echo "<td><center>
                                 <a class='fa fa-fw fa-search' title='Lihat Detail' href='?view=guru&act=detailguru&id=$r[nip]'></a>
                                 <a class='fa fa-fw fa-edit' title='Edit Data' href='?view=guru&act=editguru&id=$r[nip]'></a>
-                                <a class='fa fa-fw fa-eraser' title='Delete Data' href='?view=guru&hapus=$r[nip]'></a>
+                                <a class='fa fa-fw fa-eraser' title='Delete Data' onclick=\"return confirm('Apa anda yakin untuk hapus Data ini?')\" href='?view=guru&hapus=$r[nip]'></a>
                               </center></td>";
                               }else{
                                 echo "<td><center>
@@ -57,19 +57,237 @@
               </div><!-- /.box -->
             </div>
 <?php 
+}elseif($_GET[act]=='tambah'){
+  cek_session_admin();
+  if (isset($_POST[cek])){
+    $nips = $_POST['aa'];
+     
+
+   $cek = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_guru where nip='$nips'"));
+   if($cek > 0){
+  //  echo "<script>window.alert('NIP Sudah Ada!');</script>";
+       echo "<script>window.location='index.php?view=guru&act=nip';</script>";
+
+   }else{
+          echo "<script>document.location='index.php?view=guru&act=tambahguru&nip=$nips';</script>";
+    }
+         
+  }
+
+    echo "<div class='col-md-12'>
+              <div class='box box-info'>
+                <div class='box-header with-border'>
+                  <h3 class='box-title'>Tambah Data Guru</h3>
+                </div>
+                <div class='box-body'>
+
+                  <div class='panel-body'>
+                    <ul id='myTabs' class='nav nav-tabs' role='tablist'>
+                      <li role='presentation' class='active'><a href='#siswa' id='siswa-tab' role='tab' data-toggle='tab' aria-controls='siswa' aria-expanded='true'>Data </a></li>
+                      
+                    </ul><br>
+
+                    <div id='myTabContent' class='tab-content'>
+                      <div role='tabpanel' class='tab-pane fade active in' id='siswa' aria-labelledby='siswa-tab'>
+                          <form action='' method='POST' enctype='multipart/form-data' class='form-horizontal'>
+                          <div class='col-md-6'>
+                            <table class='table table-condensed table-bordered'>
+                            <tbody>
+                             
+                              <tr><th scope='row'>NIP</th> <td><input type='text' class='form-control' name='aa'></td></tr>
+                             
+ <tr><th scope='row'>Password</th>               <td><input type='text' class='form-control' name='ab' disabled></td></tr>
+                    <tr><th scope='row'>Kelas</th>                  <td><select class='form-control' name='zx' disabled> 
+                    <option value='0' selected>- Kode Kelas -</option>";
+                    $kelas = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelas order by kode_kelas asc");
+                    while($a = mysqli_fetch_array($kelas)){
+                      echo "<option value='$a[kode_kelas]'>$a[nama_kelas]</option>";
+                    }
+                    echo "</select></td></tr>
+                    <tr><th scope='row'>Nama Lengkap</th>           <td><input type='text' class='form-control' name='ac' disabled></td></tr>
+                    <tr><th scope='row'>Tempat Lahir</th>           <td><input type='text' class='form-control' name='ad' disabled></td></tr>
+                    <tr><th scope='row'>Tanggal Lahir</th>          <td><input type='text' class='form-control datepicker' name='ae' disabled></td></tr>
+                    <tr><th scope='row'>Jenis Kelamin</th>          <td><select class='form-control' name='af' disabled> 
+                                                                          <option value='0' selected>- Pilih Jenis Kelamin -</option>
+                                                                            <option value='Laki-Laki'>Laki-Laki</option>
+                                                                            <option value='Perempuan'>Perempuan</option></select>
+                                                                            </td></tr>
+                    <tr><th scope='row'>Agama</th>                  <td><select class='form-control' name='ag' disabled> 
+                                                                          <option value='0' selected>- Pilih Agama -</option>
+                                                                          <option value='Islam'>Islam</option>
+                                                                          <option value='Kristen'>Kristen</option>
+                                                                          <option value='Katolik'>Katolik</option>
+                                                                          <option value='Hindu'>Hindu</option>
+                                                                          <option value='Budha'>Budha</option>
+
+                                                                            </select></td></tr>
+                    <tr><th scope='row'>No Hp</th>                  <td><input type='text' class='form-control' name='ah' disabled></td></tr>
+                    <tr><th scope='row'>Alamat Email</th>           <td><input type='text' class='form-control' name='aj' disabled></td></tr>
+                    <tr><th scope='row'>Alamat</th>                 <td><input type='text' class='form-control' name='ak' disabled></td></tr>
+                   
+                    <tr><th scope='row'>Status Nikah</th>            <td><select class='form-control' name='aw' disabled> 
+                                                                    <option value='0' selected>- Pilih Status Pernikahan -</option>
+                                                                    <option value='Menikah'>Menikah</option>
+                                                                    <option value='Belum Menikah'>Belum Menikah</option></select>
+                                                                    </td></tr>
+                   
+                   
+                   
+                  </tbody>
+                  </table>
+                </div>
+
+                <div class='col-md-6'>
+                  <table class='table table-condensed table-bordered'>
+                  <tbody>
+                   
+
+                  </tbody>
+                  </table>
+                </div>
+                         
+                          <div style='clear:both'></div>
+                          <div class='box-footer'>
+                            <button type='submit' name='cek' class='btn btn-info'>Simpan</button>
+                          </div> 
+                          </form>
+                      </div>
+
+                     
+                    </div>
+                  </div>
+
+                </div>
+            </div>
+        </div>";
+}elseif($_GET[act]=='nip'){
+  cek_session_admin();
+  if (isset($_POST[cek])){
+    $nips = $_POST['aa'];
+     
+
+   $cek = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_guru where nip='$nips'"));
+   if($cek > 0){
+   // echo "<script>window.alert('NIP Sudah Ada!');</script>";
+       echo "<script>window.location='index.php?view=guru&act=nip';</script>";
+
+   }else{
+          echo "<script>document.location='index.php?view=guru&act=tambahguru&nip=$nips';</script>";
+    }
+         
+  }
+
+    echo "<div class='col-md-12'>
+              <div class='box box-info'>
+                <div class='box-header with-border'>
+                  <h3 class='box-title'>Tambah Data Guru</h3>
+                </div>
+                <div class='box-body'>
+
+                  <div class='panel-body'>
+                    <ul id='myTabs' class='nav nav-tabs' role='tablist'>
+                      <li role='presentation' class='active'><a href='#siswa' id='siswa-tab' role='tab' data-toggle='tab' aria-controls='siswa' aria-expanded='true'>Data </a></li>
+                      
+                    </ul><br>
+
+                    <div id='myTabContent' class='tab-content'>
+                      <div role='tabpanel' class='tab-pane fade active in' id='siswa' aria-labelledby='siswa-tab'>
+                          <form action='' method='POST' enctype='multipart/form-data' class='form-horizontal'>
+                          <div class='col-md-6'>
+                            <table class='table table-condensed table-bordered'>
+                            <tbody>
+                             
+                              <tr><th scope='row'>NIP</th> <td><input type='text' class='form-control' name='aa'></td></tr>
+                              <tr><th scope='row' style='color:red;'>**NIP Sudah Ada!!!</th></tr>
+                              <tr><th scope='row'>Password</th>               <td><input type='text' class='form-control' name='ab' disabled></td></tr>
+                    <tr><th scope='row'>Kelas</th>                  <td><select class='form-control' name='zx' disabled> 
+                    <option value='0' selected>- Kode Kelas -</option>";
+                    $kelas = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelas order by kode_kelas asc");
+                    while($a = mysqli_fetch_array($kelas)){
+                      echo "<option value='$a[kode_kelas]'>$a[nama_kelas]</option>";
+                    }
+                    echo "</select></td></tr>
+                    <tr><th scope='row'>Nama Lengkap</th>           <td><input type='text' class='form-control' name='ac' disabled></td></tr>
+                    <tr><th scope='row'>Tempat Lahir</th>           <td><input type='text' class='form-control' name='ad' disabled></td></tr>
+                    <tr><th scope='row'>Tanggal Lahir</th>          <td><input type='text' class='form-control datepicker' name='ae' disabled></td></tr>
+                    <tr><th scope='row'>Jenis Kelamin</th>          <td><select class='form-control' name='af' disabled> 
+                                                                          <option value='0' selected>- Pilih Jenis Kelamin -</option>
+                                                                            <option value='Laki-Laki'>Laki-Laki</option>
+                                                                            <option value='Perempuan'>Perempuan</option></select>
+                                                                            </td></tr>
+                    <tr><th scope='row'>Agama</th>                  <td><select class='form-control' name='ag' disabled> 
+                                                                          <option value='0' selected>- Pilih Agama -</option>
+                                                                          <option value='Islam'>Islam</option>
+                                                                          <option value='Kristen'>Kristen</option>
+                                                                          <option value='Katolik'>Katolik</option>
+                                                                          <option value='Hindu'>Hindu</option>
+                                                                          <option value='Budha'>Budha</option>
+
+                                                                            </select></td></tr>
+                    <tr><th scope='row'>No Hp</th>                  <td><input type='text' class='form-control' name='ah' disabled></td></tr>
+                    <tr><th scope='row'>Alamat Email</th>           <td><input type='text' class='form-control' name='aj' disabled></td></tr>
+                    <tr><th scope='row'>Alamat</th>                 <td><input type='text' class='form-control' name='ak' disabled></td></tr>
+                   
+                    <tr><th scope='row'>Status Nikah</th>            <td><select class='form-control' name='aw' disabled> 
+                                                                    <option value='0' selected>- Pilih Status Pernikahan -</option>
+                                                                    <option value='Menikah'>Menikah</option>
+                                                                    <option value='Belum Menikah'>Belum Menikah</option></select>
+                                                                    </td></tr>
+                   
+                   
+                   
+                  </tbody>
+                  </table>
+                </div>
+
+                <div class='col-md-6'>
+                  <table class='table table-condensed table-bordered'>
+                  <tbody>
+                   
+
+                  </tbody>
+                  </table>
+                </div>
+                         
+                          <div style='clear:both'></div>
+                          <div class='box-footer'>
+                            <button type='submit' name='cek' class='btn btn-info'>Simpan</button>
+                          </div> 
+                          </form>
+                      </div>
+
+                     
+                    </div>
+                  </div>
+
+                </div>
+            </div>
+        </div>";
 }elseif($_GET[act]=='tambahguru'){
   if (isset($_POST[tambah])){
       $rtrw = explode('/',$_POST[al]);
       $rt = $rtrw[0];
       $rw = $rtrw[1];
-     
+
+      
+    $nip = $_GET['nip'];
+      $format=date('Y-m-d',
+      strtotime($_POST[ae]));
+      $cek = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_guru where nis='$nip'"));
+   if($cek > 0){
+    echo "<script>window.alert('NIS Sudah Ada!');</script>";
+       echo "<script>window.location='index.php?view=siswa';</script>";
+
+   }else{
           mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rb_guru VALUES('$_POST[aa]','$_POST[ab]','$_POST[zx]','$_POST[ac]','$_POST[af]','$_POST[ad]',
-                           '$_POST[ae]','$_POST[ba]', 
+                           '$format', 
                            '$_POST[ag]','$_POST[ak]','$_POST[ah]','$_POST[aj]',
                            '$_POST[aw]')");
       
+          echo "<script>window.alert('Data Berhasil di Simpan !')</script>";
       echo "<script>document.location='index.php?view=guru&act=detailguru&id=".$_POST[aa]."';</script>";
   }
+}
 
     echo "<div class='col-md-12'>
               <div class='box box-info'>
@@ -78,22 +296,22 @@
                 </div>
               <div class='box-body'>
               <form method='POST' class='form-horizontal' action='' enctype='multipart/form-data'>
-                <div class='col-md-6'>
+                <div class='col-md-7'>
                   <table class='table table-condensed table-bordered'>
                   <tbody>
                     <input type='hidden' name='id' value='$s[nip]'>
-                    <tr><th width='120px' scope='row'>Nip</th>      <td><input type='text' class='form-control' name='aa'></td></tr>
+                    <tr><th width='120px' scope='row'>Nip</th>      <td><input type='text' class='form-control' name='aa' value='$_GET[nip]' readonly></td></tr>
                     <tr><th scope='row'>Password</th>               <td><input type='text' class='form-control' name='ab'></td></tr>
                     <tr><th scope='row'>Kelas</th>                  <td><select class='form-control' name='zx'> 
                     <option value='0' selected>- Kode Kelas -</option>";
-                    $kelas = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelas");
+                    $kelas = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rb_kelas order by kode_kelas asc");
                     while($a = mysqli_fetch_array($kelas)){
                       echo "<option value='$a[kode_kelas]'>$a[nama_kelas]</option>";
                     }
                     echo "</select></td></tr>
                     <tr><th scope='row'>Nama Lengkap</th>           <td><input type='text' class='form-control' name='ac'></td></tr>
                     <tr><th scope='row'>Tempat Lahir</th>           <td><input type='text' class='form-control' name='ad'></td></tr>
-                    <tr><th scope='row'>Tanggal Lahir</th>          <td><input type='text' class='form-control' name='ae'></td></tr>
+                    <tr><th scope='row'>Tanggal Lahir</th>          <td><input type='text' class='form-control datepicker' name='ae'></td></tr>
                     <tr><th scope='row'>Jenis Kelamin</th>          <td><select class='form-control' name='af'> 
                                                                           <option value='0' selected>- Pilih Jenis Kelamin -</option>
                                                                             <option value='Laki-Laki'>Laki-Laki</option>
@@ -112,7 +330,7 @@
                     <tr><th scope='row'>Alamat Email</th>           <td><input type='text' class='form-control' name='aj'></td></tr>
                     <tr><th scope='row'>Alamat</th>                 <td><input type='text' class='form-control' name='ak'></td></tr>
                    
-                    <tr><th scope='row'>Status Nikah</th>           < <td><select class='form-control' name='aw'> 
+                    <tr><th scope='row'>Status Nikah</th>            <td><select class='form-control' name='aw'> 
                                                                     <option value='0' selected>- Pilih Status Pernikahan -</option>
                                                                     <option value='Menikah'>Menikah</option>
                                                                     <option value='Belum Menikah'>Belum Menikah</option></select>
@@ -134,7 +352,7 @@
                 </div> 
                 <div style='clear:both'></div>
                         <div class='box-footer'>
-                          <button type='submit' name='tambah' class='btn btn-info'>Tambahkan</button>
+                          <button type='submit' name='tambah' class='btn btn-info'>Simpan</button>
                           <a href='index.php?view=siswa'><button type='button' class='btn btn-default pull-right'>Cancel</button></a>
                         </div> 
               </div>
@@ -145,6 +363,8 @@
       $rtrw = explode('/',$_POST[al]);
       $rt = $rtrw[0];
       $rw = $rtrw[1];
+      $format=date('Y-m-d',
+      strtotime($_POST[ae]));
       $dir_gambar = 'foto_pegawai/';
       $filename = basename($_FILES['ax']['name']);
       $filenamee = date("YmdHis").'-'.basename($_FILES['ax']['name']);
@@ -157,7 +377,7 @@
                            kode_kelas     = '$_POST[zx]',
                            nama_guru         = '$_POST[ac]',
                            tempat_lahir       = '$_POST[ad]',
-                           tanggal_lahir = '$_POST[ae]',
+                           tanggal_lahir = '$format',
                            jenis_kelamin       = '$_POST[af]',
                            agama           = '$_POST[ag]',
                            hp         = '$_POST[ah]',
@@ -174,7 +394,7 @@
                            kode_kelas     = '$_POST[zx]',
                            nama_guru         = '$_POST[ac]',
                            tempat_lahir       = '$_POST[ad]',
-                           tanggal_lahir = '$_POST[ae]',
+                           tanggal_lahir = '$format',
                            jenis_kelamin       = '$_POST[af]',
                            agama           = '$_POST[ag]',
                            hp         = '$_POST[ah]',
@@ -214,7 +434,7 @@
                     echo "</select></td></tr>
                     <tr><th scope='row'>Nama Lengkap</th>           <td><input type='text' class='form-control' value='$s[nama_guru]' name='ac'></td></tr>
                     <tr><th scope='row'>Tempat Lahir</th>           <td><input type='text' class='form-control' value='$s[tempat_lahir]' name='ad'></td></tr>
-                    <tr><th scope='row'>Tanggal Lahir</th>          <td><input type='text' class='form-control' value='$s[tanggal_lahir]' name='ae'></td></tr>
+                    <tr><th scope='row'>Tanggal Lahir</th>          <td><input type='text' class='form-control datepicker' value='$s[tanggal_lahir]' name='ae'></td></tr>
                     <tr><th scope='row'>Jenis Kelamin</th>          <td><select class='form-control' name='af'> 
                                                                           <option value='0' selected>- Pilih Jenis Kelamin -</option> 
                                                                             <option value='Laki-Laki'>Laki-Laki</option>
@@ -238,13 +458,7 @@
                                                                           <option value='Menikah'>Menikah</option>
                                                                           <option value='Belum Menikah'>Belum Menikah</option></select>
                                                                           </td></tr>
-                    <tr><th scope='row'>Ganti Foto</th>             <td><div style='position:relative;''>
-                                                                          <a class='btn btn-primary' href='javascript:;'>
-                                                                            <span class='glyphicon glyphicon-search'></span> Browse..."; ?>
-                                                                            <input type='file' class='files' name='ax' onchange='$("#upload-file-info").html($(this).val());'>
-                                                                          <?php echo "</a> <span style='width:155px' class='label label-info' id='upload-file-info'></span>
-                                                                        </div>
-                    </td></tr>
+                
                    
                   
                   </tbody>
@@ -281,17 +495,7 @@
                   <table class='table table-condensed table-bordered'>
                   <tbody>
                     <input type='hidden' name='id' value='$s[nip]'>
-                    <tr><th style='background-color:#E7EAEC' width='160px' rowspan='25'>";
-                        if (trim($s[foto])==''){
-                          echo "<img class='img-thumbnail' style='width:155px' src='foto_siswa/no-image.jpg'>";
-                        }else{
-                          echo "<img class='img-thumbnail' style='width:155px' src='foto_pegawai/$s[foto]'>";
-                        }
-                      if($_SESSION[level]!='kepala'){
-                        echo "<a href='index.php?view=guru&act=editguru&id=$_GET[id]' class='btn btn-success btn-block'>Edit Profile</a>";
-                      }
-                        echo "</th>
-                    </tr>
+                   
                     
                    
                     <tr><th width='120px' scope='row'>Nip</th>      <td>$s[nip]</td></tr>

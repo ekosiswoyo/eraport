@@ -81,11 +81,11 @@ cek_session_admin();
                               <td>$r[jam_selesai]</td>";
                               if (isset($_GET[tahun]) AND isset($_GET[kelas])){
                                 if($_SESSION[level]!='kepala'){
-                                  echo "<td style='width:280px !important'><center>
+                                  echo "<td style='width:280px !important'>
                                           <a class='btn btn-warning btn-xs' title='Lihat Nilai Sikap Siswa' href='index.php?view=raport&act=listsiswasikap&jdwl=$r[kodejdwl]&kd=$r[kode_pelajaran]&id=$r[kode_kelas]&tahun=$_GET[tahun]'><span class='glyphicon glyphicon-th-list'></span> Sikap</a>
                                           <a class='btn btn-success btn-xs' title='Lihat Nilai Pengetahuan Siswa' href='index.php?view=raport&act=listsiswa&jdwl=$r[kodejdwl]&kd=$r[kode_pelajaran]&id=$r[kode_kelas]&tahun=$_GET[tahun]'><span class='glyphicon glyphicon-th-list'></span> Pengetahuan</a>
                                           <a class='btn btn-primary btn-xs' title='Lihat Nilai Keterampilan Siswa' href='index.php?view=raport&act=listsiswaketerampilan&jdwl=$r[kodejdwl]&kd=$r[kode_pelajaran]&id=$r[kode_kelas]&tahun=$_GET[tahun]'><span class='glyphicon glyphicon-th-list'></span> Keterampilan</a>
-                                        </center></td>";
+                                        </td>";
                                 }
                               }
                             echo "</tr>";
@@ -111,10 +111,30 @@ cek_session_guru();
 elseif($_GET[act]=='listsiswaketerampilan'){
 cek_session_guru();
     include "raport/raport_nilai_keterampilan.php";
+}elseif($_GET[act]=='listsiswawali'){
+cek_session_guru();
+    include "raport/raport_nilai_pengetahuan_wali.php"; 
+}
+elseif($_GET[act]=='listsiswaketerampilanwali'){
+cek_session_guru();
+    include "raport/raport_nilai_keterampilan_wali.php";
 }
 elseif($_GET[act]=='detailguru'){
 cek_session_guru();
     include "raport/raport_halaman_guru.php";
+}
+elseif($_GET[act]=='detailnilaisiswa'){
+cek_session_guru();
+    include "raport/raport_data_siswa.php";
+}
+elseif($_GET[act]=='nilairaportkepsek'){
+cek_session_guru();
+    include "raport/raport_kepsek.php";
+}
+
+elseif($_GET[act]=='nilaiutskepsek'){
+cek_session_guru();
+    include "raport/uts_kepsek.php";
 }
 elseif($_GET[act]=='detailsiswa'){
 cek_session_siswa();
@@ -123,5 +143,8 @@ cek_session_siswa();
 elseif($_GET[act]=='listsiswasikap'){
 cek_session_guru();
     include "raport/raport_nilai_sikap.php";
+}elseif($_GET[act]=='listsiswasikapwali'){
+cek_session_guru();
+    include "raport/raport_nilai_sikap_wali.php";
 }
 ?> 
